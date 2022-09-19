@@ -1,0 +1,62 @@
+2022-07-29 11:43:49,277 - WARNING - No record selected when trying to edit process
+2022-07-29 11:43:49,629 - WARNING - No record selected when trying to edit process
+2022-07-29 11:43:49,934 - WARNING - No record selected when trying to edit process
+2022-07-29 11:43:50,119 - WARNING - No record selected when trying to edit process
+2022-07-29 11:43:50,275 - WARNING - No record selected when trying to edit process
+2022-07-29 11:43:50,443 - WARNING - No record selected when trying to edit process
+2022-07-29 13:05:26,019 - ERROR - Material sum was not equal to 1 when trying to edit a recipe
+2022-07-29 13:05:46,005 - ERROR - Material sum was not equal to 1 when trying to edit a recipe
+2022-07-29 13:11:36,930 - ERROR - Entered a duplicate name when editing recipe record
+2022-07-29 13:11:51,124 - ERROR - Entered a duplicate name when adding new recipe
+2022-07-29 15:53:42,374 - CRITICAL - Not enough material in storage to complete an order
+2022-07-29 15:53:50,194 - ERROR - No recipe chosen when trying to submit an order
+2022-07-29 15:53:52,298 - ERROR - Wrong value type entered when trying to add an order
+2022-07-29 15:53:55,157 - ERROR - Wrong value type entered when trying to add an order
+2022-07-29 15:54:15,727 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-29 15:54:23,712 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-29 15:54:39,024 - ERROR - Entered a duplicate name when editing recipe record
+2022-07-29 15:54:42,882 - ERROR - Entered a duplicate name when editing recipe record
+2022-07-29 15:55:25,408 - ERROR - Wrong material values input when trying to edit a recipe
+2022-07-29 15:56:00,679 - ERROR - Efficiency input was less than 0 when trying to edit a process
+2022-07-29 16:30:06,713 - ERROR - Entered a duplicate material name when editing process record
+2022-07-29 16:30:12,991 - ERROR - Entered a duplicate material name when editing process record
+2022-07-29 16:30:19,304 - ERROR - Entered a duplicate name when editing storage record
+2022-07-29 16:41:52,110 - ERROR - Entered a duplicate material name when editing process record
+2022-07-29 16:41:55,671 - WARNING - No record selected when trying to edit process
+2022-07-29 16:41:58,402 - ERROR - Entered a duplicate name when editing process record
+2022-07-29 16:42:00,415 - ERROR - Entered a duplicate name when editing process record
+2022-07-29 16:42:03,801 - ERROR - Entered a duplicate material name when editing process record
+2022-07-29 16:42:28,963 - ERROR - Entered a duplicate name when editing storage record
+2022-07-29 17:53:41,216 - ERROR - No recipe chosen when trying to submit an order
+2022-07-29 17:55:11,929 - CRITICAL - Not enough material in storage to complete an order
+2022-07-29 17:56:00,671 - CRITICAL - Not enough material in storage to complete an order
+2022-07-29 17:57:11,105 - ERROR - Entered a duplicate material name when editing process record
+2022-07-29 17:57:17,310 - ERROR - Efficiency input was less than 0 when trying to edit a process
+2022-07-29 17:57:32,361 - ERROR - Entered a duplicate name when adding new recipe
+2022-07-29 18:01:25,223 - WARNING - No record selected when trying to edit a recipe
+2022-07-29 18:01:26,602 - WARNING - No record selected when trying to edit a recipe
+2022-07-30 10:49:43,422 - ERROR - No recipe chosen when trying to submit an order
+2022-07-30 10:49:48,753 - CRITICAL - Not enough material in storage to complete an order
+2022-07-30 10:50:14,423 - ERROR - No recipe chosen when trying to submit an order
+2022-07-30 10:50:20,069 - ERROR - Entered a duplicate name when editing recipe record
+2022-07-30 10:50:22,966 - ERROR - Entered a duplicate name when editing recipe record
+2022-07-30 10:52:16,705 - ERROR - Efficiency input was less than 0 when trying to edit a process
+2022-07-30 10:52:18,626 - ERROR - Efficiency input was less than 0 when trying to edit a process
+2022-07-30 10:52:23,176 - ERROR - Entered a duplicate name when editing process record
+2022-07-30 10:52:28,976 - ERROR - Entered a duplicate name when editing process record
+2022-07-30 10:52:35,894 - ERROR - Entered a duplicate material name when editing process record
+2022-07-30 10:53:09,709 - ERROR - Entered a duplicate name when adding new recipe
+2022-07-30 10:53:21,679 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-30 10:53:24,351 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-30 10:53:26,562 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-30 10:53:41,580 - ERROR - Material sum was not equal to 1 or were negative when trying to edit a recipe
+2022-07-30 10:53:57,395 - WARNING - No record selected when trying to delete recipe!
+2022-07-30 10:53:57,909 - WARNING - No record selected when trying to edit a recipe
+2022-08-01 13:11:11,567 - WARNING - No record selected when trying to delete recipe!
+2022-08-01 13:11:11,730 - WARNING - No record selected when trying to delete recipe!
+2022-08-01 13:11:11,891 - WARNING - No record selected when trying to delete recipe!
+2022-08-01 13:15:35,794 - ERROR - No recipe chosen when trying to submit an order
+2022-08-01 13:15:38,958 - ERROR - Wrong value type entered when trying to add an order
+2022-09-19 14:10:05,641 - WARNING - No record selected when trying to edit a storage record
+2022-09-19 14:10:07,081 - ERROR - No recipe chosen when trying to submit an order
+2022-09-19 14:10:47,140 - WARNING - No record selected when trying to edit process
