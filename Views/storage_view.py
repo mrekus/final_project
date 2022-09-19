@@ -1,6 +1,4 @@
-from tkinter import *
-from Control import *
-import logging
+from utils import *
 
 
 class StorageViews:
@@ -10,13 +8,13 @@ class StorageViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        self.storageTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=NSEW)
+        self.storageTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.storageTable.get_children():
             self.storageTable.delete(i)
         for i, col_heading in enumerate(["ID", "Name", "Amount kg"], 1):
-            self.storageTable.column(f"# {i}", anchor=CENTER, width=90)
+            self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
-        for i in get_storage_data():
+        for i in Control.get_storage_data():
             self.storageTable.insert('', 'end', values=(i.id, i.name, i.amount))
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_storage_get_values, text="Edit")
@@ -60,16 +58,16 @@ class StorageViews:
         ir ar reikšmės didesnės už 0, jei taip, redaguotą įrašą išsaugo, jei ne meta ERROR.
         Taip pat pakeičia procesų DB material pavadinimą
         """
-        selected_field = session.query(Storage).get(self.idForEdit.get())
+        selected_field = Control.session.query(Control.Storage).get(self.idForEdit.get())
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
             if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           check_for_duplicates_storage() if
+                                                                           Control.check_for_duplicates_storage() if
                                                                            i != selected_field]:
                 try:
                     if float(self.entryFieldEdit2.get()) > 0:
-                        update_storage(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get())
-                        update_process_material_from_storage(self.idForEdit.get(), self.entryFieldEdit1.get())
+                        Control.update_storage(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get())
+                        Control.update_process_material_from_storage(self.idForEdit.get(), self.entryFieldEdit1.get())
                         self.fill_storage_data_box()
                     else:
                         logging.error("Material amount entered was less than 0 when trying to edit a storage record")

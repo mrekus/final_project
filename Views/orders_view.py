@@ -1,6 +1,4 @@
-from tkinter import *
-from Control import *
-import logging
+from utils import *
 from datetime import datetime
 
 
@@ -9,7 +7,7 @@ class OrderViews:
         """
         Atjauniną receptų sąrašą
         """
-        self.recipe_list.config(values=check_for_duplicates_recipe())
+        self.recipe_list.config(values=Control.check_for_duplicates_recipe())
         self.recipe_list.set("")
 
     def order_adding_widgets(self):
@@ -30,7 +28,7 @@ class OrderViews:
         """
         self.buttonAddOrder.grid(row=1, column=0)
         self.entryFieldOrder.grid_forget()
-        self.entryFieldOrder.delete(0, END)
+        self.entryFieldOrder.delete(0, tk.END)
         self.labelOrder.grid_forget()
         self.buttonCancelOrder.grid_forget()
         self.buttonConfirmOrder.grid_forget()
@@ -45,7 +43,7 @@ class OrderViews:
         try:
             if self.recipe_list.get() != "":
                 if int(self.entryFieldOrder.get()) > 0:
-                    selected_recipe = str(session.query(Recipe).filter_by(name=self.recipe_list.get()).one())
+                    selected_recipe = str(Control.session.query(Control.Recipe).filter_by(name=self.recipe_list.get()).one())
                     selected_recipe = selected_recipe.replace(" ", "")
                     selected_recipe = selected_recipe.replace(";", "-")
                     selected_recipe = selected_recipe.split("-")
@@ -71,7 +69,7 @@ class OrderViews:
         :param entry: užsakymo dydis
         """
         required_materials = [i * entry for i in selected_recipe]
-        storage = str(get_storage_data())
+        storage = str(Control.get_storage_data())
         storage = storage.replace(",", "-")
         storage = storage.replace("]", "")
         storage = storage.replace(" ", "")
@@ -89,7 +87,7 @@ class OrderViews:
         """
         num = 0
         if min(storage_remaining) < 0:
-            storage = str(get_process_data())
+            storage = str(Control.get_process_data())
             efficiency = storage.replace("k", "-")
             efficiency = efficiency.replace(" ", "")
             efficiency = efficiency.split("-")
@@ -114,7 +112,7 @@ class OrderViews:
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - "
                     f"{self.entryFieldOrder.get()}kg completed.\n")
             for i in storage_remaining:
-                record = session.query(Storage).get(record_id)
+                record = Control.session.query(Control.Storage).get(record_id)
                 record.amount = round(i, 1)
                 record_id += 1
-            session.commit()
+            Control.session.commit()

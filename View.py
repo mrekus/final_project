@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import logging
-from Views import processes_view, recipies_view, storage_view, orders_view
+from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews
 
 
 class MyButton(Button):
@@ -35,15 +35,16 @@ class MyEntry(Entry):
         self.config(font=("courier", 14, "bold"), width=15)
 
 
-class Main(processes_view.ProcessViews,
-           recipies_view.RecipiesViews,
-           storage_view.StorageViews,
-           orders_view.OrderViews):
+class Main(ProcessViews,
+           RecipiesViews,
+           StorageViews,
+           OrderViews):
     """
     Pagrindinis programos langas
     """
 
     def __init__(self, master):
+        super().__init__()
         self.master = master
         self.style = ttk.Style()
         self.style.theme_use("clam")
@@ -51,13 +52,13 @@ class Main(processes_view.ProcessViews,
         logging.basicConfig(filename="Project_error_log.log", level=logging.WARNING,
                             format="%(asctime)s - %(levelname)s - %(message)s", encoding="UTF-8")
 
-        gradient_step = 0
-        hex_step = 400
+        self.gradient_step = 0
+        self.hex_step = 400
         for _ in range(40):
-            color_hex = str(224499 + hex_step)
-            Frame(master, width=100, height=550, bg="#" + color_hex).place(x=gradient_step, y=0)
-            gradient_step += 100
-            hex_step += 300
+            color_hex = str(224499 + self.hex_step)
+            Frame(master, width=100, height=550, bg="#" + color_hex).place(x=self.gradient_step, y=0)
+            self.gradient_step += 100
+            self.hex_step += 300
 
         self.idForEdit = IntVar()
 
@@ -179,28 +180,6 @@ class Main(processes_view.ProcessViews,
         self.buttonDelete.grid_forget()
         self.buttonCancelEditing.grid_forget()
         self.buttonAddRecipe.grid_forget()
-
-
-class ErrorWindow:
-    """
-    Iššaukia ERROR langą su tekstu
-    :param text: priima error lango tekstą
-    """
-
-    def __init__(self, text):
-        self.error_window = Toplevel()
-        self.error_window.geometry("+900+500")
-        self.error_window.title("Error")
-        frame = Frame(self.error_window)
-        error_text = Label(frame, text=text, anchor=CENTER, font=("courier", 25, "bold"))
-        ok_button = Button(frame, text="Confirm", command=self.error_window.destroy, anchor=CENTER, bg="white",
-                           fg="black",
-                           font=("courier", 12, "bold"), relief="groove", height=1, width=15,
-                           activebackground="#0a0a0a", activeforeground="#e6d415")
-        error_text.grid(row=0, column=1)
-        ok_button.grid(row=1, column=1)
-        frame.pack(expand=True)
-        self.error_window.bell()
 
 
 def main():

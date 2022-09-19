@@ -1,6 +1,4 @@
-from tkinter import *
-from Control import *
-import logging
+from utils import *
 
 
 class RecipiesViews:
@@ -10,18 +8,18 @@ class RecipiesViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        headings = check_for_duplicates_storage()
-        self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=NSEW)
+        headings = Control.check_for_duplicates_storage()
+        self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
         for i, col_heading in enumerate(
                 ["ID", "Recipe", headings[0], headings[1], headings[2], headings[3], headings[4]], 1):
-            self.recipeTable.column(f"# {i}", anchor=CENTER, width=90)
+            self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.recipeTable.heading(f"# {i}", text=col_heading)
-        for i in get_recipe_data():
+        for i in Control.get_recipe_data():
             self.recipeTable.insert('', 'end', values=(
                 i.id, i.name, i.material1, i.material2, i.material3, i.material4, i.material5))
-        self.buttonDelete.config(state=NORMAL, bg="red")
+        self.buttonDelete.config(state=tk.NORMAL, bg="red")
         self.buttonAddRecipe.grid(row=3, column=6)
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
 
@@ -55,7 +53,7 @@ class RecipiesViews:
             deletion_id = deletion_id.split("[")
             deletion_id = deletion_id[1]
             deletion_id = int(deletion_id[0])
-            delete_recipe_record(deletion_id)
+            Control.delete_recipe_record(deletion_id)
             self.fill_recipe_data_box()
             self.refresh_recipe_list()
         except IndexError:
@@ -76,15 +74,15 @@ class RecipiesViews:
         klaidos atveju meta ERROR
         """
         if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                       check_for_duplicates_recipe()]:
+                                                                       Control.check_for_duplicates_recipe()]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
                     check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
                                     float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
                                     float(self.entryFieldEdit6.get())]
                     if all(0 <= i <= 1 for i in check_values) and round(sum(check_values), 3) == 1:
-                        add_recipe(self.entryFieldEdit1.get(), self.entryFieldEdit2.get(), self.entryFieldEdit3.get(),
-                                   self.entryFieldEdit4.get(), self.entryFieldEdit5.get(), self.entryFieldEdit6.get())
+                        Control.add_recipe(self.entryFieldEdit1.get(), self.entryFieldEdit2.get(), self.entryFieldEdit3.get(),
+                                           self.entryFieldEdit4.get(), self.entryFieldEdit5.get(), self.entryFieldEdit6.get())
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
@@ -129,21 +127,21 @@ class RecipiesViews:
          ir ar medžiagų dalių suma yra 1, ir prideda jį į DB. Klaidos atveju meta ERROR.
         :return:
         """
-        selected_field = session.query(Recipe).get(self.idForEdit.get())
+        selected_field = Control.session.query(Control.Recipe).get(self.idForEdit.get())
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
             if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           check_for_duplicates_recipe() if
+                                                                           Control.check_for_duplicates_recipe() if
                                                                            i != selected_field]:
                 try:
                     check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
                                     float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
                                     float(self.entryFieldEdit6.get())]
                     if all((0 <= i <= 1) for i in check_values) and round(sum(check_values), 3) == 1:
-                        update_recipe(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
-                                      self.entryFieldEdit3.get(),
-                                      self.entryFieldEdit4.get(), self.entryFieldEdit5.get(),
-                                      self.entryFieldEdit6.get())
+                        Control.update_recipe(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
+                                              self.entryFieldEdit3.get(),
+                                              self.entryFieldEdit4.get(), self.entryFieldEdit5.get(),
+                                              self.entryFieldEdit6.get())
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
@@ -164,5 +162,5 @@ class RecipiesViews:
         Atšaukia Recipies įrašo redagavimą ir pašalina laukus
         """
         self.cancel_editing()
-        self.buttonDelete.config(state=NORMAL, bg="red")
+        self.buttonDelete.config(state=tk.NORMAL, bg="red")
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
