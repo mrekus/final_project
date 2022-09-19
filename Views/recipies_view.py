@@ -13,12 +13,33 @@ class RecipiesViews:
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
         for i, col_heading in enumerate(
-                ["ID", "Recipe", headings[0], headings[1], headings[2], headings[3], headings[4]], 1):
+            [
+                "ID",
+                "Recipe",
+                headings[0],
+                headings[1],
+                headings[2],
+                headings[3],
+                headings[4],
+            ],
+            1,
+        ):
             self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.recipeTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_recipe_data():
-            self.recipeTable.insert('', 'end', values=(
-                i.id, i.name, i.material1, i.material2, i.material3, i.material4, i.material5))
+            self.recipeTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.name,
+                    i.material1,
+                    i.material2,
+                    i.material3,
+                    i.material4,
+                    i.material5,
+                ),
+            )
         self.buttonDelete.config(state=tk.NORMAL, bg="red")
         self.buttonAddRecipe.grid(row=3, column=6)
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
@@ -73,23 +94,41 @@ class RecipiesViews:
         Prideda naują receptą į DB jei jis turi pavadinimą, ir medžiagų dalių suma yra 1,
         klaidos atveju meta ERROR
         """
-        if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                       Control.check_for_duplicates_recipe()]:
+        if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+            i.lower().replace(" ", "") for i in Control.check_for_duplicates_recipe()
+        ]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
-                    check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
-                                    float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
-                                    float(self.entryFieldEdit6.get())]
-                    if all(0 <= i <= 1 for i in check_values) and round(sum(check_values), 3) == 1:
-                        Control.add_recipe(self.entryFieldEdit1.get(), self.entryFieldEdit2.get(), self.entryFieldEdit3.get(),
-                                           self.entryFieldEdit4.get(), self.entryFieldEdit5.get(), self.entryFieldEdit6.get())
+                    check_values = [
+                        float(self.entryFieldEdit2.get()),
+                        float(self.entryFieldEdit3.get()),
+                        float(self.entryFieldEdit4.get()),
+                        float(self.entryFieldEdit5.get()),
+                        float(self.entryFieldEdit6.get()),
+                    ]
+                    if (
+                        all(0 <= i <= 1 for i in check_values)
+                        and round(sum(check_values), 3) == 1
+                    ):
+                        Control.add_recipe(
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                            self.entryFieldEdit3.get(),
+                            self.entryFieldEdit4.get(),
+                            self.entryFieldEdit5.get(),
+                            self.entryFieldEdit6.get(),
+                        )
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
-                        logging.error("Material sum not equal to 1 when trying to add new recipe")
+                        logging.error(
+                            "Material sum not equal to 1 when trying to add new recipe"
+                        )
                         ErrorWindow("Material sum must amount to 1!")
                 except ValueError:
-                    logging.error("Wrong material values input when trying to add new recipe")
+                    logging.error(
+                        "Wrong material values input when trying to add new recipe"
+                    )
                     ErrorWindow("Material inputs are not numbers, or are not filled!")
             else:
                 logging.error("No name input when trying to add new recipe")
@@ -130,25 +169,45 @@ class RecipiesViews:
         selected_field = Control.session.query(Control.Recipe).get(self.idForEdit.get())
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           Control.check_for_duplicates_recipe() if
-                                                                           i != selected_field]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in Control.check_for_duplicates_recipe()
+                if i != selected_field
+            ]:
                 try:
-                    check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
-                                    float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
-                                    float(self.entryFieldEdit6.get())]
-                    if all((0 <= i <= 1) for i in check_values) and round(sum(check_values), 3) == 1:
-                        Control.update_recipe(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
-                                              self.entryFieldEdit3.get(),
-                                              self.entryFieldEdit4.get(), self.entryFieldEdit5.get(),
-                                              self.entryFieldEdit6.get())
+                    check_values = [
+                        float(self.entryFieldEdit2.get()),
+                        float(self.entryFieldEdit3.get()),
+                        float(self.entryFieldEdit4.get()),
+                        float(self.entryFieldEdit5.get()),
+                        float(self.entryFieldEdit6.get()),
+                    ]
+                    if (
+                        all((0 <= i <= 1) for i in check_values)
+                        and round(sum(check_values), 3) == 1
+                    ):
+                        Control.update_recipe(
+                            self.idForEdit.get(),
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                            self.entryFieldEdit3.get(),
+                            self.entryFieldEdit4.get(),
+                            self.entryFieldEdit5.get(),
+                            self.entryFieldEdit6.get(),
+                        )
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
-                        logging.error("Material sum was not equal to 1 or were negative when trying to edit a recipe")
-                        ErrorWindow("Material sum must amount to 1 and material values must be positive!")
+                        logging.error(
+                            "Material sum was not equal to 1 or were negative when trying to edit a recipe"
+                        )
+                        ErrorWindow(
+                            "Material sum must amount to 1 and material values must be positive!"
+                        )
                 except ValueError:
-                    logging.error("Wrong material values input when trying to edit a recipe")
+                    logging.error(
+                        "Wrong material values input when trying to edit a recipe"
+                    )
                     ErrorWindow("Material inputs must be numbers!")
             else:
                 logging.error("Entered a duplicate name when editing recipe record")

@@ -12,8 +12,16 @@ class MyButton(Button):
 
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent, **kwargs)
-        self.config(bg="white", fg="black", font=("courier", 12, "bold"), relief="groove", height=3, width=15,
-                    activebackground="#0a0a0a", activeforeground="#e6d415")
+        self.config(
+            bg="white",
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=3,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
 
 
 class MyLabel(Label):
@@ -42,14 +50,20 @@ class Main:
         self.style = ttk.Style()
         self.style.theme_use("clam")
 
-        logging.basicConfig(filename="Project_error_log.log", level=logging.WARNING,
-                            format="%(asctime)s - %(levelname)s - %(message)s", encoding="UTF-8")
+        logging.basicConfig(
+            filename="Project_error_log.log",
+            level=logging.WARNING,
+            format="%(asctime)s - %(levelname)s - %(message)s",
+            encoding="UTF-8",
+        )
 
         gradient_step = 0
         hex_step = 400
         for _ in range(40):
             color_hex = str(224499 + hex_step)
-            Frame(master, width=100, height=550, bg="#" + color_hex).place(x=gradient_step, y=0)
+            Frame(master, width=100, height=550, bg="#" + color_hex).place(
+                x=gradient_step, y=0
+            )
             gradient_step += 100
             hex_step += 300
 
@@ -62,46 +76,119 @@ class Main:
         self.master.config(menu=self.menu)
         self.submenu = Menu(self.menu, tearoff=False)
 
-        self.buttonAddOrder = Button(self.topFrame, text="Add an Order", height=3, width=20, anchor=CENTER,
-                                     bg="white", fg="black", font=("courier", 20, "bold"), relief="groove",
-                                     command=self.order_adding_widgets, activebackground="#0a0a0a",
-                                     activeforeground="#e6d415")
-        self.buttonProcesses = MyButton(self.leftFrame, text="Processes", command=self.fill_process_data_box)
-        self.buttonRecipies = MyButton(self.leftFrame, text="Recipies", command=self.fill_recipe_data_box)
-        self.buttonStorage = MyButton(self.leftFrame, text="Storage", command=self.fill_storage_data_box)
+        self.buttonAddOrder = Button(
+            self.topFrame,
+            text="Add an Order",
+            height=3,
+            width=20,
+            anchor=CENTER,
+            bg="white",
+            fg="black",
+            font=("courier", 20, "bold"),
+            relief="groove",
+            command=self.order_adding_widgets,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
+        self.buttonProcesses = MyButton(
+            self.leftFrame, text="Processes", command=self.fill_process_data_box
+        )
+        self.buttonRecipies = MyButton(
+            self.leftFrame, text="Recipies", command=self.fill_recipe_data_box
+        )
+        self.buttonStorage = MyButton(
+            self.leftFrame, text="Storage", command=self.fill_storage_data_box
+        )
         self.buttonEdit = MyButton(self.leftFrame, text="Edit")
-        self.buttonDelete = Button(self.leftFrame, text="Delete", bg="red", fg="black", font=("courier", 12), height=3,
-                                   width=15, command=self.delete_record)
-        self.buttonAddRecipe = MyButton(self.leftFrame, text="Add Recipe", command=self.add_record_recipies)
-        self.buttonCancelEditing = MyButton(self.leftFrame, text="Cancel", command=self.cancel_editing)
-        self.buttonCancelOrder = Button(self.topFrame, text="Cancel Order", height=3, width=20, anchor=CENTER,
-                                        bg="red", fg="black", font=("courier", 14, "bold"), relief="groove",
-                                        command=self.cancel_order)
-        self.buttonConfirmOrder = Button(self.topFrame, text="Confirm Order", height=3, width=20, anchor=CENTER,
-                                         bg="white", fg="black", font=("courier", 14, "bold"), relief="groove",
-                                         command=self.order_calculation, activebackground="#0a0a0a",
-                                         activeforeground="#e6d415")
+        self.buttonDelete = Button(
+            self.leftFrame,
+            text="Delete",
+            bg="red",
+            fg="black",
+            font=("courier", 12),
+            height=3,
+            width=15,
+            command=self.delete_record,
+        )
+        self.buttonAddRecipe = MyButton(
+            self.leftFrame, text="Add Recipe", command=self.add_record_recipies
+        )
+        self.buttonCancelEditing = MyButton(
+            self.leftFrame, text="Cancel", command=self.cancel_editing
+        )
+        self.buttonCancelOrder = Button(
+            self.topFrame,
+            text="Cancel Order",
+            height=3,
+            width=20,
+            anchor=CENTER,
+            bg="red",
+            fg="black",
+            font=("courier", 14, "bold"),
+            relief="groove",
+            command=self.cancel_order,
+        )
+        self.buttonConfirmOrder = Button(
+            self.topFrame,
+            text="Confirm Order",
+            height=3,
+            width=20,
+            anchor=CENTER,
+            bg="white",
+            fg="black",
+            font=("courier", 14, "bold"),
+            relief="groove",
+            command=self.order_calculation,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
         self.labelEdit1 = MyLabel(self.leftFrame)
         self.labelEdit2 = MyLabel(self.leftFrame)
         self.labelEdit3 = MyLabel(self.leftFrame)
         self.labelEdit4 = MyLabel(self.leftFrame)
         self.labelEdit5 = MyLabel(self.leftFrame)
         self.labelEdit6 = MyLabel(self.leftFrame)
-        self.labelOrder = Label(self.topFrame, text="Amount in kg:", font=("courier", 25, "bold"), width=15)
+        self.labelOrder = Label(
+            self.topFrame, text="Amount in kg:", font=("courier", 25, "bold"), width=15
+        )
         self.entryFieldEdit1 = MyEntry(self.leftFrame)
         self.entryFieldEdit2 = MyEntry(self.leftFrame)
         self.entryFieldEdit3 = MyEntry(self.leftFrame)
         self.entryFieldEdit4 = MyEntry(self.leftFrame)
         self.entryFieldEdit5 = MyEntry(self.leftFrame)
         self.entryFieldEdit6 = MyEntry(self.leftFrame)
-        self.entryFieldOrder = Entry(self.topFrame, font=("courier", 25, "bold"), width=15)
-        self.recipe_list = ttk.Combobox(self.topFrame, width=12, font=("courier", 25, "bold"), state="readonly")
-        self.processTable = ttk.Treeview(self.leftFrame, columns=("id", "Process", "Material", "Efficiency kg/h"),
-                                         show='headings', height=8)
-        self.recipeTable = ttk.Treeview(self.leftFrame, columns=(
-            "id", "Recipe", "Material 1", "Material 2", "Material 3", "Material 4", "Material 5"), show='headings',
-                                        height=8)
-        self.storageTable = ttk.Treeview(self.leftFrame, columns=("id", "Name", "Amount kg"), show='headings', height=8)
+        self.entryFieldOrder = Entry(
+            self.topFrame, font=("courier", 25, "bold"), width=15
+        )
+        self.recipe_list = ttk.Combobox(
+            self.topFrame, width=12, font=("courier", 25, "bold"), state="readonly"
+        )
+        self.processTable = ttk.Treeview(
+            self.leftFrame,
+            columns=("id", "Process", "Material", "Efficiency kg/h"),
+            show="headings",
+            height=8,
+        )
+        self.recipeTable = ttk.Treeview(
+            self.leftFrame,
+            columns=(
+                "id",
+                "Recipe",
+                "Material 1",
+                "Material 2",
+                "Material 3",
+                "Material 4",
+                "Material 5",
+            ),
+            show="headings",
+            height=8,
+        )
+        self.storageTable = ttk.Treeview(
+            self.leftFrame,
+            columns=("id", "Name", "Amount kg"),
+            show="headings",
+            height=8,
+        )
 
         self.menu.add_cascade(label="Menu", menu=self.submenu)
         self.submenu.add_command(label="Back to main", command=self.back_to_main)
@@ -124,11 +211,15 @@ class Main:
         self.processTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=NSEW)
         for i in self.processTable.get_children():
             self.processTable.delete(i)
-        for i, col_heading in enumerate(["ID", "Process", "Material", "Efficiency kg/h"], 1):
+        for i, col_heading in enumerate(
+            ["ID", "Process", "Material", "Efficiency kg/h"], 1
+        ):
             self.processTable.column(f"# {i}", anchor=CENTER, width=90)
             self.processTable.heading(f"# {i}", text=col_heading)
         for i in get_process_data():
-            self.processTable.insert('', 'end', values=(i.id, i.name, i.produced_material, i.efficiency))
+            self.processTable.insert(
+                "", "end", values=(i.id, i.name, i.produced_material, i.efficiency)
+            )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_process_get_values, text="Edit")
 
@@ -143,12 +234,33 @@ class Main:
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
         for i, col_heading in enumerate(
-                ["ID", "Recipe", headings[0], headings[1], headings[2], headings[3], headings[4]], 1):
+            [
+                "ID",
+                "Recipe",
+                headings[0],
+                headings[1],
+                headings[2],
+                headings[3],
+                headings[4],
+            ],
+            1,
+        ):
             self.recipeTable.column(f"# {i}", anchor=CENTER, width=90)
             self.recipeTable.heading(f"# {i}", text=col_heading)
         for i in get_recipe_data():
-            self.recipeTable.insert('', 'end', values=(
-                i.id, i.name, i.material1, i.material2, i.material3, i.material4, i.material5))
+            self.recipeTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.name,
+                    i.material1,
+                    i.material2,
+                    i.material3,
+                    i.material4,
+                    i.material5,
+                ),
+            )
         self.buttonDelete.config(state=NORMAL, bg="red")
         self.buttonAddRecipe.grid(row=3, column=6)
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
@@ -166,7 +278,7 @@ class Main:
             self.storageTable.column(f"# {i}", anchor=CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
         for i in get_storage_data():
-            self.storageTable.insert('', 'end', values=(i.id, i.name, i.amount))
+            self.storageTable.insert("", "end", values=(i.id, i.name, i.amount))
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_storage_get_values, text="Edit")
 
@@ -300,24 +412,44 @@ class Main:
         Prideda naują receptą į DB jei jis turi pavadinimą, ir medžiagų dalių suma yra 1,
         klaidos atveju meta ERROR
         """
-        if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                       check_for_duplicates_recipe()]:
+        if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+            i.lower().replace(" ", "") for i in check_for_duplicates_recipe()
+        ]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
-                    check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
-                                    float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
-                                    float(self.entryFieldEdit6.get())]
-                    if all(0 <= i <= 1 for i in check_values) and round(sum(check_values), 3) == 1:
-                        add_recipe(self.entryFieldEdit1.get(), self.entryFieldEdit2.get(), self.entryFieldEdit3.get(),
-                                   self.entryFieldEdit4.get(), self.entryFieldEdit5.get(), self.entryFieldEdit6.get())
+                    check_values = [
+                        float(self.entryFieldEdit2.get()),
+                        float(self.entryFieldEdit3.get()),
+                        float(self.entryFieldEdit4.get()),
+                        float(self.entryFieldEdit5.get()),
+                        float(self.entryFieldEdit6.get()),
+                    ]
+                    if (
+                        all(0 <= i <= 1 for i in check_values)
+                        and round(sum(check_values), 3) == 1
+                    ):
+                        add_recipe(
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                            self.entryFieldEdit3.get(),
+                            self.entryFieldEdit4.get(),
+                            self.entryFieldEdit5.get(),
+                            self.entryFieldEdit6.get(),
+                        )
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
-                        logging.error("Material sum not equal to 1 when trying to add new recipe")
+                        logging.error(
+                            "Material sum not equal to 1 when trying to add new recipe"
+                        )
                         self.error_popup("Material sum must amount to 1!")
                 except ValueError:
-                    logging.error("Wrong material values input when trying to add new recipe")
-                    self.error_popup("Material inputs are not numbers, or are not filled!")
+                    logging.error(
+                        "Wrong material values input when trying to add new recipe"
+                    )
+                    self.error_popup(
+                        "Material inputs are not numbers, or are not filled!"
+                    )
             else:
                 logging.error("No name input when trying to add new recipe")
                 self.error_popup("No name entered!")
@@ -354,27 +486,45 @@ class Main:
         selected_field_name = selected_field.name
         selected_field_material = selected_field.produced_material
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           check_for_duplicates_process() if
-                                                                           i != selected_field_name]:
-                if self.entryFieldEdit2.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                               check_for_duplicates_storage() if
-                                                                               i != selected_field_material]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in check_for_duplicates_process()
+                if i != selected_field_name
+            ]:
+                if self.entryFieldEdit2.get().lower().replace(" ", "") not in [
+                    i.lower().replace(" ", "")
+                    for i in check_for_duplicates_storage()
+                    if i != selected_field_material
+                ]:
                     try:
                         if float(self.entryFieldEdit3.get()) > 0:
-                            update_process(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
-                                           self.entryFieldEdit3.get())
-                            update_storage_material_from_process(self.idForEdit.get(), self.entryFieldEdit2.get())
+                            update_process(
+                                self.idForEdit.get(),
+                                self.entryFieldEdit1.get(),
+                                self.entryFieldEdit2.get(),
+                                self.entryFieldEdit3.get(),
+                            )
+                            update_storage_material_from_process(
+                                self.idForEdit.get(), self.entryFieldEdit2.get()
+                            )
                             self.fill_process_data_box()
                         else:
-                            logging.error("Efficiency input was less than 0 when trying to edit a process")
+                            logging.error(
+                                "Efficiency input was less than 0 when trying to edit a process"
+                            )
                             self.error_popup("Efficiency must be more than 0!")
                     except ValueError:
-                        logging.error("Efficiency value was not a number when trying to edit a process")
+                        logging.error(
+                            "Efficiency value was not a number when trying to edit a process"
+                        )
                         self.error_popup("Efficiency must be a number!")
                 else:
-                    logging.error("Entered a duplicate material name when editing process record")
-                    self.error_popup("Process record with that material name already exists!")
+                    logging.error(
+                        "Entered a duplicate material name when editing process record"
+                    )
+                    self.error_popup(
+                        "Process record with that material name already exists!"
+                    )
             else:
                 logging.error("Entered a duplicate name when editing process record")
                 self.error_popup("Process record with that name already exists!")
@@ -421,25 +571,45 @@ class Main:
         selected_field = session.query(Recipe).get(self.idForEdit.get())
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           check_for_duplicates_recipe() if
-                                                                           i != selected_field]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in check_for_duplicates_recipe()
+                if i != selected_field
+            ]:
                 try:
-                    check_values = [float(self.entryFieldEdit2.get()), float(self.entryFieldEdit3.get()),
-                                    float(self.entryFieldEdit4.get()), float(self.entryFieldEdit5.get()),
-                                    float(self.entryFieldEdit6.get())]
-                    if all((0 <= i <= 1) for i in check_values) and round(sum(check_values), 3) == 1:
-                        update_recipe(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
-                                      self.entryFieldEdit3.get(),
-                                      self.entryFieldEdit4.get(), self.entryFieldEdit5.get(),
-                                      self.entryFieldEdit6.get())
+                    check_values = [
+                        float(self.entryFieldEdit2.get()),
+                        float(self.entryFieldEdit3.get()),
+                        float(self.entryFieldEdit4.get()),
+                        float(self.entryFieldEdit5.get()),
+                        float(self.entryFieldEdit6.get()),
+                    ]
+                    if (
+                        all((0 <= i <= 1) for i in check_values)
+                        and round(sum(check_values), 3) == 1
+                    ):
+                        update_recipe(
+                            self.idForEdit.get(),
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                            self.entryFieldEdit3.get(),
+                            self.entryFieldEdit4.get(),
+                            self.entryFieldEdit5.get(),
+                            self.entryFieldEdit6.get(),
+                        )
                         self.fill_recipe_data_box()
                         self.refresh_recipe_list()
                     else:
-                        logging.error("Material sum was not equal to 1 or were negative when trying to edit a recipe")
-                        self.error_popup("Material sum must amount to 1 and material values must be positive!")
+                        logging.error(
+                            "Material sum was not equal to 1 or were negative when trying to edit a recipe"
+                        )
+                        self.error_popup(
+                            "Material sum must amount to 1 and material values must be positive!"
+                        )
                 except ValueError:
-                    logging.error("Wrong material values input when trying to edit a recipe")
+                    logging.error(
+                        "Wrong material values input when trying to edit a recipe"
+                    )
                     self.error_popup("Material inputs must be numbers!")
             else:
                 logging.error("Entered a duplicate name when editing recipe record")
@@ -484,19 +654,31 @@ class Main:
         selected_field = session.query(Storage).get(self.idForEdit.get())
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           check_for_duplicates_storage() if
-                                                                           i != selected_field]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in check_for_duplicates_storage()
+                if i != selected_field
+            ]:
                 try:
                     if float(self.entryFieldEdit2.get()) > 0:
-                        update_storage(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get())
-                        update_process_material_from_storage(self.idForEdit.get(), self.entryFieldEdit1.get())
+                        update_storage(
+                            self.idForEdit.get(),
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                        )
+                        update_process_material_from_storage(
+                            self.idForEdit.get(), self.entryFieldEdit1.get()
+                        )
                         self.fill_storage_data_box()
                     else:
-                        logging.error("Material amount entered was less than 0 when trying to edit a storage record")
+                        logging.error(
+                            "Material amount entered was less than 0 when trying to edit a storage record"
+                        )
                         self.error_popup("Amount must be more than 0!")
                 except ValueError:
-                    logging.error("Wrong material values input when trying to edit a storage record")
+                    logging.error(
+                        "Wrong material values input when trying to edit a storage record"
+                    )
                     self.error_popup("Amount must be a number!")
             else:
                 logging.error("Entered a duplicate name when editing storage record")
@@ -552,17 +734,25 @@ class Main:
         try:
             if self.recipe_list.get() != "":
                 if int(self.entryFieldOrder.get()) > 0:
-                    selected_recipe = str(session.query(Recipe).filter_by(name=self.recipe_list.get()).one())
+                    selected_recipe = str(
+                        session.query(Recipe)
+                        .filter_by(name=self.recipe_list.get())
+                        .one()
+                    )
                     selected_recipe = selected_recipe.replace(" ", "")
                     selected_recipe = selected_recipe.replace(";", "-")
                     selected_recipe = selected_recipe.split("-")
                     del selected_recipe[0]
                     selected_recipe = [float(i) for i in selected_recipe]
-                    self.calculate_required_materials(selected_recipe, int(self.entryFieldOrder.get()))
+                    self.calculate_required_materials(
+                        selected_recipe, int(self.entryFieldOrder.get())
+                    )
                     self.fill_storage_data_box()
                     self.cancel_order()
                 else:
-                    logging.error("Order amount entered was less than 0 when trying to submit an order")
+                    logging.error(
+                        "Order amount entered was less than 0 when trying to submit an order"
+                    )
                     self.error_popup("Order amount must be more than 0!")
             else:
                 logging.error("No recipe chosen when trying to submit an order")
@@ -609,17 +799,20 @@ class Main:
             logging.critical("Not enough material in storage to complete an order")
             self.error_popup(
                 f"Not enough materials to complete the order,\n"
-                f"it will take {num} working hours to get enough material")
+                f"it will take {num} working hours to get enough material"
+            )
             with open("orders.txt", "a", encoding="utf-8") as record_order:
                 record_order.write(
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg could not "
-                    f"be completed, not enough materials. It will take {num} working hours to complete this order.\n")
+                    f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
+                )
         else:
             record_id = 1
             with open("orders.txt", "a", encoding="utf-8") as record_order:
                 record_order.write(
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - "
-                    f"{self.entryFieldOrder.get()}kg completed.\n")
+                    f"{self.entryFieldOrder.get()}kg completed.\n"
+                )
             for i in storage_remaining:
                 record = session.query(Storage).get(record_id)
                 record.amount = round(i, 1)
@@ -647,10 +840,23 @@ class Main:
         error_window.geometry("+900+500")
         error_window.title("Error")
         frame = Frame(error_window)
-        error_text = Label(frame, text=text, anchor=CENTER, font=("courier", 25, "bold"))
-        ok_button = Button(frame, text="Confirm", command=error_window.destroy, anchor=CENTER, bg="white", fg="black",
-                           font=("courier", 12, "bold"), relief="groove", height=1, width=15,
-                           activebackground="#0a0a0a", activeforeground="#e6d415")
+        error_text = Label(
+            frame, text=text, anchor=CENTER, font=("courier", 25, "bold")
+        )
+        ok_button = Button(
+            frame,
+            text="Confirm",
+            command=error_window.destroy,
+            anchor=CENTER,
+            bg="white",
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=1,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
         error_text.grid(row=0, column=1)
         ok_button.grid(row=1, column=1)
         frame.pack(expand=True)
@@ -666,5 +872,5 @@ def main():
     window.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -12,8 +12,16 @@ class MyButton(Button):
 
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent, **kwargs)
-        self.config(bg="white", fg="black", font=("courier", 12, "bold"), relief="groove", height=3, width=15,
-                    activebackground="#0a0a0a", activeforeground="#e6d415")
+        self.config(
+            bg="white",
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=3,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
 
 
 class MyLabel(Label):
@@ -45,11 +53,15 @@ def fill_process_data_box():
     processTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=NSEW)
     for i in processTable.get_children():
         processTable.delete(i)
-    for i, col_heading in enumerate(["ID", "Process", "Material", "Efficiency kg/h"], 1):
+    for i, col_heading in enumerate(
+        ["ID", "Process", "Material", "Efficiency kg/h"], 1
+    ):
         processTable.column(f"# {i}", anchor=CENTER, width=90)
         processTable.heading(f"# {i}", text=col_heading)
     for i in get_process_data():
-        processTable.insert('', 'end', values=(i.id, i.name, i.produced_material, i.efficiency))
+        processTable.insert(
+            "", "end", values=(i.id, i.name, i.produced_material, i.efficiency)
+        )
     buttonAddRecipe.grid_forget()
     buttonEdit.config(command=edit_process_get_values, text="Edit")
 
@@ -65,12 +77,33 @@ def fill_recipe_data_box():
     for i in recipeTable.get_children():
         recipeTable.delete(i)
     for i, col_heading in enumerate(
-            ["ID", "Recipe", headings[0], headings[1], headings[2], headings[3], headings[4]], 1):
+        [
+            "ID",
+            "Recipe",
+            headings[0],
+            headings[1],
+            headings[2],
+            headings[3],
+            headings[4],
+        ],
+        1,
+    ):
         recipeTable.column(f"# {i}", anchor=CENTER, width=90)
         recipeTable.heading(f"# {i}", text=col_heading)
     for i in get_recipe_data():
-        recipeTable.insert('', 'end', values=(
-            i.id, i.name, i.material1, i.material2, i.material3, i.material4, i.material5))
+        recipeTable.insert(
+            "",
+            "end",
+            values=(
+                i.id,
+                i.name,
+                i.material1,
+                i.material2,
+                i.material3,
+                i.material4,
+                i.material5,
+            ),
+        )
     buttonDelete.config(state=NORMAL, bg="red")
     buttonAddRecipe.grid(row=3, column=6)
     buttonEdit.config(command=edit_recipies_get_values, text="Edit")
@@ -89,7 +122,7 @@ def fill_storage_data_box():
         storageTable.column(f"# {i}", anchor=CENTER, width=90)
         storageTable.heading(f"# {i}", text=col_heading)
     for i in get_storage_data():
-        storageTable.insert('', 'end', values=(i.id, i.name, i.amount))
+        storageTable.insert("", "end", values=(i.id, i.name, i.amount))
     buttonAddRecipe.grid_forget()
     buttonEdit.config(command=edit_storage_get_values, text="Edit")
 
@@ -233,23 +266,41 @@ def gui_add_recipe():
     Prideda naują receptą į DB jei jis turi pavadinimą, ir medžiagų dalių suma yra 1,
     klaidos atveju meta ERROR
     """
-    if entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                              check_for_duplicates_recipe()]:
+    if entryFieldEdit1.get().lower().replace(" ", "") not in [
+        i.lower().replace(" ", "") for i in check_for_duplicates_recipe()
+    ]:
         if any(i.isalpha() or i.isdigit() for i in entryFieldEdit1.get()):
             try:
-                check_values = [float(entryFieldEdit2.get()), float(entryFieldEdit3.get()),
-                                float(entryFieldEdit4.get()), float(entryFieldEdit5.get()),
-                                float(entryFieldEdit6.get())]
-                if all(0 <= i <= 1 for i in check_values) and round(sum(check_values), 3) == 1:
-                    add_recipe(entryFieldEdit1.get(), entryFieldEdit2.get(), entryFieldEdit3.get(),
-                               entryFieldEdit4.get(), entryFieldEdit5.get(), entryFieldEdit6.get())
+                check_values = [
+                    float(entryFieldEdit2.get()),
+                    float(entryFieldEdit3.get()),
+                    float(entryFieldEdit4.get()),
+                    float(entryFieldEdit5.get()),
+                    float(entryFieldEdit6.get()),
+                ]
+                if (
+                    all(0 <= i <= 1 for i in check_values)
+                    and round(sum(check_values), 3) == 1
+                ):
+                    add_recipe(
+                        entryFieldEdit1.get(),
+                        entryFieldEdit2.get(),
+                        entryFieldEdit3.get(),
+                        entryFieldEdit4.get(),
+                        entryFieldEdit5.get(),
+                        entryFieldEdit6.get(),
+                    )
                     fill_recipe_data_box()
                     refresh_recipe_list()
                 else:
-                    logging.error("Material sum not equal to 1 when trying to add new recipe")
+                    logging.error(
+                        "Material sum not equal to 1 when trying to add new recipe"
+                    )
                     error_popup("Material sum must amount to 1!")
             except ValueError:
-                logging.error("Wrong material values input when trying to add new recipe")
+                logging.error(
+                    "Wrong material values input when trying to add new recipe"
+                )
                 error_popup("Material inputs are not numbers, or are not filled!")
         else:
             logging.error("No name input when trying to add new recipe")
@@ -289,26 +340,42 @@ def edit_process():
     selected_field_name = selected_field.name
     selected_field_material = selected_field.produced_material
     if any(i.isalpha() or i.isdigit() for i in entryFieldEdit1.get()):
-        if entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                  check_for_duplicates_process() if
-                                                                  i != selected_field_name]:
-            if entryFieldEdit2.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                      check_for_duplicates_storage() if
-                                                                      i != selected_field_material]:
+        if entryFieldEdit1.get().lower().replace(" ", "") not in [
+            i.lower().replace(" ", "")
+            for i in check_for_duplicates_process()
+            if i != selected_field_name
+        ]:
+            if entryFieldEdit2.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in check_for_duplicates_storage()
+                if i != selected_field_material
+            ]:
                 try:
                     if float(entryFieldEdit3.get()) > 0:
-                        update_process(idForEdit.get(), entryFieldEdit1.get(), entryFieldEdit2.get(),
-                                       entryFieldEdit3.get())
-                        update_storage_material_from_process(idForEdit.get(), entryFieldEdit2.get())
+                        update_process(
+                            idForEdit.get(),
+                            entryFieldEdit1.get(),
+                            entryFieldEdit2.get(),
+                            entryFieldEdit3.get(),
+                        )
+                        update_storage_material_from_process(
+                            idForEdit.get(), entryFieldEdit2.get()
+                        )
                         fill_process_data_box()
                     else:
-                        logging.error("Efficiency input was less than 0 when trying to edit a process")
+                        logging.error(
+                            "Efficiency input was less than 0 when trying to edit a process"
+                        )
                         error_popup("Efficiency must be more than 0!")
                 except ValueError:
-                    logging.error("Efficiency value was not a number when trying to edit a process")
+                    logging.error(
+                        "Efficiency value was not a number when trying to edit a process"
+                    )
                     error_popup("Efficiency must be a number!")
             else:
-                logging.error("Entered a duplicate material name when editing process record")
+                logging.error(
+                    "Entered a duplicate material name when editing process record"
+                )
                 error_popup("Process record with that material name already exists!")
         else:
             logging.error("Entered a duplicate name when editing process record")
@@ -359,22 +426,45 @@ def edit_recipe():
     selected_field = session.query(Recipe).get(idForEdit.get())
     selected_field = selected_field.name
     if any(i.isalpha() or i.isdigit() for i in entryFieldEdit1.get()):
-        if entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                  check_for_duplicates_recipe() if i != selected_field]:
+        if entryFieldEdit1.get().lower().replace(" ", "") not in [
+            i.lower().replace(" ", "")
+            for i in check_for_duplicates_recipe()
+            if i != selected_field
+        ]:
             try:
-                check_values = [float(entryFieldEdit2.get()), float(entryFieldEdit3.get()),
-                                float(entryFieldEdit4.get()), float(entryFieldEdit5.get()),
-                                float(entryFieldEdit6.get())]
-                if all((0 <= i <= 1) for i in check_values) and round(sum(check_values), 3) == 1:
-                    update_recipe(idForEdit.get(), entryFieldEdit1.get(), entryFieldEdit2.get(), entryFieldEdit3.get(),
-                                  entryFieldEdit4.get(), entryFieldEdit5.get(), entryFieldEdit6.get())
+                check_values = [
+                    float(entryFieldEdit2.get()),
+                    float(entryFieldEdit3.get()),
+                    float(entryFieldEdit4.get()),
+                    float(entryFieldEdit5.get()),
+                    float(entryFieldEdit6.get()),
+                ]
+                if (
+                    all((0 <= i <= 1) for i in check_values)
+                    and round(sum(check_values), 3) == 1
+                ):
+                    update_recipe(
+                        idForEdit.get(),
+                        entryFieldEdit1.get(),
+                        entryFieldEdit2.get(),
+                        entryFieldEdit3.get(),
+                        entryFieldEdit4.get(),
+                        entryFieldEdit5.get(),
+                        entryFieldEdit6.get(),
+                    )
                     fill_recipe_data_box()
                     refresh_recipe_list()
                 else:
-                    logging.error("Material sum was not equal to 1 or were negative when trying to edit a recipe")
-                    error_popup("Material sum must amount to 1 and material values must be positive!")
+                    logging.error(
+                        "Material sum was not equal to 1 or were negative when trying to edit a recipe"
+                    )
+                    error_popup(
+                        "Material sum must amount to 1 and material values must be positive!"
+                    )
             except ValueError:
-                logging.error("Wrong material values input when trying to edit a recipe")
+                logging.error(
+                    "Wrong material values input when trying to edit a recipe"
+                )
                 error_popup("Material inputs must be numbers!")
         else:
             logging.error("Entered a duplicate name when editing recipe record")
@@ -422,19 +512,29 @@ def edit_storage():
     selected_field = session.query(Storage).get(idForEdit.get())
     selected_field = selected_field.name
     if any(i.isalpha() or i.isdigit() for i in entryFieldEdit1.get()):
-        if entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                  check_for_duplicates_storage() if
-                                                                  i != selected_field]:
+        if entryFieldEdit1.get().lower().replace(" ", "") not in [
+            i.lower().replace(" ", "")
+            for i in check_for_duplicates_storage()
+            if i != selected_field
+        ]:
             try:
                 if float(entryFieldEdit2.get()) > 0:
-                    update_storage(idForEdit.get(), entryFieldEdit1.get(), entryFieldEdit2.get())
-                    update_process_material_from_storage(idForEdit.get(), entryFieldEdit1.get())
+                    update_storage(
+                        idForEdit.get(), entryFieldEdit1.get(), entryFieldEdit2.get()
+                    )
+                    update_process_material_from_storage(
+                        idForEdit.get(), entryFieldEdit1.get()
+                    )
                     fill_storage_data_box()
                 else:
-                    logging.error("Material amount entered was less than 0 when trying to edit a storage record")
+                    logging.error(
+                        "Material amount entered was less than 0 when trying to edit a storage record"
+                    )
                     error_popup("Amount must be more than 0!")
             except ValueError:
-                logging.error("Wrong material values input when trying to edit a storage record")
+                logging.error(
+                    "Wrong material values input when trying to edit a storage record"
+                )
                 error_popup("Amount must be a number!")
         else:
             logging.error("Entered a duplicate name when editing storage record")
@@ -495,17 +595,23 @@ def order_calculation():
     try:
         if recipe_list.get() != "":
             if int(entryFieldOrder.get()) > 0:
-                selected_recipe = str(session.query(Recipe).filter_by(name=recipe_list.get()).one())
+                selected_recipe = str(
+                    session.query(Recipe).filter_by(name=recipe_list.get()).one()
+                )
                 selected_recipe = selected_recipe.replace(" ", "")
                 selected_recipe = selected_recipe.replace(";", "-")
                 selected_recipe = selected_recipe.split("-")
                 del selected_recipe[0]
                 selected_recipe = [float(i) for i in selected_recipe]
-                calculate_required_materials(selected_recipe, int(entryFieldOrder.get()))
+                calculate_required_materials(
+                    selected_recipe, int(entryFieldOrder.get())
+                )
                 fill_storage_data_box()
                 cancel_order()
             else:
-                logging.error("Order amount entered was less than 0 when trying to submit an order")
+                logging.error(
+                    "Order amount entered was less than 0 when trying to submit an order"
+                )
                 error_popup("Order amount must be more than 0!")
         else:
             logging.error("No recipe chosen when trying to submit an order")
@@ -553,16 +659,19 @@ def check_storage_remainder(storage_remaining):
             num += 1
         logging.critical("Not enough material in storage to complete an order")
         error_popup(
-            f"Not enough materials to complete the order,\n it will take {num} working hours to get enough material ")
+            f"Not enough materials to complete the order,\n it will take {num} working hours to get enough material "
+        )
         with open("orders.txt", "a", encoding="utf-8") as record_order:
             record_order.write(
                 f"{datetime.now()} - Order of {recipe_list.get()} - {entryFieldOrder.get()}kg could not be "
-                f"completed, not enough materials. It will take {num} working hours to complete this order.\n")
+                f"completed, not enough materials. It will take {num} working hours to complete this order.\n"
+            )
     else:
         record_id = 1
         with open("orders.txt", "a", encoding="utf-8") as record_order:
             record_order.write(
-                f"{datetime.now()} - Order of {recipe_list.get()} - {entryFieldOrder.get()}kg completed.\n")
+                f"{datetime.now()} - Order of {recipe_list.get()} - {entryFieldOrder.get()}kg completed.\n"
+            )
         for i in storage_remaining:
             record = session.query(Storage).get(record_id)
             record.amount = round(i, 1)
@@ -593,9 +702,20 @@ def error_popup(text):
     error_window.title("Error")
     frame = Frame(error_window)
     error_text = Label(frame, text=text, anchor=CENTER, font=("courier", 25, "bold"))
-    ok_button = Button(frame, text="Confirm", command=error_window.destroy, anchor=CENTER, bg="white", fg="black",
-                       font=("courier", 12, "bold"), relief="groove", height=1, width=15,
-                       activebackground="#0a0a0a", activeforeground="#e6d415")
+    ok_button = Button(
+        frame,
+        text="Confirm",
+        command=error_window.destroy,
+        anchor=CENTER,
+        bg="white",
+        fg="black",
+        font=("courier", 12, "bold"),
+        relief="groove",
+        height=1,
+        width=15,
+        activebackground="#0a0a0a",
+        activeforeground="#e6d415",
+    )
     error_text.grid(row=0, column=1)
     ok_button.grid(row=1, column=1)
     frame.pack(expand=True)
@@ -603,8 +723,12 @@ def error_popup(text):
 
 
 window = Tk()
-logging.basicConfig(filename="Project_error_log.log", level=logging.WARNING,
-                    format="%(asctime)s - %(levelname)s - %(message)s", encoding="UTF-8")
+logging.basicConfig(
+    filename="Project_error_log.log",
+    level=logging.WARNING,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    encoding="UTF-8",
+)
 
 window.geometry("1570x550+400+400")
 window.resizable(False, False)
@@ -629,30 +753,71 @@ menu = Menu(window)
 window.config(menu=menu)
 submenu = Menu(menu, tearoff=False)
 
-buttonAddOrder = Button(topFrame, text="Add an Order", height=3, width=20, anchor=CENTER,
-                        bg="white", fg="black", font=("courier", 20, "bold"), relief="groove",
-                        command=order_adding_widgets, activebackground="#0a0a0a", activeforeground="#e6d415")
+buttonAddOrder = Button(
+    topFrame,
+    text="Add an Order",
+    height=3,
+    width=20,
+    anchor=CENTER,
+    bg="white",
+    fg="black",
+    font=("courier", 20, "bold"),
+    relief="groove",
+    command=order_adding_widgets,
+    activebackground="#0a0a0a",
+    activeforeground="#e6d415",
+)
 buttonProcesses = MyButton(leftFrame, text="Processes", command=fill_process_data_box)
 buttonRecipies = MyButton(leftFrame, text="Recipies", command=fill_recipe_data_box)
 buttonStorage = MyButton(leftFrame, text="Storage", command=fill_storage_data_box)
 buttonEdit = MyButton(leftFrame, text="Edit")
-buttonDelete = Button(leftFrame, text="Delete", bg="red", fg="black", font=("courier", 12), height=3, width=15,
-                      command=delete_record)
+buttonDelete = Button(
+    leftFrame,
+    text="Delete",
+    bg="red",
+    fg="black",
+    font=("courier", 12),
+    height=3,
+    width=15,
+    command=delete_record,
+)
 buttonAddRecipe = MyButton(leftFrame, text="Add Recipe", command=add_record_recipies)
 buttonCancelEditing = MyButton(leftFrame, text="Cancel", command=cancel_editing)
-buttonCancelOrder = Button(topFrame, text="Cancel Order", height=3, width=20, anchor=CENTER,
-                           bg="red", fg="black", font=("courier", 14, "bold"), relief="groove",
-                           command=cancel_order)
-buttonConfirmOrder = Button(topFrame, text="Confirm Order", height=3, width=20, anchor=CENTER,
-                            bg="white", fg="black", font=("courier", 14, "bold"), relief="groove",
-                            command=order_calculation, activebackground="#0a0a0a", activeforeground="#e6d415")
+buttonCancelOrder = Button(
+    topFrame,
+    text="Cancel Order",
+    height=3,
+    width=20,
+    anchor=CENTER,
+    bg="red",
+    fg="black",
+    font=("courier", 14, "bold"),
+    relief="groove",
+    command=cancel_order,
+)
+buttonConfirmOrder = Button(
+    topFrame,
+    text="Confirm Order",
+    height=3,
+    width=20,
+    anchor=CENTER,
+    bg="white",
+    fg="black",
+    font=("courier", 14, "bold"),
+    relief="groove",
+    command=order_calculation,
+    activebackground="#0a0a0a",
+    activeforeground="#e6d415",
+)
 labelEdit1 = MyLabel(leftFrame)
 labelEdit2 = MyLabel(leftFrame)
 labelEdit3 = MyLabel(leftFrame)
 labelEdit4 = MyLabel(leftFrame)
 labelEdit5 = MyLabel(leftFrame)
 labelEdit6 = MyLabel(leftFrame)
-labelOrder = Label(topFrame, text="Amount in kg:", font=("courier", 25, "bold"), width=15)
+labelOrder = Label(
+    topFrame, text="Amount in kg:", font=("courier", 25, "bold"), width=15
+)
 entryFieldEdit1 = MyEntry(leftFrame)
 entryFieldEdit2 = MyEntry(leftFrame)
 entryFieldEdit3 = MyEntry(leftFrame)
@@ -660,12 +825,32 @@ entryFieldEdit4 = MyEntry(leftFrame)
 entryFieldEdit5 = MyEntry(leftFrame)
 entryFieldEdit6 = MyEntry(leftFrame)
 entryFieldOrder = Entry(topFrame, font=("courier", 25, "bold"), width=15)
-recipe_list = ttk.Combobox(topFrame, width=12, font=("courier", 25, "bold"), state="readonly")
-processTable = ttk.Treeview(leftFrame, columns=("id", "Process", "Material", "Efficiency kg/h"),
-                            show='headings', height=8)
-recipeTable = ttk.Treeview(leftFrame, columns=(
-    "id", "Recipe", "Material 1", "Material 2", "Material 3", "Material 4", "Material 5"), show='headings', height=8)
-storageTable = ttk.Treeview(leftFrame, columns=("id", "Name", "Amount kg"), show='headings', height=8)
+recipe_list = ttk.Combobox(
+    topFrame, width=12, font=("courier", 25, "bold"), state="readonly"
+)
+processTable = ttk.Treeview(
+    leftFrame,
+    columns=("id", "Process", "Material", "Efficiency kg/h"),
+    show="headings",
+    height=8,
+)
+recipeTable = ttk.Treeview(
+    leftFrame,
+    columns=(
+        "id",
+        "Recipe",
+        "Material 1",
+        "Material 2",
+        "Material 3",
+        "Material 4",
+        "Material 5",
+    ),
+    show="headings",
+    height=8,
+)
+storageTable = ttk.Treeview(
+    leftFrame, columns=("id", "Name", "Amount kg"), show="headings", height=8
+)
 
 menu.add_cascade(label="Menu", menu=submenu)
 submenu.add_command(label="Back to main", command=back_to_main)

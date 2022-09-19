@@ -15,7 +15,7 @@ class StorageViews:
             self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_storage_data():
-            self.storageTable.insert('', 'end', values=(i.id, i.name, i.amount))
+            self.storageTable.insert("", "end", values=(i.id, i.name, i.amount))
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_storage_get_values, text="Edit")
 
@@ -58,22 +58,36 @@ class StorageViews:
         ir ar reikšmės didesnės už 0, jei taip, redaguotą įrašą išsaugo, jei ne meta ERROR.
         Taip pat pakeičia procesų DB material pavadinimą
         """
-        selected_field = Control.session.query(Control.Storage).get(self.idForEdit.get())
+        selected_field = Control.session.query(Control.Storage).get(
+            self.idForEdit.get()
+        )
         selected_field = selected_field.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           Control.check_for_duplicates_storage() if
-                                                                           i != selected_field]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in Control.check_for_duplicates_storage()
+                if i != selected_field
+            ]:
                 try:
                     if float(self.entryFieldEdit2.get()) > 0:
-                        Control.update_storage(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get())
-                        Control.update_process_material_from_storage(self.idForEdit.get(), self.entryFieldEdit1.get())
+                        Control.update_storage(
+                            self.idForEdit.get(),
+                            self.entryFieldEdit1.get(),
+                            self.entryFieldEdit2.get(),
+                        )
+                        Control.update_process_material_from_storage(
+                            self.idForEdit.get(), self.entryFieldEdit1.get()
+                        )
                         self.fill_storage_data_box()
                     else:
-                        logging.error("Material amount entered was less than 0 when trying to edit a storage record")
+                        logging.error(
+                            "Material amount entered was less than 0 when trying to edit a storage record"
+                        )
                         ErrorWindow("Amount must be more than 0!")
                 except ValueError:
-                    logging.error("Wrong material values input when trying to edit a storage record")
+                    logging.error(
+                        "Wrong material values input when trying to edit a storage record"
+                    )
                     ErrorWindow("Amount must be a number!")
             else:
                 logging.error("Entered a duplicate name when editing storage record")

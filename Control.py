@@ -66,7 +66,9 @@ def update_process(update_id, name, material, efficiency):
     session.commit()
 
 
-def update_recipe(update_id, name, material1, material2, material3, material4, material5):
+def update_recipe(
+    update_id, name, material1, material2, material3, material4, material5
+):
     """
     Atnaujina recepto įrašą pagal ID
     :param update_id: norimo įrašo ID

@@ -11,11 +11,15 @@ class ProcessViews:
         self.processTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.processTable.get_children():
             self.processTable.delete(i)
-        for i, col_heading in enumerate(["ID", "Process", "Material", "Efficiency kg/h"], 1):
+        for i, col_heading in enumerate(
+            ["ID", "Process", "Material", "Efficiency kg/h"], 1
+        ):
             self.processTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.processTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_process_data():
-            self.processTable.insert('', 'end', values=(i.id, i.name, i.produced_material, i.efficiency))
+            self.processTable.insert(
+                "", "end", values=(i.id, i.name, i.produced_material, i.efficiency)
+            )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_process_get_values, text="Edit")
 
@@ -63,31 +67,51 @@ class ProcessViews:
         Redaguoja Process įrašą jei jis turi pavadinimą, jis nesikartoja ir našumas daugiau nei 0,
         ir įrašo vertes į DB. Kitu atveju meta ERROR
         """
-        selected_field = Control.session.query(Control.Process).get(self.idForEdit.get())
+        selected_field = Control.session.query(Control.Process).get(
+            self.idForEdit.get()
+        )
         selected_field_name = selected_field.name
         selected_field_material = selected_field.produced_material
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                           Control.check_for_duplicates_process() if
-                                                                           i != selected_field_name]:
-                if self.entryFieldEdit2.get().lower().replace(" ", "") not in [i.lower().replace(" ", "") for i in
-                                                                               Control.check_for_duplicates_storage() if
-                                                                               i != selected_field_material]:
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in Control.check_for_duplicates_process()
+                if i != selected_field_name
+            ]:
+                if self.entryFieldEdit2.get().lower().replace(" ", "") not in [
+                    i.lower().replace(" ", "")
+                    for i in Control.check_for_duplicates_storage()
+                    if i != selected_field_material
+                ]:
                     try:
                         if float(self.entryFieldEdit3.get()) > 0:
-                            Control.update_process(self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get(),
-                                                   self.entryFieldEdit3.get())
-                            Control.update_storage_material_from_process(self.idForEdit.get(), self.entryFieldEdit2.get())
+                            Control.update_process(
+                                self.idForEdit.get(),
+                                self.entryFieldEdit1.get(),
+                                self.entryFieldEdit2.get(),
+                                self.entryFieldEdit3.get(),
+                            )
+                            Control.update_storage_material_from_process(
+                                self.idForEdit.get(), self.entryFieldEdit2.get()
+                            )
                             self.fill_process_data_box()
                         else:
-                            logging.error("Efficiency input was less than 0 when trying to edit a process")
+                            logging.error(
+                                "Efficiency input was less than 0 when trying to edit a process"
+                            )
                             ErrorWindow("Efficiency must be more than 0!")
                     except ValueError:
-                        logging.error("Efficiency value was not a number when trying to edit a process")
+                        logging.error(
+                            "Efficiency value was not a number when trying to edit a process"
+                        )
                         ErrorWindow("Efficiency must be a number!")
                 else:
-                    logging.error("Entered a duplicate material name when editing process record")
-                    ErrorWindow("Process record with that material name already exists!")
+                    logging.error(
+                        "Entered a duplicate material name when editing process record"
+                    )
+                    ErrorWindow(
+                        "Process record with that material name already exists!"
+                    )
             else:
                 logging.error("Entered a duplicate name when editing process record")
                 ErrorWindow("Process record with that name already exists!")

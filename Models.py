@@ -9,6 +9,7 @@ class Process(Base):
     """
     Sukuria Process DB lentelę
     """
+
     __tablename__ = "Processes"
     id = Column(Integer, primary_key=True)
     name = Column("Process", String)
@@ -28,6 +29,7 @@ class Recipe(Base):
     """
     Sukuria Recipe DB lentelę
     """
+
     __tablename__ = "Recipies"
     id = Column(Integer, primary_key=True)
     name = Column("Recipe", String)
@@ -46,14 +48,17 @@ class Recipe(Base):
         self.material5 = material5
 
     def __repr__(self):
-        return f"{self.id}. {self.name} - {self.material1} ; {self.material2} ; " \
-               f"{self.material3} ; {self.material4} ; {self.material5}"
+        return (
+            f"{self.id}. {self.name} - {self.material1} ; {self.material2} ; "
+            f"{self.material3} ; {self.material4} ; {self.material5}"
+        )
 
 
 class Storage(Base):
     """
     Sukuria Storage DB lentelę
     """
+
     __tablename__ = "Storage"
     id = Column(Integer, primary_key=True)
     name = Column("Raw_material", String)

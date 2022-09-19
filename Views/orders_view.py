@@ -43,17 +43,25 @@ class OrderViews:
         try:
             if self.recipe_list.get() != "":
                 if int(self.entryFieldOrder.get()) > 0:
-                    selected_recipe = str(Control.session.query(Control.Recipe).filter_by(name=self.recipe_list.get()).one())
+                    selected_recipe = str(
+                        Control.session.query(Control.Recipe)
+                        .filter_by(name=self.recipe_list.get())
+                        .one()
+                    )
                     selected_recipe = selected_recipe.replace(" ", "")
                     selected_recipe = selected_recipe.replace(";", "-")
                     selected_recipe = selected_recipe.split("-")
                     del selected_recipe[0]
                     selected_recipe = [float(i) for i in selected_recipe]
-                    self.calculate_required_materials(selected_recipe, int(self.entryFieldOrder.get()))
+                    self.calculate_required_materials(
+                        selected_recipe, int(self.entryFieldOrder.get())
+                    )
                     self.fill_storage_data_box()
                     self.cancel_order()
                 else:
-                    logging.error("Order amount entered was less than 0 when trying to submit an order")
+                    logging.error(
+                        "Order amount entered was less than 0 when trying to submit an order"
+                    )
                     ErrorWindow("Order amount must be more than 0!")
             else:
                 logging.error("No recipe chosen when trying to submit an order")
@@ -100,17 +108,20 @@ class OrderViews:
             logging.critical("Not enough material in storage to complete an order")
             ErrorWindow(
                 f"Not enough materials to complete the order,\n"
-                f"it will take {num} working hours to get enough material")
+                f"it will take {num} working hours to get enough material"
+            )
             with open("orders.txt", "a", encoding="utf-8") as record_order:
                 record_order.write(
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg could not "
-                    f"be completed, not enough materials. It will take {num} working hours to complete this order.\n")
+                    f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
+                )
         else:
             record_id = 1
             with open("orders.txt", "a", encoding="utf-8") as record_order:
                 record_order.write(
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - "
-                    f"{self.entryFieldOrder.get()}kg completed.\n")
+                    f"{self.entryFieldOrder.get()}kg completed.\n"
+                )
             for i in storage_remaining:
                 record = Control.session.query(Control.Storage).get(record_id)
                 record.amount = round(i, 1)
