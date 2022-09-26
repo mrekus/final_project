@@ -79,3 +79,6 @@
 2022-09-22 14:34:07,108 - WARNING - No record selected when trying to edit a recipe
 2022-09-22 14:37:04,564 - ERROR - Wrong value type entered when trying to add an order
 2022-09-22 14:39:19,686 - CRITICAL - Not enough material in storage to complete an order
+2022-09-26 21:26:06,902 - ERROR - Wrong value type entered when trying to add an order
+2022-09-26 21:29:37,474 - CRITICAL - Not enough material in storage to complete an order
+2022-09-26 21:32:21,452 - CRITICAL - Not enough material in storage to complete an order

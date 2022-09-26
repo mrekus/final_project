@@ -77,14 +77,11 @@ class OrderViews:
         :param entry: užsakymo dydis
         """
         required_materials = [i * entry for i in selected_recipe]
-        storage = str(Control.get_storage_data())
-        storage = storage.replace(",", "-")
-        storage = storage.replace("]", "")
-        storage = storage.replace(" ", "")
-        storage = storage.replace("kg", "")
-        storage = storage.split("-")
-        storage = [float(i) for i in storage[1::2]]
-        storage_remaining = [i - j for (i, j) in zip(storage, required_materials)]
+        storage = Control.get_storage_amount()
+        storage_list = []
+        for i in storage:
+            storage_list.append(i[0])
+        storage_remaining = [i - j for (i, j) in zip(storage_list, required_materials)]
         self.check_storage_remainder(storage_remaining)
 
     def check_storage_remainder(self, storage_remaining):

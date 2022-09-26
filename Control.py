@@ -26,6 +26,13 @@ def get_storage_data():
     return session.query(Storage).all()
 
 
+def get_storage_amount():
+    """
+    :return: grąžina visus storage DB amount
+    """
+    return session.query(Storage.amount).all()
+
+
 def delete_recipe_record(deletion_id):
     """
     Ištrina recepto įrašą iš DB pagal ID
