@@ -75,3 +75,7 @@
 2022-09-19 15:36:39,367 - ERROR - No recipe chosen when trying to submit an order
 2022-09-19 15:39:05,493 - ERROR - No recipe chosen when trying to submit an order
 2022-09-19 15:53:39,880 - ERROR - No recipe chosen when trying to submit an order
+2022-09-22 14:33:49,437 - WARNING - No record selected when trying to edit a recipe
+2022-09-22 14:34:07,108 - WARNING - No record selected when trying to edit a recipe
+2022-09-22 14:37:04,564 - ERROR - Wrong value type entered when trying to add an order
+2022-09-22 14:39:19,686 - CRITICAL - Not enough material in storage to complete an order

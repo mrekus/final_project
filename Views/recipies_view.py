@@ -16,11 +16,7 @@ class RecipiesViews:
             [
                 "ID",
                 "Recipe",
-                headings[0],
-                headings[1],
-                headings[2],
-                headings[3],
-                headings[4],
+                *headings
             ],
             1,
         ):

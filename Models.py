@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, create_engine
+from sqlalchemy import Column, Integer, String, Float, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine("sqlite:///factory.db")
@@ -70,6 +70,27 @@ class Storage(Base):
 
     def __repr__(self):
         return f"{self.id}. {self.name} - {self.amount} kg"
+
+
+class Orders(Base):
+    """
+    Sukuria Orders DB lentelę
+    """
+
+    __tablename__ = "Orders"
+    id = Column(Integer, primary_key=True)
+    date = Column("Date", String)
+    recipe = Column("Recipe", Integer, ForeignKey("Recipies.id"))
+    amount = Column("Amount", Float)
+
+    def __init__(self, date, recipe, amount):
+        self.date = date
+        self.name = date
+        self.recipe = recipe
+        self.amount = amount
+
+    def __repr__(self):
+        return f"{self.id}. {self.date} : {self.recipe} - {self.amount} kg"
 
 
 Base.metadata.create_all(engine)
