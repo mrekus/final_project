@@ -116,14 +116,19 @@ class OrderViews:
                     f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
                 )
         else:
-            record_id = 1
             with open("orders.txt", "a", encoding="utf-8") as record_order:
                 record_order.write(
                     f"{datetime.now()} - Order of {self.recipe_list.get()} - "
                     f"{self.entryFieldOrder.get()}kg completed.\n"
                 )
+            record_id = 1
             for i in storage_remaining:
                 record = Control.session.query(Control.Storage).get(record_id)
                 record.amount = round(i, 1)
                 record_id += 1
+            recipe = Control.session.query(Control.Recipe).filter_by(name=self.recipe_list.get()).one()
+            order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            recipe_id = recipe.id
+            recipe_amount = self.entryFieldOrder.get()
+            Control.add_order(order_date, recipe_id, recipe_amount)
             Control.session.commit()

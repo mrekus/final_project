@@ -6,3 +6,5 @@
 2022-07-30 10:54:26.741230 - Order of Recipe 9 - 1kg completed.
 2022-09-22 14:39:12.298486 - Order of Recipe 10 - 20kg completed.
 2022-09-22 14:39:19.687396 - Order of Recipe 9 - 3000kg could not be completed, not enough materials. It will take 111 working hours to complete this order.
+2022-09-26 21:10:14.769188 - Order of Recipe 3 - 10kg completed.
+2022-09-26 21:10:50.863098 - Order of Recipe 3 - 10kg completed.

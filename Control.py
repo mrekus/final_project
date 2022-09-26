@@ -1,4 +1,4 @@
-from Models import Process, Recipe, Storage, engine
+from Models import Process, Recipe, Storage, Orders, engine
 from sqlalchemy.orm import sessionmaker
 
 Session = sessionmaker(bind=engine)
@@ -48,6 +48,12 @@ def add_recipe(name, material1, material2, material3, material4, material5):
     """
     recipe = Recipe(name, material1, material2, material3, material4, material5)
     session.add(recipe)
+    session.commit()
+
+
+def add_order(date, recipe, amount):
+    order = Orders(date, recipe, amount)
+    session.add(order)
     session.commit()
 
 
