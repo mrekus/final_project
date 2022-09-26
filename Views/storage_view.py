@@ -15,7 +15,7 @@ class StorageViews:
             self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_storage_data():
-            self.storageTable.insert("", "end", values=(i.id, i.name, i.amount))
+            self.storageTable.insert("", "end", values=(i.id, i.materials.name, i.amount))
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_storage_get_values, text="Edit")
 
@@ -72,10 +72,9 @@ class StorageViews:
                     if float(self.entryFieldEdit2.get()) > 0:
                         Control.update_storage(
                             self.idForEdit.get(),
-                            self.entryFieldEdit1.get(),
-                            self.entryFieldEdit2.get(),
+                            self.entryFieldEdit2.get()
                         )
-                        Control.update_process_material_from_storage(
+                        Control.update_material(
                             self.idForEdit.get(), self.entryFieldEdit1.get()
                         )
                         self.fill_storage_data_box()

@@ -1,4 +1,4 @@
-from Models import Process, Recipe, Storage, Orders, engine
+from Models import Process, Recipe, Storage, Orders, Materials, engine
 from sqlalchemy.orm import sessionmaker
 
 Session = sessionmaker(bind=engine)
@@ -64,17 +64,15 @@ def add_order(date, recipe, amount):
     session.commit()
 
 
-def update_process(update_id, name, material, efficiency):
+def update_process(update_id, name, efficiency):
     """
     Atnaujiną proceso įrašą pagal ID
     :param update_id: norimo įrašo ID
     :param name: įrašo pavadinimas
-    :param material: gaminama medžiaga
     :param efficiency: našumas
     """
     update_object = session.query(Process).get(update_id)
     update_object.name = name
-    update_object.produced_material = material
     update_object.efficiency = efficiency
     session.commit()
 
@@ -101,7 +99,7 @@ def update_recipe(
     update_object.material5 = material5
 
 
-def update_storage(update_id, name, amount):
+def update_storage(update_id, amount):
     """
     Atnaujina storage įrašą pagal ID
     :param update_id: įrašo ID
@@ -110,7 +108,6 @@ def update_storage(update_id, name, amount):
     :return:
     """
     update_object = session.query(Storage).get(update_id)
-    update_object.name = name
     update_object.amount = amount
     session.commit()
 
@@ -144,27 +141,16 @@ def check_for_duplicates_storage():
     """
     storage_list = []
     for i in session.query(Storage).all():
-        storage_list.append(str(i.name))
+        storage_list.append(i.materials.name)
     return storage_list
 
 
-def update_process_material_from_storage(update_id, name):
-    """
-    Atnaujina process DB material pavadinimą pagal storage material pavadinimą
-    :param update_id: atnaujinamo įrašo ID
-    :param name: naujas pavadinimas
-    """
-    update_object = session.query(Process).get(update_id)
-    update_object.produced_material = name
-    session.commit()
-
-
-def update_storage_material_from_process(update_id, name):
+def update_material(update_id, name):
     """
     Atnaujina storage DB material pavadinimą pagal process material pavadinimą
     :param update_id: atnaujinamo įrašo ID
     :param name: naujas pavadinimas
     """
-    update_object = session.query(Storage).get(update_id)
+    update_object = session.query(Materials).get(update_id)
     update_object.name = name
     session.commit()

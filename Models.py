@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 engine = create_engine("sqlite:///factory.db")
 Base = declarative_base()
@@ -13,8 +14,9 @@ class Process(Base):
     __tablename__ = "Processes"
     id = Column(Integer, primary_key=True)
     name = Column("Process", String)
-    produced_material = Column("Produced material", String)
+    produced_material = Column("Produced material", Integer, ForeignKey("Materials.id"))
     efficiency = Column("Efficiency", Float)
+    materials = relationship("Materials")
 
     def __init__(self, name, produced_material, efficiency):
         self.name = name
@@ -61,8 +63,9 @@ class Storage(Base):
 
     __tablename__ = "Storage"
     id = Column(Integer, primary_key=True)
-    name = Column("Raw_material", String)
+    name = Column("Raw Material", Integer, ForeignKey("Materials.id"))
     amount = Column("Amount", Float)
+    materials = relationship("Materials")
 
     def __init__(self, name, amount):
         self.name = name
@@ -70,6 +73,24 @@ class Storage(Base):
 
     def __repr__(self):
         return f"{self.id}. {self.name} - {self.amount} kg"
+
+
+class Materials(Base):
+    """
+    Sukuria Materials DB lentelę
+    """
+
+    __tablename__ = "Materials"
+    id = Column(Integer, primary_key=True)
+    name = Column("Material", String)
+    price = Column("Price", Float)
+
+    def __init__(self, name, price):
+        self.name = name
+        self.amount = price
+
+    def __repr__(self):
+        return f"{self.id}. {self.name} - {self.price}"
 
 
 class Orders(Base):

@@ -18,7 +18,7 @@ class ProcessViews:
             self.processTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_process_data():
             self.processTable.insert(
-                "", "end", values=(i.id, i.name, i.produced_material, i.efficiency)
+                "", "end", values=(i.id, i.name, i.materials.name, i.efficiency)
             )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_process_get_values, text="Edit")
@@ -88,10 +88,9 @@ class ProcessViews:
                             Control.update_process(
                                 self.idForEdit.get(),
                                 self.entryFieldEdit1.get(),
-                                self.entryFieldEdit2.get(),
                                 self.entryFieldEdit3.get(),
                             )
-                            Control.update_storage_material_from_process(
+                            Control.update_material(
                                 self.idForEdit.get(), self.entryFieldEdit2.get()
                             )
                             self.fill_process_data_box()
