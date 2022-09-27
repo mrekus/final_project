@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import logging
 from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
+from API import get_rates
 
 
 class MyButton(Button):
@@ -72,6 +73,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             self.hex_step += 300
 
         self.idForEdit = IntVar()
+
+        self.rates = get_rates()
 
         self.topFrame = Frame(master)
         self.leftFrame = Frame(master)

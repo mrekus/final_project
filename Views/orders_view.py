@@ -4,9 +4,6 @@ from API import get_rates
 
 
 class OrderViews:
-    def __init__(self):
-        self.rates = get_rates()
-
     def fill_orders_data_box(self):
         """
         Atstato pradinę lango būseną su Orders duomenų lentele

@@ -3,9 +3,6 @@ from API import get_rates
 
 
 class MaterialsViews:
-    def __init__(self):
-        self.rates = get_rates()
-
     def fill_materials_data_box(self):
         """
         Atstato pradinę lango būseną su Materials duomenų lentele
