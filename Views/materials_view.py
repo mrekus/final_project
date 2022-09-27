@@ -14,7 +14,7 @@ class MaterialsViews:
         for i, col_heading in enumerate(
             ["ID", "Name", "Price"], 1
         ):
-            self.materialsTable.column(f"# {i}", anchor=tk.CENTER, width=120)
+            self.materialsTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.materialsTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_materials_data():
             self.materialsTable.insert(
@@ -23,3 +23,4 @@ class MaterialsViews:
                 values=(i.id, i.name, i.price)
             )
         self.buttonAddRecipe.grid_forget()
+        self.buttonEdit.config(state=tk.DISABLED, bg="gray")

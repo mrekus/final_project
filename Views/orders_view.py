@@ -24,6 +24,7 @@ class OrderViews:
                 values=(i.id, i.date, i.recipe_info.name, i.amount, i.man_cost, i.sell_price)
             )
         self.buttonAddRecipe.grid_forget()
+        self.buttonEdit.config(state=tk.DISABLED, bg="gray")
 
     def refresh_recipe_list(self):
         """

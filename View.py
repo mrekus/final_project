@@ -94,13 +94,13 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             activebackground="#0a0a0a",
             activeforeground="#e6d415",
         )
-        self.buttonProcesses = MyButton(
+        self.buttonMenu1 = MyButton(
             self.leftFrame, text="Processes", command=self.fill_process_data_box
         )
-        self.buttonRecipies = MyButton(
+        self.buttonMenu2 = MyButton(
             self.leftFrame, text="Recipies", command=self.fill_recipe_data_box
         )
-        self.buttonStorage = MyButton(
+        self.buttonMenu3 = MyButton(
             self.leftFrame, text="Storage", command=self.fill_storage_data_box
         )
         self.buttonEdit = MyButton(self.leftFrame, text="Edit")
@@ -148,7 +148,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         )
         self.buttonScrollUp = Button(
             self.master,
-            bg="white",
+            bg="gray",
             fg="black",
             font=("courier", 12, "bold"),
             relief="groove",
@@ -158,6 +158,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             activeforeground="#e6d415",
             text="↑↑↑",
             command="",
+            state=DISABLED,
         )
         self.buttonScrollDown = Button(
             self.master,
@@ -225,6 +226,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             show="headings",
             height=8,
         )
+        self.materialsTable = ttk.Treeview(
+            self.leftFrame,
+            columns=("id", "Name", "Price"),
+            show="headings",
+            height=8,
+        )
 
         self.menu.add_cascade(label="Menu", menu=self.submenu)
         self.submenu.add_command(label="Back to main", command=self.back_to_main)
@@ -234,9 +241,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonScrollUp.place(x=0, y=282)
         self.buttonScrollDown.place(x=0, y=314)
         self.buttonAddOrder.grid(row=0, column=0)
-        self.buttonProcesses.grid(row=1, column=1)
-        self.buttonRecipies.grid(row=2, column=1)
-        self.buttonStorage.grid(row=3, column=1)
+        self.buttonMenu1.grid(row=1, column=1)
+        self.buttonMenu2.grid(row=2, column=1)
+        self.buttonMenu3.grid(row=3, column=1)
         self.topFrame.pack(side=TOP, expand=True)
         self.leftFrame.pack(side=LEFT)
 
@@ -247,6 +254,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonEdit.grid(row=1, column=6)
         self.buttonDelete.grid(row=2, column=6)
         self.buttonDelete.config(state=DISABLED, bg="gray")
+        self.buttonEdit.config(state=NORMAL, bg="white")
         self.cancel_editing()
 
     def cancel_editing(self):
@@ -275,6 +283,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.recipeTable.grid_forget()
         self.storageTable.grid_forget()
         self.ordersTable.grid_forget()
+        self.materialsTable.grid_forget()
 
     def reset_entry_fields(self):
         """
@@ -301,16 +310,32 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonAddRecipe.grid_forget()
 
     def scroll_down_1(self):
-        self.buttonDelete.config(state=DISABLED, bg="gray")
+        self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
+        self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
+        self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
+        self.buttonScrollDown.config(command=self.scroll_down_2)
+        self.buttonScrollUp.config(command=self.scroll_up_1, state=NORMAL, bg="white")
 
     def scroll_down_2(self):
-        pass
+        self.buttonMenu1.config(text="Storage", command=self.fill_storage_data_box)
+        self.buttonMenu2.config(text="Materials", command=self.fill_materials_data_box)
+        self.buttonMenu3.config(text="Orders", command=self.fill_orders_data_box)
+        self.buttonScrollDown.config(state=DISABLED, bg="gray")
+        self.buttonScrollUp.config(command=self.scroll_up_2)
 
     def scroll_up_1(self):
-        pass
+        self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
+        self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
+        self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
+        self.buttonScrollUp.config(state=DISABLED, bg="gray")
+        self.buttonScrollDown.config(command=self.scroll_down_1)
 
     def scroll_up_2(self):
-        pass
+        self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
+        self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
+        self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
+        self.buttonScrollUp.config(command=self.scroll_up_1, state=NORMAL, bg="white")
+        self.buttonScrollDown.config(command=self.scroll_down_2, state=NORMAL, bg="white")
 
 
 def main():
