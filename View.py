@@ -194,9 +194,16 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.entryFieldOrder = Entry(
             self.master, font=("courier", 25, "bold"), width=15
         )
+
         self.recipe_list = ttk.Combobox(
             self.master, width=12, font=("courier", 25, "bold"), state="readonly"
         )
+        self.currency_list = ttk.Combobox(
+            self.master, width=6, font=("courier", 25, "bold"), state="readonly"
+        )
+        self.currency_list.config(values=["EUR", "USD", "GBP", "NOK"])
+        self.currency_list.set("EUR")
+
         self.processTable = ttk.Treeview(
             self.leftFrame,
             columns=("id", "Process", "Material", "Efficiency kg/h"),
@@ -241,6 +248,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.submenu.add_separator()
         self.submenu.add_command(label="Exit", command=master.destroy)
 
+        self.currency_list.place(x=0, y=170)
         self.buttonScrollUp.place(x=0, y=282)
         self.buttonScrollDown.place(x=0, y=314)
         self.buttonAddOrder.place(x=585, y=130)

@@ -1,8 +1,12 @@
 from utils import *
 from datetime import datetime
+from API import get_rates
 
 
 class OrderViews:
+    def __init__(self):
+        self.rates = get_rates()
+
     def fill_orders_data_box(self):
         """
         Atstato pradinę lango būseną su Orders duomenų lentele
@@ -17,14 +21,43 @@ class OrderViews:
         ):
             self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.ordersTable.heading(f"# {i}", text=col_heading)
+        self.currency_list.bind('<<ComboboxSelected>>', self.refresh_orders)
+        chosen_currency = self.currency_list.get()
+        rate = self.rates[chosen_currency]
         for i in Control.get_orders_data():
             self.ordersTable.insert(
                 "",
                 "end",
-                values=(i.id, i.date, i.recipe_info.name, i.amount, i.man_cost, i.sell_price)
+                values=(
+                    i.id,
+                    i.date,
+                    i.recipe_info.name,
+                    round((i.amount * rate), 2),
+                    round((i.man_cost * rate), 2),
+                    round((i.sell_price * rate), 2),
+                ),
             )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(state=tk.DISABLED, bg="gray")
+
+    def refresh_orders(self, event):
+        for i in self.ordersTable.get_children():
+            self.ordersTable.delete(i)
+        chosen_currency = self.currency_list.get()
+        rate = self.rates[chosen_currency]
+        for i in Control.get_orders_data():
+            self.ordersTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.date,
+                    i.recipe_info.name,
+                    round((i.amount * rate), 2),
+                    round((i.man_cost * rate), 2),
+                    round((i.sell_price * rate), 2),
+                ),
+            )
 
     def refresh_recipe_list(self):
         """
