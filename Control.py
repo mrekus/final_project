@@ -164,6 +164,9 @@ def update_material(update_id, name):
 
 
 def get_material_price_list():
+    """
+    Grąžina material kainų sąrašą
+    """
     price_list = []
     prices = session.query(Materials.price).all()
     for i in prices:

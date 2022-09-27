@@ -146,6 +146,32 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
             activebackground="#0a0a0a",
             activeforeground="#e6d415",
         )
+        self.buttonScrollUp = Button(
+            self.master,
+            bg="white",
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=1,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+            text="↑↑↑",
+            command="",
+        )
+        self.buttonScrollDown = Button(
+            self.master,
+            bg="white",
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=1,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+            text="↓↓↓",
+            command="",
+        )
         self.labelEdit1 = MyLabel(self.leftFrame)
         self.labelEdit2 = MyLabel(self.leftFrame)
         self.labelEdit3 = MyLabel(self.leftFrame)
@@ -199,6 +225,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
         self.submenu.add_separator()
         self.submenu.add_command(label="Exit", command=master.destroy)
 
+        self.buttonScrollUp.place(x=0, y=282)
+        self.buttonScrollDown.place(x=0, y=314)
         self.buttonAddOrder.grid(row=0, column=0)
         self.buttonProcesses.grid(row=1, column=1)
         self.buttonRecipies.grid(row=2, column=1)
