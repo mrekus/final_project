@@ -65,8 +65,8 @@ def add_recipe(name, material1, material2, material3, material4, material5):
     session.commit()
 
 
-def add_order(date, recipe, amount):
-    order = Orders(date, recipe, amount)
+def add_order(date, recipe, amount, man_cost, sell_price):
+    order = Orders(date, recipe, amount, man_cost, sell_price)
     session.add(order)
     session.commit()
 
@@ -161,3 +161,11 @@ def update_material(update_id, name):
     update_object = session.query(Materials).get(update_id)
     update_object.name = name
     session.commit()
+
+
+def get_material_price_list():
+    price_list = []
+    prices = session.query(Materials.price).all()
+    for i in prices:
+        price_list.append(i[0])
+    return price_list

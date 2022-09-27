@@ -142,7 +142,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
             fg="black",
             font=("courier", 14, "bold"),
             relief="groove",
-            command=self.order_calculation,
+            command=self.recipe_calculation,
             activebackground="#0a0a0a",
             activeforeground="#e6d415",
         )

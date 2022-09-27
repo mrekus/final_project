@@ -103,12 +103,16 @@ class Orders(Base):
     date = Column("Date", String)
     recipe = Column("Recipe", Integer, ForeignKey("Recipies.id"))
     amount = Column("Amount", Float)
+    man_cost = Column("Manufacturing cost", Float)
+    sell_price = Column("Selling price", Float)
 
-    def __init__(self, date, recipe, amount):
+    def __init__(self, date, recipe, amount, man_cost, sell_price):
         self.date = date
         self.name = date
         self.recipe = recipe
         self.amount = amount
+        self.man_cost = man_cost
+        self.sell_price = sell_price
 
     def __repr__(self):
         return f"{self.id}. {self.date} : {self.recipe} - {self.amount} kg"

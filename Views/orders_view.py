@@ -35,14 +35,14 @@ class OrderViews:
         self.recipe_list.grid_forget()
         self.recipe_list.set("")
 
-    def order_calculation(self):
+    def recipe_calculation(self):
         """
         Tikrina ar pasirinktas receptas, tada ar užsakymo vertė daugiau už 0,
-        jei taip, skaičiuoja reikiamą žaliavų kiekį, jei ne meta ERROR
+        jei taip, skaičiuoja iš recepto reikalingą žaliavų dalį, jei ne meta ERROR
         """
         try:
             if self.recipe_list.get() != "":
-                if int(self.entryFieldOrder.get()) > 0:
+                if float(self.entryFieldOrder.get()) > 0:
                     selected_recipe = str(
                         Control.session.query(Control.Recipe)
                         .filter_by(name=self.recipe_list.get())
@@ -54,7 +54,7 @@ class OrderViews:
                     del selected_recipe[0]
                     selected_recipe = [float(i) for i in selected_recipe]
                     self.calculate_required_materials(
-                        selected_recipe, int(self.entryFieldOrder.get())
+                        selected_recipe, float(self.entryFieldOrder.get())
                     )
                     self.fill_storage_data_box()
                     self.cancel_order()
@@ -70,21 +70,24 @@ class OrderViews:
             logging.error("Wrong value type entered when trying to add an order")
             ErrorWindow("Amount is not a number!")
 
-    def calculate_required_materials(self, selected_recipe, entry):
+    def calculate_required_materials(self, selected_recipe, order_amount):
         """
         Skaičiuoja reikiamą žaliavų kiekį užsakymui įvykdyti
         :param selected_recipe: pasirinktas receptas užsakymui
-        :param entry: užsakymo dydis
+        :param order_amount: užsakymo dydis
         """
-        required_materials = [i * entry for i in selected_recipe]
+        required_materials = [i * order_amount for i in selected_recipe]
+        self.calculate_storage_remainder(required_materials)
+
+    def calculate_storage_remainder(self, required_materials):
         storage = Control.get_storage_amount()
         storage_list = []
         for i in storage:
             storage_list.append(i[0])
         storage_remaining = [i - j for (i, j) in zip(storage_list, required_materials)]
-        self.check_storage_remainder(storage_remaining)
+        self.order_calculation(storage_remaining)
 
-    def check_storage_remainder(self, storage_remaining):
+    def order_calculation(self, storage_remaining):
         """
         Tikrina ar sandėlio žaliavų likutis yra neigiamas, jei taip, apskaičiuoja
         kiek reikės darbo valandų kad pasiekti teigiamą kiekį, jei ne, surašo į DB
@@ -92,13 +95,11 @@ class OrderViews:
         """
         num = 0
         if min(storage_remaining) < 0:
-            print(storage_remaining)
             efficiency = Control.get_process_efficiency()
             efficiency_list = []
             for i in efficiency:
                 efficiency_list.append(i[0])
             check_remainder = [i + j for (i, j) in zip(efficiency_list, storage_remaining)]
-            num = 1
             while min(check_remainder) < 0:
                 check_remainder = [i + j for (i, j) in zip(efficiency_list, check_remainder)]
                 num += 1
@@ -126,6 +127,9 @@ class OrderViews:
             recipe = Control.session.query(Control.Recipe).filter_by(name=self.recipe_list.get()).one()
             order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             recipe_id = recipe.id
-            recipe_amount = self.entryFieldOrder.get()
-            Control.add_order(order_date, recipe_id, recipe_amount)
+            recipe_amount = float(self.entryFieldOrder.get())
+            prices = Control.get_material_price_list()
+            man_cost = sum([i * recipe_amount for i in prices])
+            sell_price = man_cost * 1.3
+            Control.add_order(order_date, recipe_id, recipe_amount, man_cost, sell_price)
             Control.session.commit()
