@@ -26,6 +26,20 @@ def get_storage_data():
     return session.query(Storage).all()
 
 
+def get_orders_data():
+    """
+    :return: grąžina visus orders DB įrašus
+    """
+    return session.query(Orders).all()
+
+
+def get_materials_data():
+    """
+    :return: grąžina visus materials DB įrašus
+    """
+    return session.query(Materials).all()
+
+
 def get_storage_amount():
     """
     :return: grąžina visus storage DB amount

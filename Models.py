@@ -105,6 +105,7 @@ class Orders(Base):
     amount = Column("Amount", Float)
     man_cost = Column("Manufacturing cost", Float)
     sell_price = Column("Selling price", Float)
+    recipe_info = relationship("Recipe")
 
     def __init__(self, date, recipe, amount, man_cost, sell_price):
         self.date = date
@@ -115,7 +116,8 @@ class Orders(Base):
         self.sell_price = sell_price
 
     def __repr__(self):
-        return f"{self.id}. {self.date} : {self.recipe} - {self.amount} kg"
+        return f"{self.id}. {self.date} - {self.recipe_info.name} Amount: {self.amount}kg " \
+               f"Manufacturing cost: {self.man_cost} Selling price: {self.sell_price}"
 
 
 Base.metadata.create_all(engine)

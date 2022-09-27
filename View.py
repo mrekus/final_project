@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import logging
-from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews
+from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
 
 
 class MyButton(Button):
@@ -43,7 +43,7 @@ class MyEntry(Entry):
         self.config(font=("courier", 14, "bold"), width=15)
 
 
-class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
+class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews):
     """
     Pagrindinis programos langas
     """
@@ -170,7 +170,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
             activebackground="#0a0a0a",
             activeforeground="#e6d415",
             text="↓↓↓",
-            command="",
+            command=self.scroll_down_1,
         )
         self.labelEdit1 = MyLabel(self.leftFrame)
         self.labelEdit2 = MyLabel(self.leftFrame)
@@ -216,6 +216,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
         self.storageTable = ttk.Treeview(
             self.leftFrame,
             columns=("id", "Name", "Amount kg"),
+            show="headings",
+            height=8,
+        )
+        self.ordersTable = ttk.Treeview(
+            self.leftFrame,
+            columns=("id", "Date", "Recipe", "Amount", "Manufacturing Cost", "Selling price"),
             show="headings",
             height=8,
         )
@@ -268,6 +274,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
         self.processTable.grid_forget()
         self.recipeTable.grid_forget()
         self.storageTable.grid_forget()
+        self.ordersTable.grid_forget()
 
     def reset_entry_fields(self):
         """
@@ -292,6 +299,18 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
         self.buttonDelete.grid_forget()
         self.buttonCancelEditing.grid_forget()
         self.buttonAddRecipe.grid_forget()
+
+    def scroll_down_1(self):
+        self.buttonDelete.config(state=DISABLED, bg="gray")
+
+    def scroll_down_2(self):
+        pass
+
+    def scroll_up_1(self):
+        pass
+
+    def scroll_up_2(self):
+        pass
 
 
 def main():

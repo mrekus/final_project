@@ -3,6 +3,28 @@ from datetime import datetime
 
 
 class OrderViews:
+    def fill_orders_data_box(self):
+        """
+        Atstato pradinę lango būseną su Orders duomenų lentele
+        """
+        self.default_button_layouts()
+        self.forget_tables()
+        self.ordersTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
+        for i in self.ordersTable.get_children():
+            self.ordersTable.delete(i)
+        for i, col_heading in enumerate(
+            ["ID", "Date", "Recipe", "Amount", "Manufacturing Cost", "Selling price"], 1
+        ):
+            self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
+            self.ordersTable.heading(f"# {i}", text=col_heading)
+        for i in Control.get_orders_data():
+            self.ordersTable.insert(
+                "",
+                "end",
+                values=(i.id, i.date, i.recipe_info.name, i.amount, i.man_cost, i.sell_price)
+            )
+        self.buttonAddRecipe.grid_forget()
+
     def refresh_recipe_list(self):
         """
         Atjauniną receptų sąrašą
@@ -99,9 +121,13 @@ class OrderViews:
             efficiency_list = []
             for i in efficiency:
                 efficiency_list.append(i[0])
-            check_remainder = [i + j for (i, j) in zip(efficiency_list, storage_remaining)]
+            check_remainder = [
+                i + j for (i, j) in zip(efficiency_list, storage_remaining)
+            ]
             while min(check_remainder) < 0:
-                check_remainder = [i + j for (i, j) in zip(efficiency_list, check_remainder)]
+                check_remainder = [
+                    i + j for (i, j) in zip(efficiency_list, check_remainder)
+                ]
                 num += 1
             logging.critical("Not enough material in storage to complete an order")
             ErrorWindow(
@@ -124,12 +150,18 @@ class OrderViews:
                 record = Control.session.query(Control.Storage).get(record_id)
                 record.amount = round(i, 1)
                 record_id += 1
-            recipe = Control.session.query(Control.Recipe).filter_by(name=self.recipe_list.get()).one()
+            recipe = (
+                Control.session.query(Control.Recipe)
+                .filter_by(name=self.recipe_list.get())
+                .one()
+            )
             order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             recipe_id = recipe.id
             recipe_amount = float(self.entryFieldOrder.get())
             prices = Control.get_material_price_list()
-            man_cost = sum([i * recipe_amount for i in prices])
-            sell_price = man_cost * 1.3
-            Control.add_order(order_date, recipe_id, recipe_amount, man_cost, sell_price)
+            man_cost = round(sum([i * recipe_amount for i in prices]), 2)
+            sell_price = round((man_cost * 1.3), 2)
+            Control.add_order(
+                order_date, recipe_id, recipe_amount, man_cost, sell_price
+            )
             Control.session.commit()
