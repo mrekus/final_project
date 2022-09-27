@@ -64,8 +64,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews):
         self.gradient_step = 0
         self.hex_step = 400
         for _ in range(40):
-            color_hex = str(224499 + self.hex_step)
-            Frame(master, width=100, height=550, bg="#" + color_hex).place(
+            self.color_hex = str(224499 + self.hex_step)
+            Frame(master, width=100, height=550, bg="#" + self.color_hex).place(
                 x=self.gradient_step, y=0
             )
             self.gradient_step += 100

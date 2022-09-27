@@ -33,6 +33,13 @@ def get_storage_amount():
     return session.query(Storage.amount).all()
 
 
+def get_process_efficiency():
+    """
+    :return: Grąžina procesų efficiency
+    """
+    return session.query(Process.efficiency).all()
+
+
 def delete_recipe_record(deletion_id):
     """
     Ištrina recepto įrašą iš DB pagal ID
@@ -78,7 +85,7 @@ def update_process(update_id, name, efficiency):
 
 
 def update_recipe(
-    update_id, name, material1, material2, material3, material4, material5
+        update_id, name, material1, material2, material3, material4, material5
 ):
     """
     Atnaujina recepto įrašą pagal ID

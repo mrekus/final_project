@@ -92,15 +92,15 @@ class OrderViews:
         """
         num = 0
         if min(storage_remaining) < 0:
-            storage = str(Control.get_process_data())
-            efficiency = storage.replace("k", "-")
-            efficiency = efficiency.replace(" ", "")
-            efficiency = efficiency.split("-")
-            efficiency = [float(i) for i in efficiency[2::3]]
-            check_remainder = [i + j for (i, j) in zip(efficiency, storage_remaining)]
-            num += 1
+            print(storage_remaining)
+            efficiency = Control.get_process_efficiency()
+            efficiency_list = []
+            for i in efficiency:
+                efficiency_list.append(i[0])
+            check_remainder = [i + j for (i, j) in zip(efficiency_list, storage_remaining)]
+            num = 1
             while min(check_remainder) < 0:
-                check_remainder = [i + j for (i, j) in zip(efficiency, check_remainder)]
+                check_remainder = [i + j for (i, j) in zip(efficiency_list, check_remainder)]
                 num += 1
             logging.critical("Not enough material in storage to complete an order")
             ErrorWindow(
