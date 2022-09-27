@@ -81,7 +81,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.submenu = Menu(self.menu, tearoff=False)
 
         self.buttonAddOrder = Button(
-            self.topFrame,
+            self.master,
             text="Add an Order",
             height=3,
             width=20,
@@ -121,7 +121,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             self.leftFrame, text="Cancel", command=self.cancel_editing
         )
         self.buttonCancelOrder = Button(
-            self.topFrame,
+            self.master,
             text="Cancel Order",
             height=3,
             width=20,
@@ -133,7 +133,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             command=self.cancel_order,
         )
         self.buttonConfirmOrder = Button(
-            self.topFrame,
+            self.master,
             text="Confirm Order",
             height=3,
             width=20,
@@ -180,7 +180,10 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelEdit5 = MyLabel(self.leftFrame)
         self.labelEdit6 = MyLabel(self.leftFrame)
         self.labelOrder = Label(
-            self.topFrame, text="Amount in kg:", font=("courier", 25, "bold"), width=15
+            self.master, text="Amount in kg:", font=("courier", 25, "bold"), width=15
+        )
+        self.labelRecipe = Label(
+            self.master, text="Recipe:", font=("courier", 25, "bold"), width=13
         )
         self.entryFieldEdit1 = MyEntry(self.leftFrame)
         self.entryFieldEdit2 = MyEntry(self.leftFrame)
@@ -189,10 +192,10 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.entryFieldEdit5 = MyEntry(self.leftFrame)
         self.entryFieldEdit6 = MyEntry(self.leftFrame)
         self.entryFieldOrder = Entry(
-            self.topFrame, font=("courier", 25, "bold"), width=15
+            self.master, font=("courier", 25, "bold"), width=15
         )
         self.recipe_list = ttk.Combobox(
-            self.topFrame, width=12, font=("courier", 25, "bold"), state="readonly"
+            self.master, width=12, font=("courier", 25, "bold"), state="readonly"
         )
         self.processTable = ttk.Treeview(
             self.leftFrame,
@@ -240,7 +243,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
 
         self.buttonScrollUp.place(x=0, y=282)
         self.buttonScrollDown.place(x=0, y=314)
-        self.buttonAddOrder.grid(row=0, column=0)
+        self.buttonAddOrder.place(x=585, y=130)
         self.buttonMenu1.grid(row=1, column=1)
         self.buttonMenu2.grid(row=2, column=1)
         self.buttonMenu3.grid(row=3, column=1)
@@ -304,10 +307,24 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.default_button_layouts()
         self.forget_tables()
         self.cancel_order()
+        self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
+        self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
+        self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
+        self.buttonScrollUp.config(state=DISABLED, bg="gray")
+        self.buttonScrollDown.config(command=self.scroll_down_1, state=NORMAL, bg="white")
         self.buttonEdit.grid_forget()
         self.buttonDelete.grid_forget()
         self.buttonCancelEditing.grid_forget()
         self.buttonAddRecipe.grid_forget()
+
+    def color_background(self):
+        for _ in range(40):
+            self.color_hex = str(224499 + self.hex_step)
+            Frame(self.master, width=100, height=550, bg="#" + self.color_hex).place(
+                x=self.gradient_step, y=0
+            )
+            self.gradient_step += 100
+            self.hex_step += 300
 
     def scroll_down_1(self):
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)

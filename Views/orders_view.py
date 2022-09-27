@@ -38,24 +38,26 @@ class OrderViews:
         Sukuria užsakymo pridėjimo laukus ir atnaujina receptų sąrašą
         """
         self.refresh_recipe_list()
-        self.recipe_list.grid(row=1, column=0)
-        self.buttonAddOrder.grid_forget()
-        self.entryFieldOrder.grid(row=1, column=1)
-        self.labelOrder.grid(row=0, column=1)
-        self.buttonConfirmOrder.grid(row=1, column=2)
-        self.buttonCancelOrder.grid(row=1, column=3)
+        self.recipe_list.place(x=330, y=170)
+        self.buttonAddOrder.place_forget()
+        self.entryFieldOrder.place(x=590, y=170)
+        self.labelOrder.place(x=589, y=130)
+        self.labelRecipe.place(x=330, y=130)
+        self.buttonConfirmOrder.place(x=895, y=110)
+        self.buttonCancelOrder.place(x=895, y=191)
 
     def cancel_order(self):
         """
         Atšaukia užsakymo pridėjimą, pašalina ir išvalo laukus
         """
-        self.buttonAddOrder.grid(row=1, column=0)
-        self.entryFieldOrder.grid_forget()
+        self.buttonAddOrder.place(x=585, y=130)
+        self.entryFieldOrder.place_forget()
         self.entryFieldOrder.delete(0, tk.END)
-        self.labelOrder.grid_forget()
-        self.buttonCancelOrder.grid_forget()
-        self.buttonConfirmOrder.grid_forget()
-        self.recipe_list.grid_forget()
+        self.labelOrder.place_forget()
+        self.labelRecipe.place_forget()
+        self.buttonCancelOrder.place_forget()
+        self.buttonConfirmOrder.place_forget()
+        self.recipe_list.place_forget()
         self.recipe_list.set("")
 
     def recipe_calculation(self):
