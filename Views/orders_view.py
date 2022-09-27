@@ -53,7 +53,7 @@ class OrderViews:
                     i.id,
                     i.date,
                     i.recipe_info.name,
-                    round((i.amount * rate), 2),
+                    i.amount,
                     round((i.man_cost * rate), 2),
                     round((i.sell_price * rate), 2),
                 ),
