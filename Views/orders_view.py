@@ -13,7 +13,7 @@ class OrderViews:
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
         for i, col_heading in enumerate(
-            ["ID", "Date", "Recipe", "Amount", "Manufacturing Cost", "Selling price"], 1
+            ["ID", "Date", "Recipe", "Amount, kg", "Manufacturing Cost", "Selling price"], 1
         ):
             self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.ordersTable.heading(f"# {i}", text=col_heading)

@@ -1,6 +1,5 @@
 import json
 import requests
-import time
 
 
 FOREX_ENDPOINT = "https://api.frankfurter.app/latest"
@@ -18,5 +17,4 @@ def get_rates(endpoint=FOREX_ENDPOINT):
         res = json.loads(r.text)
         rate = res['rates'][i]
         rates[i] = rate
-        time.sleep(0.5)
     return rates

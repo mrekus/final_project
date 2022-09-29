@@ -80,6 +80,14 @@ def add_recipe(name, material1, material2, material3, material4, material5):
 
 
 def add_order(date, recipe, amount, man_cost, sell_price):
+    """
+    Prideda užsakymą į DB
+    :param date: užsakymo data
+    :param recipe: gamintas receptas
+    :param amount: gamintas kiekis
+    :param man_cost: gamybos kaina
+    :param sell_price: pardavimo kaina
+    """
     order = Orders(date, recipe, amount, man_cost, sell_price)
     session.add(order)
     session.commit()
@@ -124,7 +132,6 @@ def update_storage(update_id, amount):
     """
     Atnaujina storage įrašą pagal ID
     :param update_id: įrašo ID
-    :param name: įrašo pavadinimas
     :param amount: įrašo kiekis
     :return:
     """
