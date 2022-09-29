@@ -1,5 +1,4 @@
 from utils import *
-from API import get_rates
 
 
 class MaterialsViews:

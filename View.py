@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import logging
 from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
-from API import get_rates
+from API import get_rates, PAIRS
 
 
 class MyButton(Button):
@@ -204,7 +204,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.currency_list = ttk.Combobox(
             self.master, width=6, font=("courier", 25, "bold"), state="readonly"
         )
-        self.currency_list.config(values=["EUR", "USD", "GBP", "NOK"])
+        self.currency_list.config(values=PAIRS)
         self.currency_list.set("EUR")
 
         self.processTable = ttk.Treeview(
@@ -251,7 +251,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.submenu.add_separator()
         self.submenu.add_command(label="Exit", command=master.destroy)
 
-        self.currency_list.place(x=0, y=170)
+        self.currency_list.place(x=0, y=130)
         self.buttonScrollUp.place(x=0, y=282)
         self.buttonScrollDown.place(x=0, y=314)
         self.buttonAddOrder.place(x=585, y=130)

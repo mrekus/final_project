@@ -1,6 +1,5 @@
 from utils import *
 from datetime import datetime
-from API import get_rates
 
 
 class OrderViews:

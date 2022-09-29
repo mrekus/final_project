@@ -1,1 +1,1 @@
-from API.currency import get_rates
+from API.currency import get_rates, PAIRS
