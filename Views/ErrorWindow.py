@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter
 
 
 class ErrorWindow:
@@ -8,18 +8,18 @@ class ErrorWindow:
     """
 
     def __init__(self, text):
-        self.error_window = Toplevel()
+        self.error_window = tkinter.Toplevel()
         self.error_window.geometry("+900+500")
         self.error_window.title("Error")
-        self.frame = Frame(self.error_window)
-        self.error_text = Label(
-            self.frame, text=text, anchor=CENTER, font=("courier", 25, "bold")
+        self.frame = tkinter.Frame(self.error_window)
+        self.error_text = tkinter.Label(
+            self.frame, text=text, anchor=tkinter.CENTER, font=("courier", 25, "bold")
         )
-        self.ok_button = Button(
+        self.ok_button = tkinter.Button(
             self.frame,
             text="Confirm",
             command=self.error_window.destroy,
-            anchor=CENTER,
+            anchor=tkinter.CENTER,
             bg="white",
             fg="black",
             font=("courier", 12, "bold"),

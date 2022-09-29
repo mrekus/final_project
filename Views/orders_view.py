@@ -1,5 +1,6 @@
 from utils import *
 from datetime import datetime
+from Control import send_email
 
 
 class OrderViews:
@@ -13,11 +14,19 @@ class OrderViews:
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
         for i, col_heading in enumerate(
-            ["ID", "Date", "Recipe", "Amount, kg", "Manufacturing Cost", "Selling price"], 1
+            [
+                "ID",
+                "Date",
+                "Recipe",
+                "Amount, kg",
+                "Manufacturing Cost",
+                "Selling price",
+            ],
+            1,
         ):
             self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.ordersTable.heading(f"# {i}", text=col_heading)
-        self.currency_list.bind('<<ComboboxSelected>>', self.refresh_orders)
+        self.currency_list.bind("<<ComboboxSelected>>", self.refresh_orders)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
         for i in Control.get_orders_data():
@@ -28,7 +37,7 @@ class OrderViews:
                     i.id,
                     i.date,
                     i.recipe_info.name,
-                    round((i.amount * rate), 2),
+                    i.amount,
                     round((i.man_cost * rate), 2),
                     round((i.sell_price * rate), 2),
                 ),
@@ -197,3 +206,11 @@ class OrderViews:
                 order_date, recipe_id, recipe_amount, man_cost, sell_price
             )
             Control.session.commit()
+
+            subject = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} " \
+                      f"- Order {self.recipe_list.get()} " \
+                      f"- {self.entryFieldOrder.get()}kg"
+            text = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} " \
+                   f"- Order of recipe {self.recipe_list.get()} " \
+                   f"- {self.entryFieldOrder.get()}kg has just been completed"
+            send_email(subject, text)
