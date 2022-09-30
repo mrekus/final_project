@@ -44,8 +44,13 @@ class OrderViews:
             )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(state=tk.DISABLED, bg="gray")
+        self.buttonFilterOrders.grid(row=3, column=6)
 
     def refresh_orders(self, event):
+        """
+        Atnaujina Orders lentelės įrašus
+        :param event: aktyvuojamas currency combobox pasikeitimu
+        """
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
         chosen_currency = self.currency_list.get()
@@ -214,3 +219,60 @@ class OrderViews:
                    f"- Order of recipe {self.recipe_list.get()} " \
                    f"- {self.entryFieldOrder.get()}kg has just been completed"
             send_email(subject, text)
+
+    def filter_orders_buttons(self):
+        """
+        Sudeda laukus ir labels Orders filtravimui
+        """
+        self.labelEdit1.grid(row=1, column=7, sticky="W")
+        self.labelEdit2.grid(row=2, column=7, sticky="W")
+        self.labelEdit3.grid(row=3, column=7, sticky="W")
+        self.labelEdit1.config(text="Year: ")
+        self.labelEdit2.config(text="Month: ")
+        self.labelEdit3.config(text="Day: ")
+        self.year_list_from.grid(row=1, column=8, sticky="W")
+        self.month_list_from.grid(row=2, column=8, sticky="W")
+        self.day_list_from.grid(row=3, column=8, sticky="W")
+        self.year_list_to.grid(row=1, column=9, sticky="W")
+        self.month_list_to.grid(row=2, column=9, sticky="W")
+        self.day_list_to.grid(row=3, column=9, sticky="W")
+        self.labelFilterFrom.place(x=1044, y=320)
+        self.labelFilterTo.place(x=1219, y=320)
+        self.currency_list.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.year_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.month_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.day_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.year_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.month_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.day_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
+
+    def filter_orders(self, event):
+        """
+        Filtruoja Orders pagal datų ruožą
+        :param event aktyvuojama datų filtrų combobox pasikeitimu
+        """
+        date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()} 00:00:01"
+        date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()} 23:59:59"
+        try:
+            date_from = datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
+            date_to = datetime.strptime(date_to, '%Y-%m-%d %H:%M:%S')
+        except:
+            pass
+        filtered = Control.search_order_by_date(date_from, date_to)
+        for i in self.ordersTable.get_children():
+            self.ordersTable.delete(i)
+        chosen_currency = self.currency_list.get()
+        rate = self.rates[chosen_currency]
+        for i in filtered:
+            self.ordersTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.date,
+                    i.recipe_info.name,
+                    i.amount,
+                    round((i.man_cost * rate), 2),
+                    round((i.sell_price * rate), 2),
+                ),
+            )

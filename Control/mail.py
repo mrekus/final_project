@@ -1,10 +1,17 @@
 import smtplib
 from Views.ErrorWindow import ErrorWindow
+
+
 FROM = "marius.rekus@gmail.com"
 TO = "marius.rekus@gmail.com"
 
 
 def send_email(subject, text):
+    """
+    Išsiunčia e-mail iš FROM į TO paštą
+    :param subject: laiško tema
+    :param text: laiško tekstas
+    """
     message = "\r\n".join(
         [f"From: {FROM}",
          f"To: {TO}",
@@ -20,4 +27,4 @@ def send_email(subject, text):
         server.sendmail(FROM, TO, message)
         server.close()
     except:
-        ErrorWindow("Failed to send order e-mail")
+        ErrorWindow("Failed to send order e-mail!!!")

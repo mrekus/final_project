@@ -3,6 +3,7 @@ from tkinter import ttk
 import logging
 from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
 from API import get_rates, PAIRS
+from datetime import datetime
 
 
 class MyButton(Button):
@@ -24,6 +25,43 @@ class MyButton(Button):
         )
 
 
+class MyOrderButton(Button):
+    """
+    Perrašo default Button klasę
+    """
+
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(
+            height=3,
+            width=20,
+            anchor=CENTER,
+            fg="black",
+            font=("courier", 14, "bold"),
+            relief="groove",
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
+
+
+class MyScrollButton(Button):
+    """
+    Perrašo default Button klasę
+    """
+
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(
+            fg="black",
+            font=("courier", 12, "bold"),
+            relief="groove",
+            height=1,
+            width=15,
+            activebackground="#0a0a0a",
+            activeforeground="#e6d415",
+        )
+
+
 class MyLabel(Label):
     """
     Perrašo default Label klasę
@@ -34,6 +72,16 @@ class MyLabel(Label):
         self.config(font=("courier", 14, "bold"))
 
 
+class MyCombobox(ttk.Combobox):
+    """
+    Perrašo default Combobox klasę
+    """
+
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(width=10, font=("courier", 15, "bold"), state="readonly")
+
+
 class MyEntry(Entry):
     """
     Perrašo default Entry klasę
@@ -42,6 +90,20 @@ class MyEntry(Entry):
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent, **kwargs)
         self.config(font=("courier", 14, "bold"), width=15)
+
+
+class MyTreeview(ttk.Treeview):
+    """
+    Perrašo default Treeview klasę
+    """
+
+    def __init__(self, parent=None, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.config(
+            show="headings",
+            height=8,
+            selectmode="browse",
+        )
 
 
 class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews):
@@ -123,56 +185,31 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonCancelEditing = MyButton(
             self.leftFrame, text="Cancel", command=self.cancel_editing
         )
-        self.buttonCancelOrder = Button(
+        self.buttonFilterOrders = MyButton(
+            self.leftFrame, text="Filter", command=self.filter_orders_buttons
+        )
+        self.buttonCancelOrder = MyOrderButton(
             self.master,
             text="Cancel Order",
-            height=3,
-            width=20,
-            anchor=CENTER,
             bg="red",
-            fg="black",
-            font=("courier", 14, "bold"),
-            relief="groove",
             command=self.cancel_order,
         )
-        self.buttonConfirmOrder = Button(
+        self.buttonConfirmOrder = MyOrderButton(
             self.master,
             text="Confirm Order",
-            height=3,
-            width=20,
-            anchor=CENTER,
             bg="white",
-            fg="black",
-            font=("courier", 14, "bold"),
-            relief="groove",
             command=self.recipe_calculation,
-            activebackground="#0a0a0a",
-            activeforeground="#e6d415",
         )
-        self.buttonScrollUp = Button(
+        self.buttonScrollUp = MyScrollButton(
             self.master,
             bg="gray",
-            fg="black",
-            font=("courier", 12, "bold"),
-            relief="groove",
-            height=1,
-            width=15,
-            activebackground="#0a0a0a",
-            activeforeground="#e6d415",
             text="↑↑↑",
             command="",
             state=DISABLED,
         )
-        self.buttonScrollDown = Button(
+        self.buttonScrollDown = MyScrollButton(
             self.master,
             bg="white",
-            fg="black",
-            font=("courier", 12, "bold"),
-            relief="groove",
-            height=1,
-            width=15,
-            activebackground="#0a0a0a",
-            activeforeground="#e6d415",
             text="↓↓↓",
             command=self.scroll_down_1,
         )
@@ -188,6 +225,13 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelRecipe = Label(
             self.master, text="Recipe:", font=("courier", 25, "bold"), width=13
         )
+        self.labelFilterFrom = Label(
+            self.master, text="From:", font=("courier", 18, "bold"), width=13
+        )
+        self.labelFilterTo = Label(
+            self.master, text="To:", font=("courier", 18, "bold"), width=13
+        )
+
         self.entryFieldEdit1 = MyEntry(self.leftFrame)
         self.entryFieldEdit2 = MyEntry(self.leftFrame)
         self.entryFieldEdit3 = MyEntry(self.leftFrame)
@@ -202,18 +246,44 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             self.master, width=12, font=("courier", 25, "bold"), state="readonly"
         )
         self.currency_list = ttk.Combobox(
-            self.master, width=6, font=("courier", 25, "bold"), state="readonly"
+            self.master,
+            width=6,
+            font=("courier", 25, "bold"),
+            state="readonly",
+            values=PAIRS,
         )
-        self.currency_list.config(values=PAIRS)
         self.currency_list.set("EUR")
-
-        self.processTable = ttk.Treeview(
-            self.leftFrame,
-            columns=("id", "Process", "Material", "Efficiency kg/h"),
-            show="headings",
-            height=8,
+        self.year_list_from = MyCombobox(
+            self.leftFrame, values=["2022", "2023", "2024", "2025"]
         )
-        self.recipeTable = ttk.Treeview(
+        self.month_list_from = MyCombobox(
+            self.leftFrame,
+            values=["0" + str(i) if len(str(i)) <= 1 else str(i) for i in range(1, 13)],
+        )
+        self.day_list_from = MyCombobox(
+            self.leftFrame, values=[str(i) for i in range(1, 32)]
+        )
+        self.year_list_to = MyCombobox(
+            self.leftFrame, values=["2022", "2023", "2024", "2025"]
+        )
+        self.month_list_to = MyCombobox(
+            self.leftFrame,
+            values=["0" + str(i) if len(str(i)) <= 1 else str(i) for i in range(1, 13)],
+        )
+        self.day_list_to = MyCombobox(
+            self.leftFrame, values=[str(i) for i in range(1, 32)]
+        )
+        self.year_list_from.set("2022")
+        self.month_list_from.set("01")
+        self.day_list_from.set("1")
+        self.year_list_to.set(str(datetime.now().year))
+        self.month_list_to.set(str(datetime.now().month))
+        self.day_list_to.set(str(datetime.now().day))
+
+        self.processTable = MyTreeview(
+            self.leftFrame, columns=("id", "Process", "Material", "Efficiency kg/h")
+        )
+        self.recipeTable = MyTreeview(
             self.leftFrame,
             columns=(
                 "id",
@@ -224,26 +294,23 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
                 "Material 4",
                 "Material 5",
             ),
-            show="headings",
-            height=8,
         )
-        self.storageTable = ttk.Treeview(
-            self.leftFrame,
-            columns=("id", "Name", "Amount kg"),
-            show="headings",
-            height=8,
+        self.storageTable = MyTreeview(
+            self.leftFrame, columns=("id", "Name", "Amount kg")
         )
-        self.ordersTable = ttk.Treeview(
+        self.ordersTable = MyTreeview(
             self.leftFrame,
-            columns=("id", "Date", "Recipe", "Amount", "Manufacturing Cost", "Selling price"),
-            show="headings",
-            height=8,
+            columns=(
+                "id",
+                "Date",
+                "Recipe",
+                "Amount",
+                "Manufacturing Cost",
+                "Selling price",
+            ),
         )
-        self.materialsTable = ttk.Treeview(
-            self.leftFrame,
-            columns=("id", "Name", "Price"),
-            show="headings",
-            height=8,
+        self.materialsTable = MyTreeview(
+            self.leftFrame, columns=("id", "Name", "Price")
         )
 
         self.menu.add_cascade(label="Menu", menu=self.submenu)
@@ -287,7 +354,16 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelEdit4.grid_forget()
         self.labelEdit5.grid_forget()
         self.labelEdit6.grid_forget()
+        self.labelFilterFrom.place_forget()
+        self.labelFilterTo.place_forget()
+        self.year_list_from.grid_forget()
+        self.month_list_from.grid_forget()
+        self.day_list_from.grid_forget()
+        self.year_list_to.grid_forget()
+        self.month_list_to.grid_forget()
+        self.day_list_to.grid_forget()
         self.buttonCancelEditing.grid_forget()
+        self.buttonFilterOrders.grid_forget()
         self.reset_entry_fields()
         self.buttonDelete.config(state=DISABLED, bg="gray")
 
@@ -309,6 +385,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.entryFieldEdit4.delete(0, END)
         self.entryFieldEdit5.delete(0, END)
         self.entryFieldEdit6.delete(0, END)
+        self.year_list_from.set("2022")
+        self.month_list_from.set("01")
+        self.day_list_from.set("1")
+        self.year_list_to.set(str(datetime.now().year))
+        self.month_list_to.set(str(datetime.now().month))
+        self.day_list_to.set(str(datetime.now().day))
         self.entryFieldEdit1.focus()
 
     def back_to_main(self):
@@ -322,20 +404,13 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonScrollUp.config(state=DISABLED, bg="gray")
-        self.buttonScrollDown.config(command=self.scroll_down_1, state=NORMAL, bg="white")
+        self.buttonScrollDown.config(
+            command=self.scroll_down_1, state=NORMAL, bg="white"
+        )
         self.buttonEdit.grid_forget()
         self.buttonDelete.grid_forget()
         self.buttonCancelEditing.grid_forget()
         self.buttonAddRecipe.grid_forget()
-
-    def color_background(self):
-        for _ in range(40):
-            self.color_hex = str(224499 + self.hex_step)
-            Frame(self.master, width=100, height=550, bg="#" + self.color_hex).place(
-                x=self.gradient_step, y=0
-            )
-            self.gradient_step += 100
-            self.hex_step += 300
 
     def scroll_down_1(self):
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
@@ -363,7 +438,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonScrollUp.config(command=self.scroll_up_1, state=NORMAL, bg="white")
-        self.buttonScrollDown.config(command=self.scroll_down_2, state=NORMAL, bg="white")
+        self.buttonScrollDown.config(
+            command=self.scroll_down_2, state=NORMAL, bg="white"
+        )
 
 
 def main():

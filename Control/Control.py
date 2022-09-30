@@ -193,3 +193,13 @@ def get_material_price_list():
     for i in prices:
         price_list.append(i[0])
     return price_list
+
+
+def search_order_by_date(start, end):
+    """
+    Grąžina Orders įrašus pagal užduotą datų ruožą
+    :param start: nuo kada filtras
+    :param end: iki kada filtras
+    """
+    qry = session.query(Orders).filter(Orders.date.between(start, end))
+    return qry

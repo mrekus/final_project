@@ -3,7 +3,7 @@ import requests
 
 
 FOREX_ENDPOINT = "https://api.frankfurter.app/latest"
-PAIRS = ["EUR", "USD", "GBP", "NOK"]
+PAIRS = ["EUR", "USD", "NOK", "GBP"]
 
 
 def get_rates(endpoint=FOREX_ENDPOINT):
