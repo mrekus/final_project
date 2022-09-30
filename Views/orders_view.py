@@ -201,7 +201,7 @@ class OrderViews:
                 .filter_by(name=self.recipe_list.get())
                 .one()
             )
-            order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            order_date = datetime.now().replace(second=0, microsecond=0)
             recipe_id = recipe.id
             recipe_amount = float(self.entryFieldOrder.get())
             prices = Control.get_material_price_list()

@@ -100,7 +100,7 @@ class Orders(Base):
 
     __tablename__ = "Orders"
     id = Column(Integer, primary_key=True)
-    date = Column("Date", String)
+    date = Column("Date", DateTime)
     recipe = Column("Recipe", Integer, ForeignKey("Recipies.id"))
     amount = Column("Amount", Float)
     man_cost = Column("Manufacturing cost", Float)
