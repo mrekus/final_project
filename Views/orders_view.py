@@ -212,13 +212,19 @@ class OrderViews:
             )
             Control.session.commit()
 
-            subject = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} " \
-                      f"- Order {self.recipe_list.get()} " \
-                      f"- {self.entryFieldOrder.get()}kg"
-            text = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} " \
-                   f"- Order of recipe {self.recipe_list.get()} " \
-                   f"- {self.entryFieldOrder.get()}kg has just been completed"
-            send_email(subject, text)
+            subject = (
+                f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} "
+                f"- Order {self.recipe_list.get()} "
+                f"- {self.entryFieldOrder.get()}kg"
+            )
+            text = (
+                f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} "
+                f"- Order of recipe {self.recipe_list.get()} "
+                f"- {self.entryFieldOrder.get()}kg has just been completed"
+            )
+            mail_state = self.mail_list.get()
+            if mail_state == "YES":
+                send_email(subject, text)
 
     def filter_orders_buttons(self):
         """
@@ -254,9 +260,9 @@ class OrderViews:
         date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()} 00:00:01"
         date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()} 23:59:59"
         try:
-            date_from = datetime.strptime(date_from, '%Y-%m-%d %H:%M:%S')
-            date_to = datetime.strptime(date_to, '%Y-%m-%d %H:%M:%S')
-        except:
+            date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
+            date_to = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
             pass
         filtered = Control.search_order_by_date(date_from, date_to)
         for i in self.ordersTable.get_children():

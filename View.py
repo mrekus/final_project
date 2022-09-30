@@ -231,6 +231,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelFilterTo = Label(
             self.master, text="To:", font=("courier", 18, "bold"), width=13
         )
+        self.labelMailOrder = Label(
+            self.master, text="Mail orders:", font=("courier", 24, "bold"), width=13
+        )
 
         self.entryFieldEdit1 = MyEntry(self.leftFrame)
         self.entryFieldEdit2 = MyEntry(self.leftFrame)
@@ -253,6 +256,14 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             values=PAIRS,
         )
         self.currency_list.set("EUR")
+        self.mail_list = ttk.Combobox(
+            self.master,
+            values=["YES", "NO"],
+            width=4,
+            font=("courier", 25, "bold"),
+            state="readonly",
+        )
+        self.mail_list.set("YES")
         self.year_list_from = MyCombobox(
             self.leftFrame, values=["2022", "2023", "2024", "2025"]
         )
@@ -319,6 +330,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.submenu.add_command(label="Exit", command=master.destroy)
 
         self.currency_list.place(x=0, y=130)
+        self.mail_list.place(x=1470, y=0)
+        self.labelMailOrder.place(x=1230, y=0)
         self.buttonScrollUp.place(x=0, y=282)
         self.buttonScrollDown.place(x=0, y=314)
         self.buttonAddOrder.place(x=585, y=130)
