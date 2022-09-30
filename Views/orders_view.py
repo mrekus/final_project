@@ -5,6 +5,11 @@ from datetime import datetime
 from Control import send_email
 
 
+def write_order_to_txt(text):
+    with open("orders.txt", "a", encoding="utf-8") as record_order:
+        record_order.write(text)
+
+
 class OrderViews:
     def fill_orders_data_box(self):
         """
@@ -47,7 +52,9 @@ class OrderViews:
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(state=tk.DISABLED, bg="gray")
         self.buttonFilterOrders.grid(row=3, column=6)
-        self.buttonFilterOrders.config(text="Filter", command=self.filter_orders_buttons)
+        self.buttonFilterOrders.config(
+            text="Filter", command=self.filter_orders_buttons
+        )
 
     def refresh_orders(self, event):
         """
@@ -74,7 +81,7 @@ class OrderViews:
 
     def refresh_recipe_list(self):
         """
-        Atjauniną receptų sąrašą
+        Atjauniną receptų combobox sąrašą
         """
         self.recipe_list.config(values=Control.check_for_duplicates_recipe())
         self.recipe_list.set("")
@@ -109,21 +116,14 @@ class OrderViews:
     def recipe_calculation(self):
         """
         Tikrina ar pasirinktas receptas, tada ar užsakymo vertė daugiau už 0,
-        jei taip, skaičiuoja iš recepto reikalingą žaliavų dalį, jei ne meta ERROR
+        jei taip, paima iš recepto reikalingą žaliavų dalį, jei ne meta ERROR
         """
         try:
             if self.recipe_list.get() != "":
                 if float(self.entryFieldOrder.get()) > 0:
-                    selected_recipe = str(
-                        Control.session.query(Control.Recipe)
-                        .filter_by(name=self.recipe_list.get())
-                        .one()
+                    selected_recipe = Control.get_recipe_materials_list(
+                        self.recipe_list.get()
                     )
-                    selected_recipe = selected_recipe.replace(" ", "")
-                    selected_recipe = selected_recipe.replace(";", "-")
-                    selected_recipe = selected_recipe.split("-")
-                    del selected_recipe[0]
-                    selected_recipe = [float(i) for i in selected_recipe]
                     self.calculate_required_materials(
                         selected_recipe, float(self.entryFieldOrder.get())
                     )
@@ -139,7 +139,7 @@ class OrderViews:
                 ErrorWindow("No recipe chosen!")
         except ValueError:
             logging.error("Wrong value type entered when trying to add an order")
-            ErrorWindow("Amount is not a number!")
+            ErrorWindow("Wrong value type entered!")
 
     def calculate_required_materials(self, selected_recipe, order_amount):
         """
@@ -162,8 +162,10 @@ class OrderViews:
         """
         Tikrina ar sandėlio žaliavų likutis yra neigiamas, jei taip, apskaičiuoja
         kiek reikės darbo valandų kad pasiekti teigiamą kiekį, jei ne, surašo į DB
+        ir išsiunčia laišką su užsakymu jei send mail laukas yra YES
         :param storage_remaining: priima sandėlio likutį
         """
+        date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         num = 0
         if min(storage_remaining) < 0:
             efficiency = Control.get_process_efficiency()
@@ -183,51 +185,26 @@ class OrderViews:
                 f"Not enough materials to complete the order,\n"
                 f"it will take {num} working hours to get enough material"
             )
-            with open("orders.txt", "a", encoding="utf-8") as record_order:
-                record_order.write(
-                    f"{datetime.now()} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg could not "
-                    f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
-                )
+            write_order_to_txt(
+                f"{date_now} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg could not "
+                f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
+            )
         else:
-            with open("orders.txt", "a", encoding="utf-8") as record_order:
-                record_order.write(
-                    f"{datetime.now()} - Order of {self.recipe_list.get()} - "
-                    f"{self.entryFieldOrder.get()}kg completed.\n"
-                )
-            record_id = 1
-            for i in storage_remaining:
-                record = Control.session.query(Control.Storage).get(record_id)
-                record.amount = round(i, 1)
-                record_id += 1
-            recipe = (
-                Control.session.query(Control.Recipe)
-                .filter_by(name=self.recipe_list.get())
-                .one()
+            write_order_to_txt(
+                f"{date_now} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg completed.\n"
             )
-            order_date = datetime.now().replace(second=0, microsecond=0)
-            recipe_id = recipe.id
-            recipe_amount = float(self.entryFieldOrder.get())
-            prices = Control.get_material_price_list()
-            man_cost = round(sum([i * recipe_amount for i in prices]), 2)
-            sell_price = round((man_cost * 1.3), 2)
-            Control.add_order(
-                order_date, recipe_id, recipe_amount, man_cost, sell_price
+            Control.update_storage_after_order(storage_remaining)
+            Control.add_order(self.recipe_list.get(), self.entryFieldOrder.get())
+            self.send_order_mail(
+                date_now, self.recipe_list.get(), self.entryFieldOrder.get()
             )
-            Control.session.commit()
 
-            subject = (
-                f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} "
-                f"- Order {self.recipe_list.get()} "
-                f"- {self.entryFieldOrder.get()}kg"
-            )
-            text = (
-                f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} "
-                f"- Order of recipe {self.recipe_list.get()} "
-                f"- {self.entryFieldOrder.get()}kg has just been completed"
-            )
-            mail_state = self.mail_list.get()
-            if mail_state == "YES":
-                send_email(subject, text)
+    def send_order_mail(self, date, recipe, amount):
+        subject = f"{date} - Order {recipe} - {amount}kg"
+        text = f"{date} - Order of recipe {recipe} - {amount}kg has just been completed"
+        mail_state = self.mail_list.get()
+        if mail_state == "YES":
+            send_email(subject, text)
 
     def filter_orders_buttons(self):
         """
@@ -294,18 +271,23 @@ class OrderViews:
             )
 
     def email_filtered(self):
+        """
+        Nusiunčia e-mail su nufiltruotais Orders laukais
+        """
         date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()}"
         date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()}"
         subject = f"Orders from: {date_from} to {date_to}"
         text = ""
         for i in self.ordersTable.get_children():
-            t_data = self.ordersTable.item(i)['values']
-            text += f"ID: {t_data[0]} " \
-                    f"Date: {t_data[1]} " \
-                    f"Recipe: {t_data[2]} " \
-                    f"Amount: {t_data[3]}kg " \
-                    f"Manufacturing cost: {t_data[4]}{self.currency_list.get()} " \
-                    f"Selling price: {t_data[5]}{self.currency_list.get()}\n"
+            t_data = self.ordersTable.item(i)["values"]
+            text += (
+                f"ID: {t_data[0]} "
+                f"Date: {t_data[1]} "
+                f"Recipe: {t_data[2]} "
+                f"Amount: {t_data[3]}kg "
+                f"Manufacturing cost: {t_data[4]}{self.currency_list.get()} "
+                f"Selling price: {t_data[5]}{self.currency_list.get()}\n"
+            )
         if text != "":
             send_email(subject, text)
             ErrorWindow("Orders sent!")
@@ -313,7 +295,11 @@ class OrderViews:
             ErrorWindow("No orders to send!")
 
     def cancel_filtering(self):
+        """
+        Atšaukia Orders filtravimą ir atstato mygtukus
+        """
         self.cancel_editing()
         self.buttonFilterOrders.grid(row=3, column=6)
-        self.buttonFilterOrders.config(text="Filter", command=self.filter_orders_buttons)
-
+        self.buttonFilterOrders.config(
+            text="Filter", command=self.filter_orders_buttons
+        )

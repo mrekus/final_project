@@ -29,6 +29,10 @@ class MaterialsViews:
         self.buttonEdit.config(state=tk.DISABLED, bg="gray")
 
     def refresh_materials(self, event):
+        """
+        Atnaujina Materials lentelės įrašus
+        :param event: aktyvuojama currency combobox pasirinkimu
+        """
         for i in self.materialsTable.get_children():
             self.materialsTable.delete(i)
         chosen_currency = self.currency_list.get()

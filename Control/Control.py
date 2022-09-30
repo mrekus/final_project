@@ -1,5 +1,6 @@
 from Models import Process, Recipe, Storage, Orders, Materials, engine
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -79,20 +80,6 @@ def add_recipe(name, material1, material2, material3, material4, material5):
     session.commit()
 
 
-def add_order(date, recipe, amount, man_cost, sell_price):
-    """
-    Prideda užsakymą į DB
-    :param date: užsakymo data
-    :param recipe: gamintas receptas
-    :param amount: gamintas kiekis
-    :param man_cost: gamybos kaina
-    :param sell_price: pardavimo kaina
-    """
-    order = Orders(date, recipe, amount, man_cost, sell_price)
-    session.add(order)
-    session.commit()
-
-
 def update_process(update_id, name, efficiency):
     """
     Atnaujiną proceso įrašą pagal ID
@@ -107,7 +94,7 @@ def update_process(update_id, name, efficiency):
 
 
 def update_recipe(
-        update_id, name, material1, material2, material3, material4, material5
+    update_id, name, material1, material2, material3, material4, material5
 ):
     """
     Atnaujina recepto įrašą pagal ID
@@ -203,3 +190,45 @@ def search_order_by_date(start, end):
     """
     qry = session.query(Orders).filter(Orders.date.between(start, end))
     return qry
+
+
+def get_recipe_materials_list(recipe_name):
+    """
+    Grąžina recepto materials sąrašą
+    :param recipe_name: recepto pavadinimas kurio materials ieškosim
+    """
+    recipe = session.query(Recipe).filter_by(name=recipe_name).one()
+    material1 = recipe.material1
+    material2 = recipe.material2
+    material3 = recipe.material3
+    material4 = recipe.material4
+    material5 = recipe.material5
+    material_list = [material1, material2, material3, material4, material5]
+    return material_list
+
+
+def update_storage_after_order(remaining):
+    record_id = 1
+    for i in remaining:
+        record = session.query(Storage).get(record_id)
+        record.amount = round(i, 1)
+        record_id += 1
+    session.commit()
+
+
+def add_order(recipe_name, order_amount):
+    """
+    Prideda įvykdytą užsakymą į DB
+    :param recipe_name recepto pavadinimas
+    :param order_amount užsakymo kiekis
+    """
+    recipe = session.query(Recipe).filter_by(name=recipe_name).one()
+    order_date = datetime.now().replace(second=0, microsecond=0)
+    recipe_id = recipe.id
+    recipe_amount = float(order_amount)
+    prices = get_material_price_list()
+    man_cost = round(sum([i * recipe_amount for i in prices]), 2)
+    sell_price = round((man_cost * 1.3), 2)
+    order = Orders(order_date, recipe_id, recipe_amount, man_cost, sell_price)
+    session.add(order)
+    session.commit()
