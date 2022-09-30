@@ -348,7 +348,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonEdit.grid(row=1, column=6)
         self.buttonDelete.grid(row=2, column=6)
         self.buttonDelete.config(state=DISABLED, bg="gray")
-        self.buttonEdit.config(state=NORMAL, bg="white")
+        self.buttonEdit.config(state=NORMAL, bg="white", text="Edit")
         self.cancel_editing()
 
     def cancel_editing(self):

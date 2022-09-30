@@ -47,6 +47,7 @@ class OrderViews:
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(state=tk.DISABLED, bg="gray")
         self.buttonFilterOrders.grid(row=3, column=6)
+        self.buttonFilterOrders.config(text="Filter", command=self.filter_orders_buttons)
 
     def refresh_orders(self, event):
         """
@@ -238,6 +239,7 @@ class OrderViews:
             state=tkinter.NORMAL,
             command=self.email_filtered,
         )
+        self.buttonFilterOrders.config(text="Cancel", command=self.cancel_filtering)
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit3.grid(row=3, column=7, sticky="W")
@@ -309,3 +311,9 @@ class OrderViews:
             ErrorWindow("Orders sent!")
         else:
             ErrorWindow("No orders to send!")
+
+    def cancel_filtering(self):
+        self.cancel_editing()
+        self.buttonFilterOrders.grid(row=3, column=6)
+        self.buttonFilterOrders.config(text="Filter", command=self.filter_orders_buttons)
+
