@@ -1,3 +1,5 @@
+import tkinter
+
 from utils import *
 from datetime import datetime
 from Control import send_email
@@ -230,6 +232,12 @@ class OrderViews:
         """
         Sudeda laukus ir labels Orders filtravimui
         """
+        self.buttonEdit.config(
+            text="Send to Email",
+            bg="#00A650",
+            state=tkinter.NORMAL,
+            command=self.email_filtered,
+        )
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit3.grid(row=3, column=7, sticky="W")
@@ -282,3 +290,22 @@ class OrderViews:
                     round((i.sell_price * rate), 2),
                 ),
             )
+
+    def email_filtered(self):
+        date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()}"
+        date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()}"
+        subject = f"Orders from: {date_from} to {date_to}"
+        text = ""
+        for i in self.ordersTable.get_children():
+            t_data = self.ordersTable.item(i)['values']
+            text += f"ID: {t_data[0]} " \
+                    f"Date: {t_data[1]} " \
+                    f"Recipe: {t_data[2]} " \
+                    f"Amount: {t_data[3]}kg " \
+                    f"Manufacturing cost: {t_data[4]}{self.currency_list.get()} " \
+                    f"Selling price: {t_data[5]}{self.currency_list.get()}\n"
+        if text != "":
+            send_email(subject, text)
+            ErrorWindow("Orders sent!")
+        else:
+            ErrorWindow("No orders to send!")
