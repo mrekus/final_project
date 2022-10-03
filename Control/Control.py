@@ -179,9 +179,8 @@ def get_material_price_list():
     Grąžina material kainų sąrašą
     """
     price_list = []
-    prices = session.query(Materials.price).all()
-    for i in prices:
-        price_list.append(i[0])
+    for i in session.query(Materials).all():
+        price_list.append(i.price)
     return price_list
 
 

@@ -91,16 +91,19 @@ class MaterialsViews:
             self.idForEdit.get()
         )
         selected_field = selected_field.name
-        if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
-                i.lower().replace(" ", "")
+        entered_name = self.entryFieldEdit1.get().strip()
+        entered_name = re.sub(" +", " ", entered_name)
+        entered_price = float(self.entryFieldEdit2.get())
+        if any(i.isalpha() or i.isdigit() for i in entered_name):
+            if entered_name.lower() not in [
+                i.lower()
                 for i in Control.check_for_duplicates_materials()
                 if i != selected_field
             ]:
                 try:
-                    if float(self.entryFieldEdit2.get()) > 0:
+                    if entered_price > 0:
                         Control.update_material(
-                            self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get()
+                            self.idForEdit.get(), entered_name, entered_price
                         )
                         self.fill_materials_data_box()
                     else:

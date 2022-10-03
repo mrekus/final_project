@@ -68,14 +68,18 @@ class ProcessViews:
         )
         selected_field_name = selected_field.name
         selected_field_material = selected_field.materials.name
-        if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
-                i.lower().replace(" ", "")
+        entered_process = self.entryFieldEdit1.get().strip()
+        entered_process = re.sub(" +", " ", entered_process)
+        entered_material = self.entryFieldEdit2.get().strip()
+        entered_material = re.sub(" +", " ", entered_material)
+        if any(i.isalpha() or i.isdigit() for i in entered_process):
+            if entered_process.lower() not in [
+                i.lower()
                 for i in Control.check_for_duplicates_process()
                 if i != selected_field_name
             ]:
-                if self.entryFieldEdit2.get().lower().replace(" ", "") not in [
-                    i.lower().replace(" ", "")
+                if entered_material.lower() not in [
+                    i.lower()
                     for i in Control.check_for_duplicates_materials()
                     if i != selected_field_material
                 ]:
@@ -83,11 +87,11 @@ class ProcessViews:
                         if float(self.entryFieldEdit3.get()) > 0:
                             Control.update_process(
                                 self.idForEdit.get(),
-                                self.entryFieldEdit1.get(),
+                                entered_process,
                                 self.entryFieldEdit3.get(),
                             )
                             Control.update_material(
-                                self.idForEdit.get(), self.entryFieldEdit2.get()
+                                self.idForEdit.get(), entered_material
                             )
                             self.fill_process_data_box()
                         else:

@@ -119,13 +119,15 @@ class OrderViews:
         jei taip, paima iš recepto reikalingą žaliavų dalį, jei ne meta ERROR
         """
         try:
-            if self.recipe_list.get() != "":
-                if float(self.entryFieldOrder.get()) > 0:
-                    selected_recipe = Control.get_recipe_materials_list(
-                        self.recipe_list.get()
+            order_amount = float(self.entryFieldOrder.get())
+            selected_recipe = self.recipe_list.get()
+            if selected_recipe != "":
+                if order_amount > 0:
+                    recipe_data = Control.get_recipe_materials_list(
+                        selected_recipe
                     )
                     self.calculate_required_materials(
-                        selected_recipe, float(self.entryFieldOrder.get())
+                        recipe_data, order_amount
                     )
                     self.fill_storage_data_box()
                     self.cancel_order()
@@ -165,6 +167,8 @@ class OrderViews:
         ir išsiunčia laišką su užsakymu jei send mail laukas yra YES
         :param storage_remaining: priima sandėlio likutį
         """
+        order_amount = float(self.entryFieldOrder.get())
+        selected_recipe = self.recipe_list.get()
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         num = 0
         if min(storage_remaining) < 0:
@@ -186,17 +190,17 @@ class OrderViews:
                 f"it will take {num} working hours to get enough material"
             )
             write_order_to_txt(
-                f"{date_now} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg could not "
+                f"{date_now} - Order of {selected_recipe} - {order_amount}kg could not "
                 f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
             )
         else:
             write_order_to_txt(
-                f"{date_now} - Order of {self.recipe_list.get()} - {self.entryFieldOrder.get()}kg completed.\n"
+                f"{date_now} - Order of {selected_recipe} - {order_amount}kg completed.\n"
             )
             Control.update_storage_after_order(storage_remaining)
-            Control.add_order(self.recipe_list.get(), self.entryFieldOrder.get())
+            Control.add_order(selected_recipe, order_amount)
             self.send_order_mail(
-                date_now, self.recipe_list.get(), self.entryFieldOrder.get()
+                date_now, selected_recipe, order_amount
             )
 
     def send_order_mail(self, date, recipe, amount):

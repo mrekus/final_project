@@ -13,11 +13,7 @@ class RecipiesViews:
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
         for i, col_heading in enumerate(
-            [
-                "ID",
-                "Recipe",
-                *headings
-            ],
+            ["ID", "Recipe", *headings],
             1,
         ):
             self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=90)
@@ -97,8 +93,10 @@ class RecipiesViews:
         Prideda naują receptą į DB jei jis turi pavadinimą, ir medžiagų dalių suma yra 1,
         klaidos atveju meta ERROR
         """
-        if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
-            i.lower().replace(" ", "") for i in Control.check_for_duplicates_recipe()
+        entered_name = self.entryFieldEdit1.get().strip()
+        entered_name = re.sub(" +", " ", entered_name)
+        if entered_name.lower() not in [
+            i.lower() for i in Control.check_for_duplicates_recipe()
         ]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
@@ -167,9 +165,11 @@ class RecipiesViews:
         """
         selected_field = Control.session.query(Control.Recipe).get(self.idForEdit.get())
         selected_field = selected_field.name
-        if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
-                i.lower().replace(" ", "")
+        entered_name = self.entryFieldEdit1.get().strip()
+        entered_name = re.sub(" +", " ", entered_name)
+        if any(i.isalpha() or i.isdigit() for i in entered_name):
+            if entered_name.lower() not in [
+                i.lower()
                 for i in Control.check_for_duplicates_recipe()
                 if i != selected_field
             ]:

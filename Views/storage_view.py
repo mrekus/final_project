@@ -15,7 +15,9 @@ class StorageViews:
             self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
         for i in Control.get_storage_data():
-            self.storageTable.insert("", "end", values=(i.id, i.materials.name, i.amount))
+            self.storageTable.insert(
+                "", "end", values=(i.id, i.materials.name, i.amount)
+            )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_storage_get_values, text="Edit")
 
@@ -58,21 +60,19 @@ class StorageViews:
             self.idForEdit.get()
         )
         selected_field = selected_field.name
-        if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
-            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
-                i.lower().replace(" ", "")
-                for i in Control.check_for_duplicates_storage()
+        entered_name = self.entryFieldEdit1.get().strip()
+        entered_name = re.sub(" +", " ", entered_name)
+        entered_amount = float(self.entryFieldEdit2.get())
+        if any(i.isalpha() or i.isdigit() for i in entered_name):
+            if entered_name.lower() not in [
+                i.lower()
+                for i in Control.check_for_duplicates_materials()
                 if i != selected_field
             ]:
                 try:
-                    if float(self.entryFieldEdit2.get()) > 0:
-                        Control.update_storage(
-                            self.idForEdit.get(),
-                            self.entryFieldEdit2.get()
-                        )
-                        Control.update_material(
-                            self.idForEdit.get(), self.entryFieldEdit1.get()
-                        )
+                    if entered_amount > 0:
+                        Control.update_storage(self.idForEdit.get(), entered_amount)
+                        Control.update_material(self.idForEdit.get(), entered_name)
                         self.fill_storage_data_box()
                     else:
                         logging.error(
