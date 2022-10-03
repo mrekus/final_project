@@ -49,15 +49,11 @@ class ProcessViews:
         try:
             self.edit_record_process()
             selection = self.processTable.item(self.processTable.focus())
-            record = str(selection).replace("]", "[")
-            record = record.split("[")
-            record = record[1]
-            self.idForEdit.set(int(record[0]))
-            record = record.replace("'", "")
-            record = record.split(",")
-            self.entryFieldEdit1.insert(0, record[1][1::])
-            self.entryFieldEdit2.insert(0, record[2][1::])
-            self.entryFieldEdit3.insert(0, record[3][1::])
+            selection = selection["values"]
+            self.idForEdit.set(selection[0])
+            self.entryFieldEdit1.insert(0, selection[1])
+            self.entryFieldEdit2.insert(0, selection[2])
+            self.entryFieldEdit3.insert(0, selection[3])
         except IndexError:
             logging.warning("No record selected when trying to edit process")
             self.fill_process_data_box()
@@ -71,7 +67,7 @@ class ProcessViews:
             self.idForEdit.get()
         )
         selected_field_name = selected_field.name
-        selected_field_material = selected_field.produced_material
+        selected_field_material = selected_field.materials.name
         if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
             if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
                 i.lower().replace(" ", "")
@@ -80,7 +76,7 @@ class ProcessViews:
             ]:
                 if self.entryFieldEdit2.get().lower().replace(" ", "") not in [
                     i.lower().replace(" ", "")
-                    for i in Control.check_for_duplicates_storage()
+                    for i in Control.check_for_duplicates_materials()
                     if i != selected_field_material
                 ]:
                     try:
@@ -109,7 +105,7 @@ class ProcessViews:
                         "Entered a duplicate material name when editing process record"
                     )
                     ErrorWindow(
-                        "Process record with that material name already exists!"
+                        "Material with that name already exists!"
                     )
             else:
                 logging.error("Entered a duplicate name when editing process record")

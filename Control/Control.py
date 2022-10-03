@@ -127,6 +127,20 @@ def update_storage(update_id, amount):
     session.commit()
 
 
+def update_material(update_id, name, price=False):
+    """
+    Atnaujiną proceso įrašą pagal ID
+    :param update_id: norimo įrašo ID
+    :param name: įrašo pavadinimas
+    :param price: kaina
+    """
+    update_object = session.query(Materials).get(update_id)
+    update_object.name = name
+    if price:
+        update_object.price = price
+    session.commit()
+
+
 def check_for_duplicates_process():
     """
     Sukuria process pavadinimų sąrašą
@@ -149,26 +163,15 @@ def check_for_duplicates_recipe():
     return recipe_list
 
 
-def check_for_duplicates_storage():
+def check_for_duplicates_materials():
     """
-    Sukuria storage pavadinimų sąrašą
+    Sukuria materials pavadinimų sąrašą
     :return: atiduoda storage pavadinimų sąrašą
     """
-    storage_list = []
-    for i in session.query(Storage).all():
-        storage_list.append(i.materials.name)
-    return storage_list
-
-
-def update_material(update_id, name):
-    """
-    Atnaujina storage DB material pavadinimą pagal process material pavadinimą
-    :param update_id: atnaujinamo įrašo ID
-    :param name: naujas pavadinimas
-    """
-    update_object = session.query(Materials).get(update_id)
-    update_object.name = name
-    session.commit()
+    materials_list = []
+    for i in session.query(Materials).all():
+        materials_list.append(i.name)
+    return materials_list
 
 
 def get_material_price_list():

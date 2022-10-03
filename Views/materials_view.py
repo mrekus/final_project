@@ -26,7 +26,7 @@ class MaterialsViews:
                 values=(i.id, i.name, round((i.price * rate), 2))
             )
         self.buttonAddRecipe.grid_forget()
-        self.buttonEdit.config(state=tk.DISABLED, bg="gray")
+        self.buttonEdit.config(command=self.edit_material_get_values, text="Edit")
 
     def refresh_materials(self, event):
         """
@@ -43,3 +43,79 @@ class MaterialsViews:
                 "end",
                 values=(i.id, i.name, round((i.price * rate), 2))
             )
+
+    def edit_record_materials(self):
+        """
+        Sukuria visus Materials edit langus
+        """
+        self.labelEdit1.grid(row=1, column=7, sticky="W")
+        self.labelEdit2.grid(row=2, column=7, sticky="W")
+        self.labelEdit1.config(text="Name: ")
+        self.labelEdit2.config(text="Price: ")
+        self.buttonEdit.config(text="Save changes", command=self.edit_material)
+        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
+        self.entryFieldEdit1.grid(row=1, column=8)
+        self.entryFieldEdit2.grid(row=2, column=8)
+        self.buttonCancelEditing.grid(row=3, column=6)
+        self.buttonCancelEditing.config(command=self.cancel_editing_material)
+        self.entryFieldEdit1.focus()
+
+    def edit_material_get_values(self):
+        """
+        Paima pasirinkto Materials įrašo vertes redagavimui
+        """
+        try:
+            self.edit_record_materials()
+            selection = self.materialsTable.item(self.materialsTable.focus())
+            selection = selection["values"]
+            self.idForEdit.set(selection[0])
+            self.entryFieldEdit1.insert(0, selection[1])
+            self.entryFieldEdit2.insert(0, selection[2])
+        except IndexError:
+            logging.warning("No record selected when trying to edit material")
+            self.fill_materials_data_box()
+
+    def cancel_editing_material(self):
+        """
+        Atšaukia Materials įrašo redagavimą
+        """
+        self.cancel_editing()
+        self.buttonEdit.config(text="Edit", command=self.edit_material_get_values)
+
+    def edit_material(self):
+        """
+        Tikrina redaguojamą Materials įrašą ar jis turi pavadinimą, tada ar jis nesikartoja
+        ir ar Price reikšmės didesnės už 0, jei taip, redaguotą įrašą išsaugo, jei ne meta ERROR.
+        """
+        selected_field = Control.session.query(Control.Materials).get(
+            self.idForEdit.get()
+        )
+        selected_field = selected_field.name
+        if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
+            if self.entryFieldEdit1.get().lower().replace(" ", "") not in [
+                i.lower().replace(" ", "")
+                for i in Control.check_for_duplicates_materials()
+                if i != selected_field
+            ]:
+                try:
+                    if float(self.entryFieldEdit2.get()) > 0:
+                        Control.update_material(
+                            self.idForEdit.get(), self.entryFieldEdit1.get(), self.entryFieldEdit2.get()
+                        )
+                        self.fill_materials_data_box()
+                    else:
+                        logging.error(
+                            "Material price entered was less than 0 when trying to edit a material"
+                        )
+                        ErrorWindow("Price must be more than 0!")
+                except ValueError:
+                    logging.error(
+                        "Wrong material values input when trying to edit a material"
+                    )
+                    ErrorWindow("Price must be a number!")
+            else:
+                logging.error("Entered a duplicate name when editing material record")
+                ErrorWindow("Material record with that name already exists!")
+        else:
+            logging.error("No name entered when trying to edit a material record")
+            ErrorWindow("No name entered!")

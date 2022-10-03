@@ -8,7 +8,7 @@ class RecipiesViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        headings = Control.check_for_duplicates_storage()
+        headings = Control.check_for_duplicates_materials()
         self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
@@ -44,20 +44,30 @@ class RecipiesViews:
         """
         Sukuria visus Recipies edit langus
         """
-        self.edit_record_process()
+        materials = Control.check_for_duplicates_materials()
         self.buttonEdit.config(text="Save changes", command=self.edit_recipe)
+        self.labelEdit1.grid(row=1, column=7, sticky="W")
+        self.labelEdit2.grid(row=2, column=7, sticky="W")
+        self.labelEdit3.grid(row=3, column=7, sticky="W")
         self.labelEdit4.grid(row=1, column=9, sticky="W")
         self.labelEdit5.grid(row=2, column=9, sticky="W")
         self.labelEdit6.grid(row=3, column=9, sticky="W")
-        self.labelEdit2.config(text="Material 1: ")
-        self.labelEdit3.config(text="Material 2: ")
-        self.labelEdit4.config(text="Material 3: ")
-        self.labelEdit5.config(text="Material 4: ")
-        self.labelEdit6.config(text="Material 5: ")
+        self.buttonCancelEditing.grid(row=3, column=6)
+        self.labelEdit1.config(text="Name: ")
+        self.labelEdit2.config(text=f"{materials[0]}: ")
+        self.labelEdit3.config(text=f"{materials[1]}: ")
+        self.labelEdit4.config(text=f"{materials[2]}: ")
+        self.labelEdit5.config(text=f"{materials[3]}: ")
+        self.labelEdit6.config(text=f"{materials[4]}: ")
+        self.entryFieldEdit1.grid(row=1, column=8)
+        self.entryFieldEdit2.grid(row=2, column=8)
+        self.entryFieldEdit3.grid(row=3, column=8)
         self.entryFieldEdit4.grid(row=1, column=10)
         self.entryFieldEdit5.grid(row=2, column=10)
         self.entryFieldEdit6.grid(row=3, column=10)
         self.buttonCancelEditing.config(command=self.cancel_editing_recipies)
+        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
+        self.entryFieldEdit1.focus()
 
     def delete_record(self):
         """
@@ -65,11 +75,8 @@ class RecipiesViews:
         """
         try:
             selection = self.recipeTable.item(self.recipeTable.focus())
-            deletion_id = str(selection).replace("]", "[")
-            deletion_id = deletion_id.replace(" ", "")
-            deletion_id = deletion_id.split("[")
-            deletion_id = deletion_id[1]
-            deletion_id = int(deletion_id[0])
+            selection = selection["values"]
+            deletion_id = selection[0]
             Control.delete_recipe_record(deletion_id)
             self.fill_recipe_data_box()
             self.refresh_recipe_list()
@@ -140,18 +147,14 @@ class RecipiesViews:
         try:
             self.edit_record_recipies()
             selection = self.recipeTable.item(self.recipeTable.focus())
-            record = str(selection).replace("]", "[")
-            record = record.split("[")
-            record = record[1]
-            self.idForEdit.set(int(record[0]))
-            record = record.replace("'", "")
-            record = record.split(",")
-            self.entryFieldEdit1.insert(0, record[1][1::])
-            self.entryFieldEdit2.insert(0, record[2][1::])
-            self.entryFieldEdit3.insert(0, record[3][1::])
-            self.entryFieldEdit4.insert(0, record[4][1::])
-            self.entryFieldEdit5.insert(0, record[5][1::])
-            self.entryFieldEdit6.insert(0, record[6][1::])
+            selection = selection["values"]
+            self.idForEdit.set(selection[0])
+            self.entryFieldEdit1.insert(0, selection[1])
+            self.entryFieldEdit2.insert(0, selection[2])
+            self.entryFieldEdit3.insert(0, selection[3])
+            self.entryFieldEdit4.insert(0, selection[4])
+            self.entryFieldEdit5.insert(0, selection[5])
+            self.entryFieldEdit6.insert(0, selection[6])
         except IndexError:
             logging.warning("No record selected when trying to edit a recipe")
             self.fill_recipe_data_box()

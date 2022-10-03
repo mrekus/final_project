@@ -28,7 +28,7 @@ class StorageViews:
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit1.config(text="Name: ")
-        self.labelEdit2.config(text="Ammount: ")
+        self.labelEdit2.config(text="Amount: ")
         self.buttonCancelEditing.config(command=self.cancel_editing_storage)
         self.labelEdit3.grid_forget()
         self.entryFieldEdit3.grid_forget()
@@ -40,14 +40,10 @@ class StorageViews:
         try:
             self.edit_record_storage()
             selection = self.storageTable.item(self.storageTable.focus())
-            record = str(selection).replace("]", "[")
-            record = record.split("[")
-            record = record[1]
-            self.idForEdit.set(int(record[0]))
-            record = record.replace("'", "")
-            record = record.split(",")
-            self.entryFieldEdit1.insert(0, record[1][1::])
-            self.entryFieldEdit2.insert(0, record[2][1::])
+            selection = selection["values"]
+            self.idForEdit.set(selection[0])
+            self.entryFieldEdit1.insert(0, selection[1])
+            self.entryFieldEdit2.insert(0, selection[2])
         except IndexError:
             logging.warning("No record selected when trying to edit a storage record")
             self.fill_storage_data_box()

@@ -303,3 +303,4 @@ class OrderViews:
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
         )
+        self.buttonEdit.config(state=tk.DISABLED, bg="gray", text="Edit")
