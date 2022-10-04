@@ -76,38 +76,42 @@ class ProcessViews:
                 for i in control.check_for_duplicates_process()
                 if i != selected_field_name
             ]:
-                if entered_material.lower() not in [
-                    i.lower()
-                    for i in control.check_for_duplicates_materials()
-                    if i != selected_field_material
-                ]:
-                    try:
-                        entered_efficiency = float(self.entryFieldEdit3.get())
-                        if entered_efficiency > 0:
-                            control.update_process(
-                                self.idForEdit.get(),
-                                entered_process,
-                                entered_efficiency,
-                            )
-                            control.update_material(
-                                self.idForEdit.get(), entered_material
-                            )
-                            self.fill_process_data_box()
-                        else:
+                if any(i.isalpha() or i.isdigit() for i in entered_material):
+                    if entered_material.lower() not in [
+                        i.lower()
+                        for i in control.check_for_duplicates_materials()
+                        if i != selected_field_material
+                    ]:
+                        try:
+                            entered_efficiency = float(self.entryFieldEdit3.get())
+                            if entered_efficiency > 0:
+                                control.update_process(
+                                    self.idForEdit.get(),
+                                    entered_process,
+                                    entered_efficiency,
+                                )
+                                control.update_material(
+                                    self.idForEdit.get(), entered_material
+                                )
+                                self.fill_process_data_box()
+                            else:
+                                logging.error(
+                                    "Efficiency input was less than 0 when trying to edit a process"
+                                )
+                                ErrorWindow("Efficiency must be more than 0!")
+                        except ValueError:
                             logging.error(
-                                "Efficiency input was less than 0 when trying to edit a process"
+                                "Efficiency value was not a number when trying to edit a process"
                             )
-                            ErrorWindow("Efficiency must be more than 0!")
-                    except ValueError:
+                            ErrorWindow("Efficiency must be a number!")
+                    else:
                         logging.error(
-                            "Efficiency value was not a number when trying to edit a process"
+                            "Entered a duplicate material name when editing process record"
                         )
-                        ErrorWindow("Efficiency must be a number!")
+                        ErrorWindow("Material with that name already exists!")
                 else:
-                    logging.error(
-                        "Entered a duplicate material name when editing process record"
-                    )
-                    ErrorWindow("Material with that name already exists!")
+                    logging.error("No material name entered when editing process record")
+                    ErrorWindow("No material name entered!")
             else:
                 logging.error("Entered a duplicate name when editing process record")
                 ErrorWindow("Process record with that name already exists!")

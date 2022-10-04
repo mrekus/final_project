@@ -426,6 +426,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonAddRecipe.grid_forget()
 
     def scroll_down_1(self):
+        """
+        Scrollina menu žemyn iš pradinės būsenos
+        """
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
@@ -433,6 +436,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonScrollUp.config(command=self.scroll_up_1, state=tk.NORMAL, bg="white")
 
     def scroll_down_2(self):
+        """
+        Scrollina menu žemyn iš antros nuo viršaus būsenos
+        """
         self.buttonMenu1.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu2.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonMenu3.config(text="Orders", command=self.fill_orders_data_box)
@@ -440,6 +446,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonScrollUp.config(command=self.scroll_up_2)
 
     def scroll_up_1(self):
+        """
+        Scrollina menu aukštyn iš antros nuo apačios būsenos
+        """
         self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
@@ -447,6 +456,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonScrollDown.config(command=self.scroll_down_1)
 
     def scroll_up_2(self):
+        """
+        Scrollina menu aukštyn iš žemutinės būsenos
+        """
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
