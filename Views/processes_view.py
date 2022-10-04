@@ -13,9 +13,7 @@ class ProcessViews:
             self.processTable.delete(i)
         self.processTable.column(f"# {1}", anchor=tk.CENTER, width=40)
         self.processTable.heading(f"# {1}", text="ID")
-        for i, col_heading in enumerate(
-            ["Process", "Material", "Efficiency kg/h"], 2
-        ):
+        for i, col_heading in enumerate(["Process", "Material", "Efficiency kg/h"], 2):
             self.processTable.column(f"# {i}", anchor=tk.CENTER, width=160)
             self.processTable.heading(f"# {i}", text=col_heading)
         for i in control.get_table_data("Process"):

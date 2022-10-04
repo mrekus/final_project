@@ -56,11 +56,12 @@ class OrderViews:
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
         )
-        my_scrollbar = tk.Scrollbar(self.ordersTable, orient=tk.VERTICAL, command=self.ordersTable.yview)
+        my_scrollbar = tk.Scrollbar(
+            self.ordersTable, orient=tk.VERTICAL, command=self.ordersTable.yview
+        )
         my_scrollbar.place(x=705, y=27, height=175)
 
         self.ordersTable.configure(yscrollcommand=my_scrollbar.set)
-        # self.ordersTable.bind('<Configure>', lambda e: self.ordersTable.configure(scrollregion=self.ordersTable.bbox("all")))
 
     def refresh_orders(self):
         """
@@ -260,12 +261,16 @@ class OrderViews:
         Filtruoja Orders pagal datų ruožą
         :param event aktyvuojama datų filtrų combobox pasikeitimu
         """
-        date_from = f"{self.year_list_from.get()}" \
-                    f"-{self.month_list_from.get()}" \
-                    f"-{self.day_list_from.get()} 00:00:01"
-        date_to = f"{self.year_list_to.get()}" \
-                  f"-{self.month_list_to.get()}" \
-                  f"-{self.day_list_to.get()} 23:59:59"
+        date_from = (
+            f"{self.year_list_from.get()}"
+            f"-{self.month_list_from.get()}"
+            f"-{self.day_list_from.get()} 00:00:01"
+        )
+        date_to = (
+            f"{self.year_list_to.get()}"
+            f"-{self.month_list_to.get()}"
+            f"-{self.day_list_to.get()} 23:59:59"
+        )
         try:
             date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
             date_to = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")

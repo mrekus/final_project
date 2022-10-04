@@ -241,9 +241,7 @@ def days_to_complete_order(storage_remainder):
         efficiency_list = []
         for i in efficiency:
             efficiency_list.append(i[0])
-        check_remainder = [
-            i + j for (i, j) in zip(efficiency_list, storage_remainder)
-        ]
+        check_remainder = [i + j for (i, j) in zip(efficiency_list, storage_remainder)]
         while min(check_remainder) < 0:
             check_remainder = [
                 i + j for (i, j) in zip(efficiency_list, check_remainder)
