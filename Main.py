@@ -89,7 +89,7 @@ class MyEntry(Entry):
 
     def __init__(self, parent=None, **kwargs):
         super().__init__(parent, **kwargs)
-        self.config(font=("courier", 14, "bold"), width=15)
+        self.config(font=("courier", 14, "bold"), width=14)
 
 
 class MyTreeview(ttk.Treeview):

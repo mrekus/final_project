@@ -12,11 +12,15 @@ class RecipiesViews:
         self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
+        self.recipeTable.column(f"# {1}", anchor=tk.CENTER, width=40)
+        self.recipeTable.heading(f"# {1}", text="ID")
+        self.recipeTable.column(f"# {2}", anchor=tk.CENTER, width=130)
+        self.recipeTable.heading(f"# {2}", text="Recipe")
         for i, col_heading in enumerate(
-            ["ID", "Recipe", *headings],
-            1,
+            [*headings],
+            3,
         ):
-            self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=90)
+            self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=83)
             self.recipeTable.heading(f"# {i}", text=col_heading)
         for i in control.get_table_data("Recipe"):
             self.recipeTable.insert(

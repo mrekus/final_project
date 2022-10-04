@@ -9,7 +9,7 @@ class ErrorWindow:
 
     def __init__(self, text):
         self.error_window = tkinter.Toplevel()
-        self.error_window.geometry("+900+500")
+        self.error_window.geometry("+800+500")
         self.error_window.title("Error")
         self.frame = tkinter.Frame(self.error_window)
         self.error_text = tkinter.Label(

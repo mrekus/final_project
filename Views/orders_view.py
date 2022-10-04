@@ -20,18 +20,19 @@ class OrderViews:
         self.ordersTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
+        self.ordersTable.column(f"# {1}", anchor=tk.CENTER, width=40)
+        self.ordersTable.heading(f"# {1}", text="ID")
         for i, col_heading in enumerate(
             [
-                "ID",
                 "Date",
                 "Recipe",
                 "Amount, kg",
                 "Manufacturing Cost",
                 "Selling price",
             ],
-            1,
+            2,
         ):
-            self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
+            self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=136)
             self.ordersTable.heading(f"# {i}", text=col_heading)
         self.currency_list.bind("<<ComboboxSelected>>", self.refresh_orders_event)
         chosen_currency = self.currency_list.get()
@@ -55,6 +56,11 @@ class OrderViews:
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
         )
+        my_scrollbar = tk.Scrollbar(self.ordersTable, orient=tk.VERTICAL, command=self.ordersTable.yview)
+        my_scrollbar.place(x=705, y=27, height=175)
+
+        self.ordersTable.configure(yscrollcommand=my_scrollbar.set)
+        # self.ordersTable.bind('<Configure>', lambda e: self.ordersTable.configure(scrollregion=self.ordersTable.bbox("all")))
 
     def refresh_orders(self):
         """

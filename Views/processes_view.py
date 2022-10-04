@@ -11,10 +11,12 @@ class ProcessViews:
         self.processTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.processTable.get_children():
             self.processTable.delete(i)
+        self.processTable.column(f"# {1}", anchor=tk.CENTER, width=40)
+        self.processTable.heading(f"# {1}", text="ID")
         for i, col_heading in enumerate(
-            ["ID", "Process", "Material", "Efficiency kg/h"], 1
+            ["Process", "Material", "Efficiency kg/h"], 2
         ):
-            self.processTable.column(f"# {i}", anchor=tk.CENTER, width=90)
+            self.processTable.column(f"# {i}", anchor=tk.CENTER, width=160)
             self.processTable.heading(f"# {i}", text=col_heading)
         for i in control.get_table_data("Process"):
             self.processTable.insert(

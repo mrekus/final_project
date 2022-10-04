@@ -11,8 +11,10 @@ class StorageViews:
         self.storageTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.storageTable.get_children():
             self.storageTable.delete(i)
-        for i, col_heading in enumerate(["ID", "Name", "Amount, kg"], 1):
-            self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
+        self.storageTable.column(f"# {1}", anchor=tk.CENTER, width=40)
+        self.storageTable.heading(f"# {1}", text="ID")
+        for i, col_heading in enumerate(["Name", "Amount, kg"], 2):
+            self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.storageTable.heading(f"# {i}", text=col_heading)
         for i in control.get_table_data("Storage"):
             self.storageTable.insert(
