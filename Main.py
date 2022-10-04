@@ -1,12 +1,12 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 import logging
 from Views import ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
-from API import get_rates, PAIRS
+import API
 from datetime import datetime
 
 
-class MyButton(Button):
+class MyButton(tk.Button):
     """
     Perrašo default Button klasę
     """
@@ -25,7 +25,7 @@ class MyButton(Button):
         )
 
 
-class MyOrderButton(Button):
+class MyOrderButton(tk.Button):
     """
     Perrašo default Button klasę
     """
@@ -35,7 +35,7 @@ class MyOrderButton(Button):
         self.config(
             height=3,
             width=20,
-            anchor=CENTER,
+            anchor=tk.CENTER,
             fg="black",
             font=("courier", 14, "bold"),
             relief="groove",
@@ -44,7 +44,7 @@ class MyOrderButton(Button):
         )
 
 
-class MyScrollButton(Button):
+class MyScrollButton(tk.Button):
     """
     Perrašo default Button klasę
     """
@@ -62,7 +62,7 @@ class MyScrollButton(Button):
         )
 
 
-class MyLabel(Label):
+class MyLabel(tk.Label):
     """
     Perrašo default Label klasę
     """
@@ -82,7 +82,7 @@ class MyCombobox(ttk.Combobox):
         self.config(width=10, font=("courier", 15, "bold"), state="readonly")
 
 
-class MyEntry(Entry):
+class MyEntry(tk.Entry):
     """
     Perrašo default Entry klasę
     """
@@ -128,29 +128,29 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.hex_step = 400
         for _ in range(40):
             self.color_hex = str(224499 + self.hex_step)
-            Frame(master, width=100, height=550, bg="#" + self.color_hex).place(
+            tk.Frame(master, width=100, height=550, bg="#" + self.color_hex).place(
                 x=self.gradient_step, y=0
             )
             self.gradient_step += 100
             self.hex_step += 300
 
-        self.idForEdit = IntVar()
+        self.idForEdit = tk.IntVar()
 
-        self.rates = get_rates()
+        self.rates = API.get_rates()
 
-        self.topFrame = Frame(master)
-        self.leftFrame = Frame(master)
+        self.topFrame = tk.Frame(master)
+        self.leftFrame = tk.Frame(master)
 
-        self.menu = Menu(master)
+        self.menu = tk.Menu(master)
         self.master.config(menu=self.menu)
-        self.submenu = Menu(self.menu, tearoff=False)
+        self.submenu = tk.Menu(self.menu, tearoff=False)
 
-        self.buttonAddOrder = Button(
+        self.buttonAddOrder = tk.Button(
             self.master,
             text="Add an Order",
             height=3,
             width=20,
-            anchor=CENTER,
+            anchor=tk.CENTER,
             bg="white",
             fg="black",
             font=("courier", 20, "bold"),
@@ -169,7 +169,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             self.leftFrame, text="Storage", command=self.fill_storage_data_box
         )
         self.buttonEdit = MyButton(self.leftFrame, text="Edit")
-        self.buttonDelete = Button(
+        self.buttonDelete = tk.Button(
             self.leftFrame,
             text="Delete",
             bg="red",
@@ -205,7 +205,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             bg="gray",
             text="↑↑↑",
             command="",
-            state=DISABLED,
+            state=tk.DISABLED,
         )
         self.buttonScrollDown = MyScrollButton(
             self.master,
@@ -219,19 +219,19 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelEdit4 = MyLabel(self.leftFrame)
         self.labelEdit5 = MyLabel(self.leftFrame)
         self.labelEdit6 = MyLabel(self.leftFrame)
-        self.labelOrder = Label(
+        self.labelOrder = tk.Label(
             self.master, text="Amount in kg:", font=("courier", 25, "bold"), width=15
         )
-        self.labelRecipe = Label(
+        self.labelRecipe = tk.Label(
             self.master, text="Recipe:", font=("courier", 25, "bold"), width=13
         )
-        self.labelFilterFrom = Label(
+        self.labelFilterFrom = tk.Label(
             self.master, text="From:", font=("courier", 18, "bold"), width=13
         )
-        self.labelFilterTo = Label(
+        self.labelFilterTo = tk.Label(
             self.master, text="To:", font=("courier", 18, "bold"), width=13
         )
-        self.labelMailOrder = Label(
+        self.labelMailOrder = tk.Label(
             self.master, text="Mail orders:", font=("courier", 24, "bold"), width=13
         )
 
@@ -241,7 +241,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.entryFieldEdit4 = MyEntry(self.leftFrame)
         self.entryFieldEdit5 = MyEntry(self.leftFrame)
         self.entryFieldEdit6 = MyEntry(self.leftFrame)
-        self.entryFieldOrder = Entry(
+        self.entryFieldOrder = tk.Entry(
             self.master, font=("courier", 25, "bold"), width=15
         )
 
@@ -253,7 +253,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             width=6,
             font=("courier", 25, "bold"),
             state="readonly",
-            values=PAIRS,
+            values=API.PAIRS,
         )
         self.currency_list.set("EUR")
         self.mail_list = ttk.Combobox(
@@ -338,8 +338,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.grid(row=1, column=1)
         self.buttonMenu2.grid(row=2, column=1)
         self.buttonMenu3.grid(row=3, column=1)
-        self.topFrame.pack(side=TOP, expand=True)
-        self.leftFrame.pack(side=LEFT)
+        self.topFrame.pack(side=tk.TOP, expand=True)
+        self.leftFrame.pack(side=tk.LEFT)
 
     def default_button_layouts(self):
         """
@@ -347,8 +347,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         """
         self.buttonEdit.grid(row=1, column=6)
         self.buttonDelete.grid(row=2, column=6)
-        self.buttonDelete.config(state=DISABLED, bg="gray")
-        self.buttonEdit.config(state=NORMAL, bg="white", text="Edit")
+        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
+        self.buttonEdit.config(state=tk.NORMAL, bg="white", text="Edit")
         self.cancel_editing()
 
     def cancel_editing(self):
@@ -378,7 +378,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonCancelEditing.grid_forget()
         self.buttonFilterOrders.grid_forget()
         self.reset_entry_fields()
-        self.buttonDelete.config(state=DISABLED, bg="gray")
+        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
 
     def forget_tables(self):
         """Pašalina visas duomenų lenteles"""
@@ -392,12 +392,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         """
         Išvalo visus Edit įrašų laukus
         """
-        self.entryFieldEdit1.delete(0, END)
-        self.entryFieldEdit2.delete(0, END)
-        self.entryFieldEdit3.delete(0, END)
-        self.entryFieldEdit4.delete(0, END)
-        self.entryFieldEdit5.delete(0, END)
-        self.entryFieldEdit6.delete(0, END)
+        self.entryFieldEdit1.delete(0, tk.END)
+        self.entryFieldEdit2.delete(0, tk.END)
+        self.entryFieldEdit3.delete(0, tk.END)
+        self.entryFieldEdit4.delete(0, tk.END)
+        self.entryFieldEdit5.delete(0, tk.END)
+        self.entryFieldEdit6.delete(0, tk.END)
         self.year_list_from.set("2022")
         self.month_list_from.set("01")
         self.day_list_from.set("1")
@@ -416,9 +416,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
-        self.buttonScrollUp.config(state=DISABLED, bg="gray")
+        self.buttonScrollUp.config(state=tk.DISABLED, bg="gray")
         self.buttonScrollDown.config(
-            command=self.scroll_down_1, state=NORMAL, bg="white"
+            command=self.scroll_down_1, state=tk.NORMAL, bg="white"
         )
         self.buttonEdit.grid_forget()
         self.buttonDelete.grid_forget()
@@ -430,34 +430,34 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonScrollDown.config(command=self.scroll_down_2)
-        self.buttonScrollUp.config(command=self.scroll_up_1, state=NORMAL, bg="white")
+        self.buttonScrollUp.config(command=self.scroll_up_1, state=tk.NORMAL, bg="white")
 
     def scroll_down_2(self):
         self.buttonMenu1.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu2.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonMenu3.config(text="Orders", command=self.fill_orders_data_box)
-        self.buttonScrollDown.config(state=DISABLED, bg="gray")
+        self.buttonScrollDown.config(state=tk.DISABLED, bg="gray")
         self.buttonScrollUp.config(command=self.scroll_up_2)
 
     def scroll_up_1(self):
         self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
-        self.buttonScrollUp.config(state=DISABLED, bg="gray")
+        self.buttonScrollUp.config(state=tk.DISABLED, bg="gray")
         self.buttonScrollDown.config(command=self.scroll_down_1)
 
     def scroll_up_2(self):
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
-        self.buttonScrollUp.config(command=self.scroll_up_1, state=NORMAL, bg="white")
+        self.buttonScrollUp.config(command=self.scroll_up_1, state=tk.NORMAL, bg="white")
         self.buttonScrollDown.config(
-            command=self.scroll_down_2, state=NORMAL, bg="white"
+            command=self.scroll_down_2, state=tk.NORMAL, bg="white"
         )
 
 
 def main():
-    window = Tk()
+    window = tk.Tk()
     Main(window)
     window.geometry("1570x550+400+400")
     window.resizable(False, False)

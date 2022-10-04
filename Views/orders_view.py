@@ -1,5 +1,3 @@
-import tkinter
-
 from utils import *
 from datetime import datetime
 from Control import send_email
@@ -66,7 +64,6 @@ class OrderViews:
     def refresh_orders(self):
         """
         Atnaujina Orders lentelės įrašus
-        :param event: aktyvuojamas currency combobox pasikeitimu
         """
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
@@ -230,7 +227,7 @@ class OrderViews:
         self.buttonEdit.config(
             text="Send to Email",
             bg="#00A650",
-            state=tkinter.NORMAL,
+            state=tk.NORMAL,
             command=self.email_filtered,
         )
         self.buttonFilterOrders.config(text="Cancel", command=self.cancel_filtering)
@@ -299,8 +296,12 @@ class OrderViews:
         """
         Nusiunčia e-mail su nufiltruotais Orders laukais
         """
-        date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()}"
-        date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()}"
+        date_from = f"{self.year_list_from.get()}" \
+                    f"-{self.month_list_from.get()}" \
+                    f"-{self.day_list_from.get()}"
+        date_to = f"{self.year_list_to.get()}" \
+                  f"-{self.month_list_to.get()}" \
+                  f"-{self.day_list_to.get()}"
         subject = f"Orders from: {date_from} to {date_to}"
         text = ""
         for i in self.ordersTable.get_children():

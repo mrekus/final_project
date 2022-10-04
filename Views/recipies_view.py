@@ -77,7 +77,7 @@ class RecipiesViews:
             selection = self.recipeTable.item(self.recipeTable.focus())
             selection = selection["values"]
             deletion_id = selection[0]
-            Control.delete_recipe_record(deletion_id)
+            control.delete_recipe_record(deletion_id)
             self.fill_recipe_data_box()
             self.refresh_recipe_list()
         except IndexError:
