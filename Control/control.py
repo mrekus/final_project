@@ -206,7 +206,7 @@ def add_order(recipe_name, order_amount):
     :param order_amount užsakymo kiekis
     """
     recipe = session.query(Recipe).filter_by(name=recipe_name).one()
-    order_date = datetime.now().replace(second=0, microsecond=0)
+    order_date = datetime.now().replace(microsecond=0)
     recipe_id = recipe.id
     recipe_amount = float(order_amount)
     prices = get_material_price_list()

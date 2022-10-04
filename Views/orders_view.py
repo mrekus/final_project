@@ -33,7 +33,7 @@ class OrderViews:
         ):
             self.ordersTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.ordersTable.heading(f"# {i}", text=col_heading)
-        self.currency_list.bind("<<ComboboxSelected>>", self.refresh_orders)
+        self.currency_list.bind("<<ComboboxSelected>>", self.refresh_orders_event)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
         for i in control.get_table_data("Orders"):
@@ -56,7 +56,30 @@ class OrderViews:
             text="Filter", command=self.filter_orders_buttons
         )
 
-    def refresh_orders(self, event):
+    def refresh_orders(self):
+        """
+        Atnaujina Orders lentelės įrašus
+        :param event: aktyvuojamas currency combobox pasikeitimu
+        """
+        for i in self.ordersTable.get_children():
+            self.ordersTable.delete(i)
+        chosen_currency = self.currency_list.get()
+        rate = self.rates[chosen_currency]
+        for i in control.get_table_data("Orders"):
+            self.ordersTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.date,
+                    i.recipe_info.name,
+                    i.amount,
+                    round((i.man_cost * rate), 2),
+                    round((i.sell_price * rate), 2),
+                ),
+            )
+
+    def refresh_orders_event(self, event):
         """
         Atnaujina Orders lentelės įrašus
         :param event: aktyvuojamas currency combobox pasikeitimu
@@ -290,6 +313,7 @@ class OrderViews:
         Atšaukia Orders filtravimą ir atstato mygtukus
         """
         self.cancel_editing()
+        self.refresh_orders()
         self.buttonFilterOrders.grid(row=3, column=6)
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
