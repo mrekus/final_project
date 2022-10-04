@@ -1,4 +1,12 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, create_engine, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Float,
+    DateTime,
+    create_engine,
+    ForeignKey,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -116,8 +124,10 @@ class Orders(Base):
         self.sell_price = sell_price
 
     def __repr__(self):
-        return f"{self.id}. {self.date} - {self.recipe_info.name} Amount: {self.amount}kg " \
-               f"Manufacturing cost: {self.man_cost} Selling price: {self.sell_price}"
+        return (
+            f"{self.id}. {self.date} - {self.recipe_info.name} Amount: {self.amount}kg "
+            f"Manufacturing cost: {self.man_cost} Selling price: {self.sell_price}"
+        )
 
 
 Base.metadata.create_all(engine)

@@ -1,5 +1,5 @@
 import tkinter as tk
-from Control import Control
-from Views.ErrorWindow import ErrorWindow
+from Control import control
+from Views.error_window import ErrorWindow
 import logging
 import re

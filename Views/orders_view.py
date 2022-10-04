@@ -36,7 +36,7 @@ class OrderViews:
         self.currency_list.bind("<<ComboboxSelected>>", self.refresh_orders)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
-        for i in Control.get_orders_data():
+        for i in control.get_table_data("Orders"):
             self.ordersTable.insert(
                 "",
                 "end",
@@ -65,7 +65,7 @@ class OrderViews:
             self.ordersTable.delete(i)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
-        for i in Control.get_orders_data():
+        for i in control.get_table_data("Orders"):
             self.ordersTable.insert(
                 "",
                 "end",
@@ -83,7 +83,7 @@ class OrderViews:
         """
         Atjauniną receptų combobox sąrašą
         """
-        self.recipe_list.config(values=Control.check_for_duplicates_recipe())
+        self.recipe_list.config(values=control.check_for_duplicates_recipe())
         self.recipe_list.set("")
 
     def order_adding_widgets(self):
@@ -123,12 +123,8 @@ class OrderViews:
             selected_recipe = self.recipe_list.get()
             if selected_recipe != "":
                 if order_amount > 0:
-                    recipe_data = Control.get_recipe_materials_list(
-                        selected_recipe
-                    )
-                    self.calculate_required_materials(
-                        recipe_data, order_amount
-                    )
+                    recipe_data = control.get_recipe_materials_list(selected_recipe)
+                    self.calculate_required_materials(recipe_data, order_amount)
                     self.fill_storage_data_box()
                     self.cancel_order()
                 else:
@@ -153,7 +149,7 @@ class OrderViews:
         self.calculate_storage_remainder(required_materials)
 
     def calculate_storage_remainder(self, required_materials):
-        storage = Control.get_storage_amount()
+        storage = control.get_storage_amount()
         storage_list = []
         for i in storage:
             storage_list.append(i[0])
@@ -172,7 +168,7 @@ class OrderViews:
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         num = 0
         if min(storage_remaining) < 0:
-            efficiency = Control.get_process_efficiency()
+            efficiency = control.get_process_efficiency()
             efficiency_list = []
             for i in efficiency:
                 efficiency_list.append(i[0])
@@ -197,11 +193,9 @@ class OrderViews:
             write_order_to_txt(
                 f"{date_now} - Order of {selected_recipe} - {order_amount}kg completed.\n"
             )
-            Control.update_storage_after_order(storage_remaining)
-            Control.add_order(selected_recipe, order_amount)
-            self.send_order_mail(
-                date_now, selected_recipe, order_amount
-            )
+            control.update_storage_after_order(storage_remaining)
+            control.add_order(selected_recipe, order_amount)
+            self.send_order_mail(date_now, selected_recipe, order_amount)
 
     def send_order_mail(self, date, recipe, amount):
         subject = f"{date} - Order {recipe} - {amount}kg"
@@ -255,7 +249,7 @@ class OrderViews:
             date_to = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")
         except ValueError:
             pass
-        filtered = Control.search_order_by_date(date_from, date_to)
+        filtered = control.search_order_by_date(date_from, date_to)
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
         chosen_currency = self.currency_list.get()

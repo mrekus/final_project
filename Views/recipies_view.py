@@ -8,7 +8,7 @@ class RecipiesViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        headings = Control.check_for_duplicates_materials()
+        headings = control.check_for_duplicates_materials()
         self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
@@ -18,7 +18,7 @@ class RecipiesViews:
         ):
             self.recipeTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.recipeTable.heading(f"# {i}", text=col_heading)
-        for i in Control.get_recipe_data():
+        for i in control.get_table_data("Recipe"):
             self.recipeTable.insert(
                 "",
                 "end",
@@ -40,7 +40,7 @@ class RecipiesViews:
         """
         Sukuria visus Recipies edit langus
         """
-        materials = Control.check_for_duplicates_materials()
+        materials = control.check_for_duplicates_materials()
         self.buttonEdit.config(text="Save changes", command=self.edit_recipe)
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
@@ -96,7 +96,7 @@ class RecipiesViews:
         entered_name = self.entryFieldEdit1.get().strip()
         entered_name = re.sub(" +", " ", entered_name)
         if entered_name.lower() not in [
-            i.lower() for i in Control.check_for_duplicates_recipe()
+            i.lower() for i in control.check_for_duplicates_recipe()
         ]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
@@ -111,7 +111,7 @@ class RecipiesViews:
                         all(0 <= i <= 1 for i in check_values)
                         and round(sum(check_values), 3) == 1
                     ):
-                        Control.add_recipe(
+                        control.add_recipe(
                             self.entryFieldEdit1.get(),
                             self.entryFieldEdit2.get(),
                             self.entryFieldEdit3.get(),
@@ -163,14 +163,14 @@ class RecipiesViews:
          ir ar medžiagų dalių suma yra 1, ir prideda jį į DB. Klaidos atveju meta ERROR.
         :return:
         """
-        selected_field = Control.session.query(Control.Recipe).get(self.idForEdit.get())
+        selected_field = control.get_record_by_id("Recipe", self.idForEdit.get())
         selected_field = selected_field.name
         entered_name = self.entryFieldEdit1.get().strip()
         entered_name = re.sub(" +", " ", entered_name)
         if any(i.isalpha() or i.isdigit() for i in entered_name):
             if entered_name.lower() not in [
                 i.lower()
-                for i in Control.check_for_duplicates_recipe()
+                for i in control.check_for_duplicates_recipe()
                 if i != selected_field
             ]:
                 try:
@@ -185,7 +185,7 @@ class RecipiesViews:
                         all((0 <= i <= 1) for i in check_values)
                         and round(sum(check_values), 3) == 1
                     ):
-                        Control.update_recipe(
+                        control.update_recipe(
                             self.idForEdit.get(),
                             self.entryFieldEdit1.get(),
                             self.entryFieldEdit2.get(),

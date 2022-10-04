@@ -14,7 +14,7 @@ class StorageViews:
         for i, col_heading in enumerate(["ID", "Name", "Amount, kg"], 1):
             self.storageTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.storageTable.heading(f"# {i}", text=col_heading)
-        for i in Control.get_storage_data():
+        for i in control.get_table_data("Storage"):
             self.storageTable.insert(
                 "", "end", values=(i.id, i.materials.name, i.amount)
             )
@@ -56,23 +56,21 @@ class StorageViews:
         ir ar reikšmės didesnės už 0, jei taip, redaguotą įrašą išsaugo, jei ne meta ERROR.
         Taip pat pakeičia procesų DB material pavadinimą
         """
-        selected_field = Control.session.query(Control.Storage).get(
-            self.idForEdit.get()
-        )
-        selected_field = selected_field.name
+        selected_field = control.get_record_by_id("Storage", self.idForEdit.get())
+        selected_field = selected_field.materials.name
         entered_name = self.entryFieldEdit1.get().strip()
         entered_name = re.sub(" +", " ", entered_name)
-        entered_amount = float(self.entryFieldEdit2.get())
         if any(i.isalpha() or i.isdigit() for i in entered_name):
             if entered_name.lower() not in [
                 i.lower()
-                for i in Control.check_for_duplicates_materials()
+                for i in control.check_for_duplicates_materials()
                 if i != selected_field
             ]:
                 try:
+                    entered_amount = float(self.entryFieldEdit2.get())
                     if entered_amount > 0:
-                        Control.update_storage(self.idForEdit.get(), entered_amount)
-                        Control.update_material(self.idForEdit.get(), entered_name)
+                        control.update_storage(self.idForEdit.get(), entered_amount)
+                        control.update_material(self.idForEdit.get(), entered_name)
                         self.fill_storage_data_box()
                     else:
                         logging.error(
@@ -86,7 +84,7 @@ class StorageViews:
                     ErrorWindow("Amount must be a number!")
             else:
                 logging.error("Entered a duplicate name when editing storage record")
-                ErrorWindow("Storage record with that name already exists!")
+                ErrorWindow("Material with that name already exists!")
         else:
             logging.error("No name entered when trying to edit a storage record")
             ErrorWindow("No name entered!")

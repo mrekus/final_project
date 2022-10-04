@@ -15,6 +15,6 @@ def get_rates(endpoint=FOREX_ENDPOINT):
         forex_payload = {"from": "EUR", "to": i}
         r = requests.get(endpoint, params=forex_payload)
         res = json.loads(r.text)
-        rate = res['rates'][i]
+        rate = res["rates"][i]
         rates[i] = rate
     return rates

@@ -6,39 +6,20 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-def get_process_data():
+def get_table_data(table):
     """
-    :return: Grąžina visus process DB įrašus
+    Grąžina visus pasirinktos lentelės įrašus
+    :param table: lentelės pavadinimas
     """
-    return session.query(Process).all()
-
-
-def get_recipe_data():
-    """
-    :return: Grąžina visus recipies DB įrašus
-    """
-    return session.query(Recipe).all()
-
-
-def get_storage_data():
-    """
-    :return: grąžina visus storage DB įrašus
-    """
-    return session.query(Storage).all()
-
-
-def get_orders_data():
-    """
-    :return: grąžina visus orders DB įrašus
-    """
-    return session.query(Orders).all()
-
-
-def get_materials_data():
-    """
-    :return: grąžina visus materials DB įrašus
-    """
-    return session.query(Materials).all()
+    tables = {
+        "Orders": Orders,
+        "Materials": Materials,
+        "Storage": Storage,
+        "Recipe": Recipe,
+        "Process": Process,
+    }
+    table_data = session.query(tables[table]).all()
+    return table_data
 
 
 def get_storage_amount():
@@ -234,3 +215,20 @@ def add_order(recipe_name, order_amount):
     order = Orders(order_date, recipe_id, recipe_amount, man_cost, sell_price)
     session.add(order)
     session.commit()
+
+
+def get_record_by_id(table, record_id):
+    """
+    Grąžina įrašą iš pasirinktos lentelės su pasirinktu id
+    :param table: lentelės pavadinimas
+    :param record_id: įrašo id
+    """
+    tables = {
+        "Orders": Orders,
+        "Materials": Materials,
+        "Storage": Storage,
+        "Recipe": Recipe,
+        "Process": Process,
+    }
+    record = session.query(tables[table]).get(record_id)
+    return record

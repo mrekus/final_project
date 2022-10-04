@@ -8,22 +8,20 @@ class MaterialsViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        self.materialsTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
+        self.materialsTable.grid(
+            row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW
+        )
         for i in self.materialsTable.get_children():
             self.materialsTable.delete(i)
-        for i, col_heading in enumerate(
-            ["ID", "Name", "Price"], 1
-        ):
+        for i, col_heading in enumerate(["ID", "Name", "Price"], 1):
             self.materialsTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.materialsTable.heading(f"# {i}", text=col_heading)
-        self.currency_list.bind('<<ComboboxSelected>>', self.refresh_materials)
+        self.currency_list.bind("<<ComboboxSelected>>", self.refresh_materials)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
-        for i in Control.get_materials_data():
+        for i in control.get_table_data("Materials"):
             self.materialsTable.insert(
-                "",
-                "end",
-                values=(i.id, i.name, round((i.price * rate), 2))
+                "", "end", values=(i.id, i.name, round((i.price * rate), 2))
             )
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_material_get_values, text="Edit")
@@ -37,11 +35,9 @@ class MaterialsViews:
             self.materialsTable.delete(i)
         chosen_currency = self.currency_list.get()
         rate = self.rates[chosen_currency]
-        for i in Control.get_materials_data():
+        for i in control.get_table_data("Materials"):
             self.materialsTable.insert(
-                "",
-                "end",
-                values=(i.id, i.name, round((i.price * rate), 2))
+                "", "end", values=(i.id, i.name, round((i.price * rate), 2))
             )
 
     def edit_record_materials(self):
@@ -87,22 +83,20 @@ class MaterialsViews:
         Tikrina redaguojamą Materials įrašą ar jis turi pavadinimą, tada ar jis nesikartoja
         ir ar Price reikšmės didesnės už 0, jei taip, redaguotą įrašą išsaugo, jei ne meta ERROR.
         """
-        selected_field = Control.session.query(Control.Materials).get(
-            self.idForEdit.get()
-        )
+        selected_field = control.get_record_by_id("Materials", self.idForEdit.get())
         selected_field = selected_field.name
         entered_name = self.entryFieldEdit1.get().strip()
         entered_name = re.sub(" +", " ", entered_name)
-        entered_price = float(self.entryFieldEdit2.get())
         if any(i.isalpha() or i.isdigit() for i in entered_name):
             if entered_name.lower() not in [
                 i.lower()
-                for i in Control.check_for_duplicates_materials()
+                for i in control.check_for_duplicates_materials()
                 if i != selected_field
             ]:
                 try:
+                    entered_price = float(self.entryFieldEdit2.get())
                     if entered_price > 0:
-                        Control.update_material(
+                        control.update_material(
                             self.idForEdit.get(), entered_name, entered_price
                         )
                         self.fill_materials_data_box()

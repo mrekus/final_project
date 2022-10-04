@@ -16,7 +16,7 @@ class ProcessViews:
         ):
             self.processTable.column(f"# {i}", anchor=tk.CENTER, width=90)
             self.processTable.heading(f"# {i}", text=col_heading)
-        for i in Control.get_process_data():
+        for i in control.get_table_data("Process"):
             self.processTable.insert(
                 "", "end", values=(i.id, i.name, i.materials.name, i.efficiency)
             )
@@ -63,9 +63,7 @@ class ProcessViews:
         Redaguoja Process įrašą jei jis turi pavadinimą, jis nesikartoja ir našumas daugiau nei 0,
         ir įrašo vertes į DB. Kitu atveju meta ERROR
         """
-        selected_field = Control.session.query(Control.Process).get(
-            self.idForEdit.get()
-        )
+        selected_field = control.get_record_by_id("Process", self.idForEdit.get())
         selected_field_name = selected_field.name
         selected_field_material = selected_field.materials.name
         entered_process = self.entryFieldEdit1.get().strip()
@@ -75,22 +73,23 @@ class ProcessViews:
         if any(i.isalpha() or i.isdigit() for i in entered_process):
             if entered_process.lower() not in [
                 i.lower()
-                for i in Control.check_for_duplicates_process()
+                for i in control.check_for_duplicates_process()
                 if i != selected_field_name
             ]:
                 if entered_material.lower() not in [
                     i.lower()
-                    for i in Control.check_for_duplicates_materials()
+                    for i in control.check_for_duplicates_materials()
                     if i != selected_field_material
                 ]:
                     try:
-                        if float(self.entryFieldEdit3.get()) > 0:
-                            Control.update_process(
+                        entered_efficiency = float(self.entryFieldEdit3.get())
+                        if entered_efficiency > 0:
+                            control.update_process(
                                 self.idForEdit.get(),
                                 entered_process,
-                                self.entryFieldEdit3.get(),
+                                entered_efficiency,
                             )
-                            Control.update_material(
+                            control.update_material(
                                 self.idForEdit.get(), entered_material
                             )
                             self.fill_process_data_box()
@@ -108,9 +107,7 @@ class ProcessViews:
                     logging.error(
                         "Entered a duplicate material name when editing process record"
                     )
-                    ErrorWindow(
-                        "Material with that name already exists!"
-                    )
+                    ErrorWindow("Material with that name already exists!")
             else:
                 logging.error("Entered a duplicate name when editing process record")
                 ErrorWindow("Process record with that name already exists!")
