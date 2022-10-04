@@ -3,7 +3,12 @@ import requests
 
 
 FOREX_ENDPOINT = "https://api.frankfurter.app/latest"
-PAIRS = ["EUR", "USD", "NOK", "GBP"]
+PAIRS = [
+    "EUR",
+    "USD",
+    "NOK",
+    "GBP",
+]  # pirmas turi likti EUR kaip default, pridėtus naujų programa updatina automatiškai
 
 
 def get_rates(endpoint=FOREX_ENDPOINT):

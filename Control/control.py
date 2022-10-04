@@ -232,3 +232,21 @@ def get_record_by_id(table, record_id):
     }
     record = session.query(tables[table]).get(record_id)
     return record
+
+
+def days_to_complete_order(storage_remainder):
+    num = 0
+    if min(storage_remainder) < 0:
+        efficiency = get_process_efficiency()
+        efficiency_list = []
+        for i in efficiency:
+            efficiency_list.append(i[0])
+        check_remainder = [
+            i + j for (i, j) in zip(efficiency_list, storage_remainder)
+        ]
+        while min(check_remainder) < 0:
+            check_remainder = [
+                i + j for (i, j) in zip(efficiency_list, check_remainder)
+            ]
+            num += 1
+    return num

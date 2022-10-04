@@ -23,4 +23,4 @@ def send_email(subject, text):
         server.sendmail(FROM, TO, message)
         server.close()
     except:
-        ErrorWindow("Failed to send order e-mail!!!")
+        ErrorWindow("Failed to send e-mail!!!")

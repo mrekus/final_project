@@ -166,28 +166,17 @@ class OrderViews:
         order_amount = float(self.entryFieldOrder.get())
         selected_recipe = self.recipe_list.get()
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        num = 0
-        if min(storage_remaining) < 0:
-            efficiency = control.get_process_efficiency()
-            efficiency_list = []
-            for i in efficiency:
-                efficiency_list.append(i[0])
-            check_remainder = [
-                i + j for (i, j) in zip(efficiency_list, storage_remaining)
-            ]
-            while min(check_remainder) < 0:
-                check_remainder = [
-                    i + j for (i, j) in zip(efficiency_list, check_remainder)
-                ]
-                num += 1
+        days_to_complete = control.days_to_complete_order(storage_remaining)
+        if days_to_complete != 0:
             logging.critical("Not enough material in storage to complete an order")
             ErrorWindow(
                 f"Not enough materials to complete the order,\n"
-                f"it will take {num} working hours to get enough material"
+                f"it will take {days_to_complete} working hours to get enough material"
             )
             write_order_to_txt(
                 f"{date_now} - Order of {selected_recipe} - {order_amount}kg could not "
-                f"be completed, not enough materials. It will take {num} working hours to complete this order.\n"
+                f"be completed, not enough materials. "
+                f"It will take {days_to_complete} working hours to complete this order.\n"
             )
         else:
             write_order_to_txt(
@@ -242,8 +231,12 @@ class OrderViews:
         Filtruoja Orders pagal datų ruožą
         :param event aktyvuojama datų filtrų combobox pasikeitimu
         """
-        date_from = f"{self.year_list_from.get()}-{self.month_list_from.get()}-{self.day_list_from.get()} 00:00:01"
-        date_to = f"{self.year_list_to.get()}-{self.month_list_to.get()}-{self.day_list_to.get()} 23:59:59"
+        date_from = f"{self.year_list_from.get()}" \
+                    f"-{self.month_list_from.get()}" \
+                    f"-{self.day_list_from.get()} 00:00:01"
+        date_to = f"{self.year_list_to.get()}" \
+                  f"-{self.month_list_to.get()}" \
+                  f"-{self.day_list_to.get()} 23:59:59"
         try:
             date_from = datetime.strptime(date_from, "%Y-%m-%d %H:%M:%S")
             date_to = datetime.strptime(date_to, "%Y-%m-%d %H:%M:%S")

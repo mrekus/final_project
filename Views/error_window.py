@@ -33,3 +33,4 @@ class ErrorWindow:
         self.ok_button.grid(row=1, column=1)
         self.frame.pack(expand=True)
         self.error_window.bell()
+        self.frame.focus_force()
