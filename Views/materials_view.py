@@ -50,12 +50,16 @@ class MaterialsViews:
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit1.config(text="Name: ")
         self.labelEdit2.config(text="Price: ")
-        self.buttonEdit.config(text="Save changes", command=self.edit_material)
+        self.buttonEdit.config(
+            text="Save changes", activebackground="#00A650", command=self.edit_material
+        )
         self.buttonDelete.config(state=tk.DISABLED, bg="gray")
         self.entryFieldEdit1.grid(row=1, column=8)
         self.entryFieldEdit2.grid(row=2, column=8)
         self.buttonCancelEditing.grid(row=3, column=6)
-        self.buttonCancelEditing.config(command=self.cancel_editing_material)
+        self.buttonCancelEditing.config(
+            activebackground="red", command=self.cancel_editing_material
+        )
         self.entryFieldEdit1.focus()
 
     def edit_material_get_values(self):
@@ -78,7 +82,11 @@ class MaterialsViews:
         Atšaukia Materials įrašo redagavimą
         """
         self.cancel_editing()
-        self.buttonEdit.config(text="Edit", command=self.edit_material_get_values)
+        self.buttonEdit.config(
+            text="Edit",
+            activebackground="#75C1BF",
+            command=self.edit_material_get_values,
+        )
 
     def edit_material(self):
         """

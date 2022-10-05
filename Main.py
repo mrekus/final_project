@@ -30,10 +30,10 @@ class MyButton(tk.Button):
         self.bind("<Leave>", self.on_leave)
 
     def on_enter(self, _e):
-        self['background'] = self['activebackground']
+        self["background"] = self["activebackground"]
 
     def on_leave(self, _e):
-        self['background'] = self.defaultBackground
+        self["background"] = self.defaultBackground
 
 
 class MyOrderButton(tk.Button):
@@ -60,10 +60,10 @@ class MyOrderButton(tk.Button):
         self.bind("<Leave>", self.on_leave)
 
     def on_enter(self, _e):
-        self['background'] = self['activebackground']
+        self["background"] = self["activebackground"]
 
     def on_leave(self, _e):
-        self['background'] = self.defaultBackground
+        self["background"] = self.defaultBackground
 
 
 class MyScrollButton(tk.Button):
@@ -79,9 +79,16 @@ class MyScrollButton(tk.Button):
             relief="groove",
             height=1,
             width=15,
-            activebackground="#0a0a0a",
-            activeforeground="#e6d415",
         )
+        self.defaultBackground = self["background"]
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+
+    def on_enter(self, _e):
+        self["background"] = self["activebackground"]
+
+    def on_leave(self, _e):
+        self["background"] = self["activeforeground"]
 
 
 class MyLabel(tk.Label):
@@ -227,12 +234,16 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             bg="gray",
             text="↑↑↑",
             command="",
+            activebackground="gray",
+            activeforeground="gray",
             state=tk.DISABLED,
         )
         self.buttonScrollDown = MyScrollButton(
             self.master,
             bg="white",
             text="↓↓↓",
+            activebackground="#75C1BF",
+            activeforeground="white",
             command=self.scroll_down_1,
         )
         self.labelEdit1 = MyLabel(self.leftFrame)
@@ -376,7 +387,9 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonEdit.grid(row=1, column=6)
         self.buttonDelete.grid(row=2, column=6)
         self.buttonDelete.config(state=tk.DISABLED, bg="gray")
-        self.buttonEdit.config(state=tk.NORMAL, bg="white", text="Edit", activebackground="#75C1BF")
+        self.buttonEdit.config(
+            state=tk.NORMAL, bg="white", text="Edit", activebackground="#75C1BF"
+        )
         self.cancel_editing()
 
     def cancel_editing(self):
@@ -446,9 +459,18 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
-        self.buttonScrollUp.config(state=tk.DISABLED, bg="gray")
+        self.buttonScrollUp.config(
+            state=tk.DISABLED,
+            bg="gray",
+            activeforeground="gray",
+            activebackground="gray",
+        )
         self.buttonScrollDown.config(
-            command=self.scroll_down_1, state=tk.NORMAL, bg="white"
+            command=self.scroll_down_1,
+            state=tk.NORMAL,
+            bg="white",
+            activebackground="#75C1BF",
+            activeforeground="white",
         )
         self.buttonEdit.grid_forget()
         self.buttonDelete.grid_forget()
@@ -463,7 +485,13 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonScrollDown.config(command=self.scroll_down_2)
-        self.buttonScrollUp.config(command=self.scroll_up_1, state=tk.NORMAL, bg="white")
+        self.buttonScrollUp.config(
+            command=self.scroll_up_1,
+            state=tk.NORMAL,
+            activebackground="#75C1BF",
+            activeforeground="white",
+            bg="white",
+        )
 
     def scroll_down_2(self):
         """
@@ -472,7 +500,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu2.config(text="Materials", command=self.fill_materials_data_box)
         self.buttonMenu3.config(text="Orders", command=self.fill_orders_data_box)
-        self.buttonScrollDown.config(state=tk.DISABLED, bg="gray")
+        self.buttonScrollDown.config(
+            state=tk.DISABLED,
+            bg="gray",
+            activebackground="gray",
+            activeforeground="gray",
+        )
         self.buttonScrollUp.config(command=self.scroll_up_2)
 
     def scroll_up_1(self):
@@ -482,7 +515,12 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.config(text="Process", command=self.fill_process_data_box)
         self.buttonMenu2.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu3.config(text="Storage", command=self.fill_storage_data_box)
-        self.buttonScrollUp.config(state=tk.DISABLED, bg="gray")
+        self.buttonScrollUp.config(
+            state=tk.DISABLED,
+            bg="gray",
+            activebackground="gray",
+            activeforeground="gray",
+        )
         self.buttonScrollDown.config(command=self.scroll_down_1)
 
     def scroll_up_2(self):
@@ -492,9 +530,15 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonMenu1.config(text="Recipies", command=self.fill_recipe_data_box)
         self.buttonMenu2.config(text="Storage", command=self.fill_storage_data_box)
         self.buttonMenu3.config(text="Materials", command=self.fill_materials_data_box)
-        self.buttonScrollUp.config(command=self.scroll_up_1, state=tk.NORMAL, bg="white")
+        self.buttonScrollUp.config(
+            command=self.scroll_up_1, state=tk.NORMAL, bg="white"
+        )
         self.buttonScrollDown.config(
-            command=self.scroll_down_2, state=tk.NORMAL, bg="white"
+            command=self.scroll_down_2,
+            state=tk.NORMAL,
+            bg="white",
+            activebackground="#75C1BF",
+            activeforeground="white",
         )
 
 

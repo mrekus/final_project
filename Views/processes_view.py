@@ -33,13 +33,17 @@ class ProcessViews:
         self.labelEdit1.config(text="Name: ")
         self.labelEdit2.config(text="Material: ")
         self.labelEdit3.config(text="Efficiency: ")
-        self.buttonEdit.config(text="Save changes", command=self.edit_process)
+        self.buttonEdit.config(
+            text="Save changes", activebackground="#00A650", command=self.edit_process
+        )
         self.buttonDelete.config(state=tk.DISABLED, bg="gray")
         self.entryFieldEdit1.grid(row=1, column=8)
         self.entryFieldEdit2.grid(row=2, column=8)
         self.entryFieldEdit3.grid(row=3, column=8)
         self.buttonCancelEditing.grid(row=3, column=6)
-        self.buttonCancelEditing.config(command=self.cancel_editing_process)
+        self.buttonCancelEditing.config(
+            activebackground="red", command=self.cancel_editing_process
+        )
         self.entryFieldEdit1.focus()
 
     def edit_process_get_values(self):
@@ -110,7 +114,9 @@ class ProcessViews:
                         )
                         ErrorWindow("Material with that name already exists!")
                 else:
-                    logging.error("No material name entered when editing process record")
+                    logging.error(
+                        "No material name entered when editing process record"
+                    )
                     ErrorWindow("No material name entered!")
             else:
                 logging.error("Entered a duplicate name when editing process record")
@@ -124,4 +130,8 @@ class ProcessViews:
         Atšaukia Process įrašo redagavimą
         """
         self.cancel_editing()
-        self.buttonEdit.config(text="Edit", command=self.edit_process_get_values)
+        self.buttonEdit.config(
+            text="Edit",
+            activebackground="#75C1BF",
+            command=self.edit_process_get_values,
+        )

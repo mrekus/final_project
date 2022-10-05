@@ -28,12 +28,16 @@ class StorageViews:
         Sukuria visus Storage edit langus
         """
         self.edit_record_process()
-        self.buttonEdit.config(text="Save changes", command=self.edit_storage)
+        self.buttonEdit.config(
+            text="Save changes", activebackground="#00A650", command=self.edit_storage
+        )
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit1.config(text="Name: ")
         self.labelEdit2.config(text="Amount: ")
-        self.buttonCancelEditing.config(command=self.cancel_editing_storage)
+        self.buttonCancelEditing.config(
+            activebackground="red", command=self.cancel_editing_storage
+        )
         self.labelEdit3.grid_forget()
         self.entryFieldEdit3.grid_forget()
 
@@ -96,4 +100,8 @@ class StorageViews:
         Atšaukia Storage įrašo redagavimą ir atstato laukus
         """
         self.cancel_editing()
-        self.buttonEdit.config(text="Edit", command=self.edit_storage_get_values)
+        self.buttonEdit.config(
+            text="Edit",
+            activebackground="#75C1BF",
+            command=self.edit_storage_get_values,
+        )

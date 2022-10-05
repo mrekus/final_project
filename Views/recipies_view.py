@@ -82,7 +82,9 @@ class RecipiesViews:
         Sukuria visus Recipies edit langus
         """
         materials = control.check_for_duplicates_materials()
-        self.buttonEdit.config(text="Save changes", command=self.edit_recipe)
+        self.buttonEdit.config(
+            text="Save changes", activebackground="#00A650", command=self.edit_recipe
+        )
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit3.grid(row=3, column=7, sticky="W")
@@ -102,8 +104,10 @@ class RecipiesViews:
         self.entryFieldEdit4.grid(row=1, column=10)
         self.entryFieldEdit5.grid(row=2, column=10)
         self.entryFieldEdit6.grid(row=3, column=10)
-        self.buttonCancelEditing.config(command=self.cancel_editing_recipies)
-        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
+        self.buttonCancelEditing.config(
+            activebackground="red", command=self.cancel_editing_recipies
+        )
+        self.buttonDelete.config(activebackground="red", state=tk.DISABLED, bg="gray")
         self.entryFieldEdit1.focus()
 
     def delete_record(self):
@@ -261,4 +265,8 @@ class RecipiesViews:
         """
         self.cancel_editing()
         self.buttonDelete.config(state=tk.NORMAL, bg="red")
-        self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
+        self.buttonEdit.config(
+            command=self.edit_recipies_get_values,
+            activebackground="#75C1BF",
+            text="Edit",
+        )

@@ -232,7 +232,9 @@ class OrderViews:
             state=tk.NORMAL,
             command=self.email_filtered,
         )
-        self.buttonFilterOrders.config(text="Cancel", command=self.cancel_filtering)
+        self.buttonFilterOrders.config(
+            text="Cancel", activebackground="red", command=self.cancel_filtering
+        )
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit3.grid(row=3, column=7, sticky="W")
@@ -254,13 +256,27 @@ class OrderViews:
         self.year_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
         self.month_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
         self.day_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
-        self.currency_list.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.year_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.month_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.day_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.year_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.month_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
-        self.day_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.currency_list.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.year_list_from.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.month_list_from.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.day_list_from.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.year_list_to.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.month_list_to.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
+        self.day_list_to.bind(
+            "<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+"
+        )
 
     def filter_orders(self, _event):
         """
@@ -343,9 +359,13 @@ class OrderViews:
         self.refresh_orders()
         self.buttonFilterOrders.grid(row=3, column=6)
         self.buttonFilterOrders.config(
-            text="Filter", command=self.filter_orders_buttons
+            text="Filter",
+            command=self.filter_orders_buttons,
+            activebackground="#75C1BF",
         )
-        self.buttonEdit.config(state=tk.DISABLED, bg="white", text="Edit", activebackground="gray")
+        self.buttonEdit.config(
+            state=tk.DISABLED, bg="white", text="Edit", activebackground="gray"
+        )
 
     def filtered_orders_profit(self):
         """
