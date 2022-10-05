@@ -20,9 +20,18 @@ class MyButton(tk.Button):
             relief="groove",
             height=3,
             width=15,
-            activebackground="#0a0a0a",
+            activebackground="#75C1BF",
             activeforeground="#e6d415",
         )
+        self.defaultBackground = self["background"]
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+
+    def on_enter(self, _e):
+        self['background'] = self['activebackground']
+
+    def on_leave(self, _e):
+        self['background'] = self.defaultBackground
 
 
 class MyOrderButton(tk.Button):
@@ -39,9 +48,18 @@ class MyOrderButton(tk.Button):
             fg="black",
             font=("courier", 14, "bold"),
             relief="groove",
-            activebackground="#0a0a0a",
+            activebackground="#75C1BF",
             activeforeground="#e6d415",
         )
+        self.defaultBackground = self["background"]
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+
+    def on_enter(self, _e):
+        self['background'] = self['activebackground']
+
+    def on_leave(self, _e):
+        self['background'] = self.defaultBackground
 
 
 class MyScrollButton(tk.Button):
@@ -354,7 +372,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.buttonEdit.grid(row=1, column=6)
         self.buttonDelete.grid(row=2, column=6)
         self.buttonDelete.config(state=tk.DISABLED, bg="gray")
-        self.buttonEdit.config(state=tk.NORMAL, bg="white", text="Edit")
+        self.buttonEdit.config(state=tk.NORMAL, bg="white", text="Edit", activebackground="#75C1BF")
         self.cancel_editing()
 
     def cancel_editing(self):

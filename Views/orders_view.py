@@ -49,7 +49,7 @@ class OrderViews:
                 ),
             )
         self.buttonAddRecipe.grid_forget()
-        self.buttonEdit.config(state=tk.DISABLED, bg="gray")
+        self.buttonEdit.config(state=tk.DISABLED, bg="white", activebackground="gray")
         self.buttonFilterOrders.grid(row=3, column=6)
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
@@ -117,6 +117,7 @@ class OrderViews:
         Sukuria užsakymo pridėjimo laukus ir atnaujina receptų sąrašą
         """
         self.refresh_recipe_list()
+        self.buttonCancelOrder.config(activebackground="red")
         self.recipe_list.place(x=330, y=170)
         self.buttonAddOrder.place_forget()
         self.entryFieldOrder.place(x=590, y=170)
@@ -226,7 +227,8 @@ class OrderViews:
         self.filtered_orders_profit()
         self.buttonEdit.config(
             text="Send to Email",
-            bg="#00A650",
+            bg="white",
+            activebackground="#00A650",
             state=tk.NORMAL,
             command=self.email_filtered,
         )
@@ -343,7 +345,7 @@ class OrderViews:
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
         )
-        self.buttonEdit.config(state=tk.DISABLED, bg="gray", text="Edit")
+        self.buttonEdit.config(state=tk.DISABLED, bg="white", text="Edit", activebackground="gray")
 
     def filtered_orders_profit(self):
         """
