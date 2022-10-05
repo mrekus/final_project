@@ -326,6 +326,10 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             self.leftFrame, columns=("id", "Name", "Price")
         )
 
+        self.scrollbar_recipe = tk.Scrollbar(
+            self.recipeTable, orient=tk.VERTICAL, command=self.recipeTable.yview
+        )
+
         self.menu.add_cascade(label="Menu", menu=self.submenu)
         self.submenu.add_command(label="Back to main", command=self.back_to_main)
         self.submenu.add_separator()

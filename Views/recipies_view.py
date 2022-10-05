@@ -4,7 +4,8 @@ from utils import *
 class RecipiesViews:
     def fill_recipe_data_box(self):
         """
-        Atstato pradinę lango būseną su Recipe duomenų lentele
+        Atstato pradinę lango būseną su Recipe duomenų lentele,
+        sukuria scroll bar jei įrašų daugiau nei 8
         """
         self.default_button_layouts()
         self.forget_tables()
@@ -39,6 +40,40 @@ class RecipiesViews:
         self.buttonDelete.config(state=tk.NORMAL, bg="red")
         self.buttonAddRecipe.grid(row=3, column=6)
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
+        if len(self.recipeTable.get_children()) >= 9:
+            self.scrollbar_recipe.place(x=571, y=27, height=175)
+            self.recipeTable.configure(yscrollcommand=self.scrollbar_recipe.set)
+
+    def refresh_recipies(self):
+        """
+        Atnaujina Recipe lentelės įrašus, atstato pradinę
+        mygtukų būseną. Sukuria scroll bar jei įrašų daugiau
+        nei 8.
+        """
+        for i in self.recipeTable.get_children():
+            self.recipeTable.delete(i)
+        for i in control.get_table_data("Recipe"):
+            self.recipeTable.insert(
+                "",
+                "end",
+                values=(
+                    i.id,
+                    i.name,
+                    i.material1,
+                    i.material2,
+                    i.material3,
+                    i.material4,
+                    i.material5,
+                ),
+            )
+        self.default_button_layouts()
+        self.buttonDelete.config(state=tk.NORMAL, bg="red")
+        self.buttonAddRecipe.grid(row=3, column=6)
+        self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
+        self.scrollbar_recipe.place_forget()
+        if len(self.recipeTable.get_children()) >= 9:
+            self.scrollbar_recipe.place(x=571, y=27, height=175)
+            self.recipeTable.configure(yscrollcommand=self.scrollbar_recipe.set)
 
     def edit_record_recipies(self):
         """
@@ -78,11 +113,10 @@ class RecipiesViews:
             selection = selection["values"]
             deletion_id = selection[0]
             control.delete_recipe_record(deletion_id)
-            self.fill_recipe_data_box()
-            self.refresh_recipe_list()
+            self.refresh_recipies()
         except IndexError:
             logging.warning("No record selected when trying to delete recipe!")
-            self.fill_recipe_data_box()
+            self.refresh_recipies()
 
     def add_record_recipies(self):
         """
@@ -123,8 +157,7 @@ class RecipiesViews:
                             self.entryFieldEdit5.get(),
                             self.entryFieldEdit6.get(),
                         )
-                        self.fill_recipe_data_box()
-                        self.refresh_recipe_list()
+                        self.refresh_recipies()
                     else:
                         logging.error(
                             "Material sum not equal to 1 when trying to add new recipe"
@@ -159,7 +192,7 @@ class RecipiesViews:
             self.entryFieldEdit6.insert(0, selection[6])
         except IndexError:
             logging.warning("No record selected when trying to edit a recipe")
-            self.fill_recipe_data_box()
+            self.refresh_recipies()
 
     def edit_recipe(self):
         """
@@ -198,8 +231,7 @@ class RecipiesViews:
                             self.entryFieldEdit5.get(),
                             self.entryFieldEdit6.get(),
                         )
-                        self.fill_recipe_data_box()
-                        self.refresh_recipe_list()
+                        self.refresh_recipies()
                     else:
                         logging.error(
                             "Material sum was not equal to 1 or were negative when trying to edit a recipe"

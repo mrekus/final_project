@@ -54,12 +54,11 @@ class OrderViews:
         self.buttonFilterOrders.config(
             text="Filter", command=self.filter_orders_buttons
         )
-        my_scrollbar = tk.Scrollbar(
+        scrollbar_orders = tk.Scrollbar(
             self.ordersTable, orient=tk.VERTICAL, command=self.ordersTable.yview
         )
-        my_scrollbar.place(x=705, y=27, height=175)
-
-        self.ordersTable.configure(yscrollcommand=my_scrollbar.set)
+        scrollbar_orders.place(x=705, y=27, height=175)
+        self.ordersTable.configure(yscrollcommand=scrollbar_orders.set)
 
     def refresh_orders(self):
         """

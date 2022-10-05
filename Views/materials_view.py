@@ -15,7 +15,7 @@ class MaterialsViews:
             self.materialsTable.delete(i)
         self.materialsTable.column(f"# {1}", anchor=tk.CENTER, width=40)
         self.materialsTable.heading(f"# {1}", text="ID")
-        for i, col_heading in enumerate(["Name", "Price"], 2):
+        for i, col_heading in enumerate(["Name", "Price / kg"], 2):
             self.materialsTable.column(f"# {i}", anchor=tk.CENTER, width=120)
             self.materialsTable.heading(f"# {i}", text=col_heading)
         self.currency_list.bind("<<ComboboxSelected>>", self.refresh_materials)
