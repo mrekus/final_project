@@ -198,12 +198,12 @@ class OrderViews:
             logging.critical("Not enough material in storage to complete an order")
             ErrorWindow(
                 f"Not enough materials to complete the order,\n"
-                f"it will take {days_to_complete} working hours to get enough material"
+                f"it would take {days_to_complete} working hours to get enough material"
             )
             write_order_to_txt(
                 f"{date_now} - Order of {selected_recipe} - {order_amount}kg could not "
                 f"be completed, not enough materials. "
-                f"It will take {days_to_complete} working hours to complete this order.\n"
+                f"It would take {days_to_complete} working hours to complete this order.\n"
             )
         else:
             write_order_to_txt(
@@ -224,6 +224,7 @@ class OrderViews:
         """
         Sudeda laukus ir labels Orders filtravimui
         """
+        self.filtered_orders_profit()
         self.buttonEdit.config(
             text="Send to Email",
             bg="#00A650",
@@ -245,13 +246,20 @@ class OrderViews:
         self.day_list_to.grid(row=3, column=9, sticky="W")
         self.labelFilterFrom.place(x=1044, y=320)
         self.labelFilterTo.place(x=1219, y=320)
-        self.currency_list.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.year_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.month_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.day_list_from.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.year_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.month_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
-        self.day_list_to.bind("<<ComboboxSelected>>", self.filter_orders)
+        self.currency_list.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.year_list_from.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.month_list_from.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.day_list_from.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.year_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.month_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.day_list_to.bind("<<ComboboxSelected>>", self.filter_orders, add="+")
+        self.currency_list.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.year_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.month_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.day_list_from.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.year_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.month_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
+        self.day_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
 
     def filter_orders(self, event):
         """
@@ -296,12 +304,16 @@ class OrderViews:
         """
         Nusiunčia e-mail su nufiltruotais Orders laukais
         """
-        date_from = f"{self.year_list_from.get()}" \
-                    f"-{self.month_list_from.get()}" \
-                    f"-{self.day_list_from.get()}"
-        date_to = f"{self.year_list_to.get()}" \
-                  f"-{self.month_list_to.get()}" \
-                  f"-{self.day_list_to.get()}"
+        date_from = (
+            f"{self.year_list_from.get()}"
+            f"-{self.month_list_from.get()}"
+            f"-{self.day_list_from.get()}"
+        )
+        date_to = (
+            f"{self.year_list_to.get()}"
+            f"-{self.month_list_to.get()}"
+            f"-{self.day_list_to.get()}"
+        )
         subject = f"Orders from: {date_from} to {date_to}"
         text = ""
         for i in self.ordersTable.get_children():
@@ -314,7 +326,9 @@ class OrderViews:
                 f"Manufacturing cost: {t_data[4]}{self.currency_list.get()} "
                 f"Selling price: {t_data[5]}{self.currency_list.get()}\n"
             )
-        if text != "":
+        total_profit = f"Total period profit: {self.labelOrderProfit2.cget('text')}"
+        text += total_profit
+        if text != total_profit:
             send_email(subject, text)
             ErrorWindow("Orders sent!")
         else:
@@ -331,3 +345,27 @@ class OrderViews:
             text="Filter", command=self.filter_orders_buttons
         )
         self.buttonEdit.config(state=tk.DISABLED, bg="gray", text="Edit")
+
+    def filtered_orders_profit(self):
+        profit_total = 0
+        for i in self.ordersTable.get_children():
+            t_man_cost = float(self.ordersTable.item(i)["values"][4])
+            t_sell_price = float(self.ordersTable.item(i)["values"][5])
+            profit = t_sell_price - t_man_cost
+            profit_total += profit
+        self.labelOrderProfit2.config(
+            text=f"{round(profit_total, 2)}{self.currency_list.get()}"
+        )
+        self.labelOrderProfit1.grid(row=1, column=10, sticky="W")
+        self.labelOrderProfit2.grid(row=2, column=10)
+
+    def filtered_orders_profit_change(self, event):
+        profit_total = 0
+        for i in self.ordersTable.get_children():
+            t_man_cost = float(self.ordersTable.item(i)["values"][4])
+            t_sell_price = float(self.ordersTable.item(i)["values"][5])
+            profit = t_sell_price - t_man_cost
+            profit_total += profit
+        self.labelOrderProfit2.config(
+            text=f"{round(profit_total, 2)}{self.currency_list.get()}"
+        )

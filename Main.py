@@ -219,6 +219,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.labelEdit4 = MyLabel(self.leftFrame)
         self.labelEdit5 = MyLabel(self.leftFrame)
         self.labelEdit6 = MyLabel(self.leftFrame)
+        self.labelOrderProfit1 = MyLabel(self.leftFrame, text="Period profit:")
+        self.labelOrderProfit2 = MyLabel(self.leftFrame)
         self.labelOrder = tk.Label(
             self.master, text="Amount in kg:", font=("courier", 25, "bold"), width=15
         )
@@ -377,6 +379,8 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.day_list_to.grid_forget()
         self.buttonCancelEditing.grid_forget()
         self.buttonFilterOrders.grid_forget()
+        self.labelOrderProfit1.grid_forget()
+        self.labelOrderProfit2.grid_forget()
         self.reset_entry_fields()
         self.buttonDelete.config(state=tk.DISABLED, bg="gray")
 
