@@ -8,7 +8,9 @@ from datetime import datetime
 
 class MyButton(tk.Button):
     """
-    Perrašo default Button klasę
+    Perrašo default Button klasę, prideda
+    spalvų pasikeitimus užvedus pelę ant
+    mygtuko.
     """
 
     def __init__(self, parent=None, **kwargs):
@@ -36,7 +38,9 @@ class MyButton(tk.Button):
 
 class MyOrderButton(tk.Button):
     """
-    Perrašo default Button klasę
+    Perrašo default Button klasę, prideda
+    spalvų pasikeitimus užvedus pelę ant
+    mygtuko.
     """
 
     def __init__(self, parent=None, **kwargs):
