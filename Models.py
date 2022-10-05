@@ -26,6 +26,7 @@ class Process(Base):
     efficiency = Column("Efficiency", Float)
     materials = relationship("Materials")
 
+    # noinspection PyMissingConstructor
     def __init__(self, name, produced_material, efficiency):
         self.name = name
         self.produced_material = produced_material
@@ -49,6 +50,7 @@ class Recipe(Base):
     material4 = Column("Material_4", Float)
     material5 = Column("Material_5", Float)
 
+    # noinspection PyMissingConstructor
     def __init__(self, name, material1, material2, material3, material4, material5):
         self.name = name
         self.material1 = material1
@@ -75,6 +77,7 @@ class Storage(Base):
     amount = Column("Amount", Float)
     materials = relationship("Materials")
 
+    # noinspection PyMissingConstructor
     def __init__(self, name, amount):
         self.name = name
         self.amount = amount
@@ -93,6 +96,7 @@ class Materials(Base):
     name = Column("Material", String)
     price = Column("Price", Float)
 
+    # noinspection PyMissingConstructor
     def __init__(self, name, price):
         self.name = name
         self.amount = price
@@ -115,6 +119,7 @@ class Orders(Base):
     sell_price = Column("Selling price", Float)
     recipe_info = relationship("Recipe")
 
+    # noinspection PyMissingConstructor
     def __init__(self, date, recipe, amount, man_cost, sell_price):
         self.date = date
         self.name = date

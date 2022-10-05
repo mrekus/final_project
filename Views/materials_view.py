@@ -28,10 +28,10 @@ class MaterialsViews:
         self.buttonAddRecipe.grid_forget()
         self.buttonEdit.config(command=self.edit_material_get_values, text="Edit")
 
-    def refresh_materials(self, event):
+    def refresh_materials(self, _event):
         """
         Atnaujina Materials lentelės įrašus
-        :param event: aktyvuojama currency combobox pasirinkimu
+        :param _event: aktyvuojama currency combobox pasirinkimu
         """
         for i in self.materialsTable.get_children():
             self.materialsTable.delete(i)

@@ -83,10 +83,10 @@ class OrderViews:
                 ),
             )
 
-    def refresh_orders_event(self, event):
+    def refresh_orders_event(self, _event):
         """
         Atnaujina Orders lentelės įrašus
-        :param event: aktyvuojamas currency combobox pasikeitimu
+        :param _event: aktyvuojamas currency combobox pasikeitimu
         """
         for i in self.ordersTable.get_children():
             self.ordersTable.delete(i)
@@ -261,10 +261,10 @@ class OrderViews:
         self.month_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
         self.day_list_to.bind("<<ComboboxSelected>>", self.filtered_orders_profit_change, add="+")
 
-    def filter_orders(self, event):
+    def filter_orders(self, _event):
         """
         Filtruoja Orders pagal datų ruožą
-        :param event aktyvuojama datų filtrų combobox pasikeitimu
+        :param _event aktyvuojama datų filtrų combobox pasikeitimu
         """
         date_from = (
             f"{self.year_list_from.get()}"
@@ -347,6 +347,11 @@ class OrderViews:
         self.buttonEdit.config(state=tk.DISABLED, bg="gray", text="Edit")
 
     def filtered_orders_profit(self):
+        """
+        Apskaičiuoja Orders lentelės įrašų pelną
+        atimant iš selling price manufacturing price,
+        prideda tekstą šalia datų filtrų
+        """
         profit_total = 0
         for i in self.ordersTable.get_children():
             t_man_cost = float(self.ordersTable.item(i)["values"][4])
@@ -359,7 +364,13 @@ class OrderViews:
         self.labelOrderProfit1.grid(row=1, column=10, sticky="W")
         self.labelOrderProfit2.grid(row=2, column=10)
 
-    def filtered_orders_profit_change(self, event):
+    def filtered_orders_profit_change(self, _event):
+        """
+        Apskaičiuoja Orders lentelės įrašų pelną
+        atimant iš selling price manufacturing price.
+        :param _event: Aktyvuojamas valiutų arba datų filtrų
+        combobox pasikeitimu.
+        """
         profit_total = 0
         for i in self.ordersTable.get_children():
             t_man_cost = float(self.ordersTable.item(i)["values"][4])
