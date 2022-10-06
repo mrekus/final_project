@@ -122,37 +122,23 @@ def update_material(update_id, name, price=False):
     session.commit()
 
 
-def check_for_duplicates_process():
+def check_for_duplicates(table):
     """
-    Sukuria process pavadinimų sąrašą
+    Sukuria lentelės names sąrašą
+    :param table: pasirinkta lentelė
     :return: atiduoda process pavadinimų sąrašą
     """
+    tables = {
+        "Orders": Orders,
+        "Materials": Materials,
+        "Storage": Storage,
+        "Recipe": Recipe,
+        "Process": Process,
+    }
     process_list = []
-    for i in session.query(Process).all():
+    for i in session.query(tables[table]).all():
         process_list.append(i.name)
     return process_list
-
-
-def check_for_duplicates_recipe():
-    """
-    Sukuria receptų pavadinimų sąrašą
-    :return: atiduoda receptų pavadinimų sąrašą
-    """
-    recipe_list = []
-    for i in session.query(Recipe).all():
-        recipe_list.append(i.name)
-    return recipe_list
-
-
-def check_for_duplicates_materials():
-    """
-    Sukuria materials pavadinimų sąrašą
-    :return: atiduoda storage pavadinimų sąrašą
-    """
-    materials_list = []
-    for i in session.query(Materials).all():
-        materials_list.append(i.name)
-    return materials_list
 
 
 def get_material_price_list():

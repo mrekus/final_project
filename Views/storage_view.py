@@ -69,7 +69,7 @@ class StorageViews:
         if any(i.isalpha() or i.isdigit() for i in entered_name):
             if entered_name.lower() not in [
                 i.lower()
-                for i in control.check_for_duplicates_materials()
+                for i in control.check_for_duplicates("Materials")
                 if i != selected_field
             ]:
                 try:

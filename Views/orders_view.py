@@ -109,7 +109,7 @@ class OrderViews:
         """
         Atjauniną receptų combobox sąrašą
         """
-        self.recipe_list.config(values=control.check_for_duplicates_recipe())
+        self.recipe_list.config(values=control.check_for_duplicates("Recipe"))
         self.recipe_list.set("")
 
     def order_adding_widgets(self):
@@ -347,7 +347,6 @@ class OrderViews:
         text += total_profit
         if text != total_profit:
             send_email(subject, text)
-            ErrorWindow("Orders sent!")
         else:
             ErrorWindow("No orders to send!")
 

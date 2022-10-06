@@ -1,9 +1,12 @@
 import smtplib
 from Views.error_window import ErrorWindow
+from configparser import ConfigParser
 
+config = ConfigParser()
+config.read("config.ini")
 
-FROM = "marius.rekus@gmail.com"
-TO = "marius.rekus@gmail.com"
+FROM = config["EMAIL"]["gmail_login"]
+TO = config["EMAIL"]["to"]
 
 
 def send_email(subject, text):
@@ -19,8 +22,9 @@ def send_email(subject, text):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
-        server.login("marius.rekus@gmail.com", "qcxefxmzeatwpdaa")
+        server.login(config["EMAIL"]["gmail_login"], config["EMAIL"]["gmail_app_key"])
         server.sendmail(FROM, TO, message)
         server.close()
+        ErrorWindow("Sent successfully!")
     except:
         ErrorWindow("Failed to send e-mail!!!")

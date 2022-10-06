@@ -77,13 +77,13 @@ class ProcessViews:
         if any(i.isalpha() or i.isdigit() for i in entered_process):
             if entered_process.lower() not in [
                 i.lower()
-                for i in control.check_for_duplicates_process()
+                for i in control.check_for_duplicates("Process")
                 if i != selected_field_name
             ]:
                 if any(i.isalpha() or i.isdigit() for i in entered_material):
                     if entered_material.lower() not in [
                         i.lower()
-                        for i in control.check_for_duplicates_materials()
+                        for i in control.check_for_duplicates("Materials")
                         if i != selected_field_material
                     ]:
                         try:

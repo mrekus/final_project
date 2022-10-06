@@ -165,7 +165,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
 
         self.idForEdit = tk.IntVar()
 
-        self.rates = API.get_rates()
+        self.rates, self.pairs = API.get_rates()
 
         self.topFrame = tk.Frame(master)
         self.leftFrame = tk.Frame(master)
@@ -288,7 +288,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             width=6,
             font=("courier", 25, "bold"),
             state="readonly",
-            values=API.PAIRS,
+            values=self.pairs,
         )
         self.currency_list.set("EUR")
         self.mail_list = ttk.Combobox(

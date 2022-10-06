@@ -9,7 +9,7 @@ class RecipiesViews:
         """
         self.default_button_layouts()
         self.forget_tables()
-        headings = control.check_for_duplicates_materials()
+        headings = control.check_for_duplicates("Materials")
         self.recipeTable.grid(row=1, rowspan=4, column=2, columnspan=3, sticky=tk.NSEW)
         for i in self.recipeTable.get_children():
             self.recipeTable.delete(i)
@@ -71,7 +71,7 @@ class RecipiesViews:
         self.buttonAddRecipe.grid(row=3, column=6)
         self.buttonEdit.config(command=self.edit_recipies_get_values, text="Edit")
         self.scrollbar_recipe.place_forget()
-        self.recipe_list.config(values=control.check_for_duplicates_recipe())
+        self.recipe_list.config(values=control.check_for_duplicates("Recipe"))
         self.recipe_list.set("")
         if len(self.recipeTable.get_children()) >= 9:
             self.scrollbar_recipe.place(x=571, y=27, height=175)
@@ -81,7 +81,7 @@ class RecipiesViews:
         """
         Sukuria visus Recipies edit langus
         """
-        materials = control.check_for_duplicates_materials()
+        materials = control.check_for_duplicates("Materials")
         self.buttonEdit.config(
             text="Save changes", activebackground="#00A650", command=self.edit_recipe
         )
@@ -120,7 +120,7 @@ class RecipiesViews:
             deletion_id = selection[0]
             control.delete_recipe_record(deletion_id)
             self.refresh_recipies()
-            self.recipe_list.config(values=control.check_for_duplicates_recipe())
+            self.recipe_list.config(values=control.check_for_duplicates("Recipe"))
             self.recipe_list.set("")
         except IndexError:
             logging.warning("No record selected when trying to delete recipe!")
@@ -142,7 +142,7 @@ class RecipiesViews:
         entered_name = self.entryFieldEdit1.get().strip()
         entered_name = re.sub(" +", " ", entered_name)
         if entered_name.lower() not in [
-            i.lower() for i in control.check_for_duplicates_recipe()
+            i.lower() for i in control.check_for_duplicates("Recipe")
         ]:
             if any(i.isalpha() or i.isdigit() for i in self.entryFieldEdit1.get()):
                 try:
@@ -215,7 +215,7 @@ class RecipiesViews:
         if any(i.isalpha() or i.isdigit() for i in entered_name):
             if entered_name.lower() not in [
                 i.lower()
-                for i in control.check_for_duplicates_recipe()
+                for i in control.check_for_duplicates("Recipe")
                 if i != selected_field
             ]:
                 try:
