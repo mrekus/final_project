@@ -12,6 +12,7 @@ class OrderViews(widgets.Widgets):
     """
     Visi metodai valdantys Orders laukus
     """
+
     def fill_orders_data_box(self):
         """
         Atstato pradinę lango būseną su Orders duomenų lentele
@@ -55,7 +56,9 @@ class OrderViews(widgets.Widgets):
         self.buttonEdit.config(state=tk.DISABLED, bg="white", activebackground="gray")
         self.buttonFilterOrders.grid(row=3, column=6)
         self.buttonFilterOrders.config(
-            text="Filter", command=self.filter_orders_buttons
+            text="Filter",
+            command=self.filter_orders_buttons,
+            activebackground="#75C1BF",
         )
         scrollbar_orders = tk.Scrollbar(
             self.ordersTable, orient=tk.VERTICAL, command=self.ordersTable.yview
