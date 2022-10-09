@@ -1,7 +1,10 @@
 from utils import *
 
 
-class RecipiesViews:
+class RecipiesViews(widgets.Widgets):
+    """
+    Visi metodai valdantys Recipies laukus
+    """
     def fill_recipe_data_box(self):
         """
         Atstato pradinę lango būseną su Recipe duomenų lentele,

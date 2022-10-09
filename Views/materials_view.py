@@ -1,7 +1,10 @@
 from utils import *
 
 
-class MaterialsViews:
+class MaterialsViews(widgets.Widgets):
+    """
+    Visi metodai valdantys Materials laukus
+    """
     def fill_materials_data_box(self):
         """
         Atstato pradinę lango būseną su Materials duomenų lentele

@@ -1,7 +1,10 @@
 from utils import *
 
 
-class ProcessViews:
+class ProcessViews(widgets.Widgets):
+    """
+    Visi metodai valdantys Process laukus
+    """
     def fill_process_data_box(self):
         """
         Atstato pradinę lango būseną su Process duomenų lentele

@@ -135,14 +135,90 @@ class MyTreeview(ttk.Treeview):
         )
 
 
-class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews):
+class MainWindow(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews):
     """
-    Pagrindinis programos langas
+    Pagrindinis programos langas su bendrais
+    metodais valdančiais visus langus bendrai
     """
 
     def __init__(self, master):
         super().__init__()
+
         self.master = master
+        self.topFrame = None
+        self.leftFrame = None
+
+        self.materialsTable = None
+        self.storageTable = None
+        self.recipeTable = None
+        self.ordersTable = None
+        self.processTable = None
+
+        self.labelEdit1 = None
+        self.labelEdit2 = None
+        self.labelEdit3 = None
+        self.labelEdit4 = None
+        self.labelEdit5 = None
+        self.labelEdit6 = None
+        self.labelFilterFrom = None
+        self.labelFilterTo = None
+        self.labelOrderProfit1 = None
+        self.labelOrderProfit2 = None
+        self.labelOrder = None
+        self.labelRecipe = None
+        self.labelMailOrder = None
+
+        self.entryFieldEdit1 = None
+        self.entryFieldEdit2 = None
+        self.entryFieldEdit3 = None
+        self.entryFieldEdit4 = None
+        self.entryFieldEdit5 = None
+        self.entryFieldEdit6 = None
+        self.entryFieldOrder = None
+
+        self.buttonAddRecipe = None
+        self.buttonEdit = None
+        self.buttonDelete = None
+        self.buttonAddOrder = None
+        self.buttonConfirmOrder = None
+        self.buttonCancelOrder = None
+        self.buttonFilterOrders = None
+        self.buttonCancelEditing = None
+        self.buttonMenu1 = None
+        self.buttonMenu2 = None
+        self.buttonMenu3 = None
+        self.buttonScrollUp = None
+        self.buttonScrollDown = None
+
+        self.idForEdit = None
+        self.scrollbar_recipe = None
+        self.rates = None
+        self.pairs = None
+        self.currency_list = None
+        self.recipe_list = None
+        self.mail_list = None
+        self.year_list_from = None
+        self.month_list_from = None
+        self.day_list_from = None
+        self.year_list_to = None
+        self.month_list_to = None
+        self.day_list_to = None
+        self.menu = None
+        self.submenu = None
+        self.style = None
+        self.make_windows()
+
+    def make_windows(self):
+        gradient_step = 0
+        hex_step = 400
+        for _ in range(40):
+            color_hex = str(224499 + hex_step)
+            tk.Frame(self.master, width=100, height=550, bg="#" + color_hex).place(
+                x=gradient_step, y=0
+            )
+            gradient_step += 100
+            hex_step += 300
+
         self.style = ttk.Style()
         self.style.theme_use("clam")
 
@@ -152,25 +228,14 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
             format="%(asctime)s - %(levelname)s - %(message)s",
             encoding="UTF-8",
         )
-
-        self.gradient_step = 0
-        self.hex_step = 400
-        for _ in range(40):
-            self.color_hex = str(224499 + self.hex_step)
-            tk.Frame(master, width=100, height=550, bg="#" + self.color_hex).place(
-                x=self.gradient_step, y=0
-            )
-            self.gradient_step += 100
-            self.hex_step += 300
-
         self.idForEdit = tk.IntVar()
 
         self.rates, self.pairs = API.get_rates()
 
-        self.topFrame = tk.Frame(master)
-        self.leftFrame = tk.Frame(master)
+        self.topFrame = tk.Frame(self.master)
+        self.leftFrame = tk.Frame(self.master)
 
-        self.menu = tk.Menu(master)
+        self.menu = tk.Menu(self.master)
         self.master.config(menu=self.menu)
         self.submenu = tk.Menu(self.menu, tearoff=False)
 
@@ -366,7 +431,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
         self.menu.add_cascade(label="Menu", menu=self.submenu)
         self.submenu.add_command(label="Back to main", command=self.back_to_main)
         self.submenu.add_separator()
-        self.submenu.add_command(label="Exit", command=master.destroy)
+        self.submenu.add_command(label="Exit", command=self.master.destroy)
 
         self.currency_list.place(x=0, y=130)
         self.mail_list.place(x=1470, y=0)
@@ -544,7 +609,7 @@ class Main(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews
 
 def main():
     window = tk.Tk()
-    Main(window)
+    MainWindow(window)
     window.geometry("1570x550+400+400")
     window.resizable(False, False)
     window.title("Control panel")

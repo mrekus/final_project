@@ -1,7 +1,10 @@
 from utils import *
 
 
-class StorageViews:
+class StorageViews(widgets.Widgets):
+    """
+    Visi metodai valdantys Storage laukus
+    """
     def fill_storage_data_box(self):
         """
         Atstato pradinę lango būseną su Storage duomenų lentele
@@ -27,10 +30,11 @@ class StorageViews:
         """
         Sukuria visus Storage edit langus
         """
-        self.edit_record_process()
         self.buttonEdit.config(
             text="Save changes", activebackground="#00A650", command=self.edit_storage
         )
+        self.entryFieldEdit1.grid(row=1, column=8)
+        self.entryFieldEdit2.grid(row=2, column=8)
         self.labelEdit1.grid(row=1, column=7, sticky="W")
         self.labelEdit2.grid(row=2, column=7, sticky="W")
         self.labelEdit1.config(text="Name: ")
@@ -38,8 +42,11 @@ class StorageViews:
         self.buttonCancelEditing.config(
             activebackground="red", command=self.cancel_editing_storage
         )
+        self.buttonDelete.config(state=tk.DISABLED, bg="gray")
         self.labelEdit3.grid_forget()
         self.entryFieldEdit3.grid_forget()
+        self.buttonCancelEditing.grid(row=3, column=6)
+        self.entryFieldEdit1.focus()
 
     def edit_storage_get_values(self):
         """

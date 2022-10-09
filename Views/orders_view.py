@@ -8,7 +8,10 @@ def write_order_to_txt(text):
         record_order.write(text)
 
 
-class OrderViews:
+class OrderViews(widgets.Widgets):
+    """
+    Visi metodai valdantys Orders laukus
+    """
     def fill_orders_data_box(self):
         """
         Atstato pradinę lango būseną su Orders duomenų lentele
