@@ -4,6 +4,9 @@ class Widgets:
     kad matytų visą programą
     """
     def __init__(self):
+        self.topFrame = None
+        self.leftFrame = None
+
         self.materialsTable = None
         self.storageTable = None
         self.recipeTable = None
@@ -22,6 +25,7 @@ class Widgets:
         self.labelOrderProfit2 = None
         self.labelOrder = None
         self.labelRecipe = None
+        self.labelMailOrder = None
 
         self.entryFieldEdit1 = None
         self.entryFieldEdit2 = None
@@ -39,10 +43,16 @@ class Widgets:
         self.buttonCancelOrder = None
         self.buttonFilterOrders = None
         self.buttonCancelEditing = None
+        self.buttonMenu1 = None
+        self.buttonMenu2 = None
+        self.buttonMenu3 = None
+        self.buttonScrollUp = None
+        self.buttonScrollDown = None
 
         self.idForEdit = None
         self.scrollbar_recipe = None
         self.rates = None
+        self.pairs = None
         self.currency_list = None
         self.recipe_list = None
         self.mail_list = None
@@ -52,3 +62,6 @@ class Widgets:
         self.year_list_to = None
         self.month_list_to = None
         self.day_list_to = None
+        self.menu = None
+        self.submenu = None
+        self.style = None
