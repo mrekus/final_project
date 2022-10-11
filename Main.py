@@ -136,7 +136,14 @@ class MyTreeview(ttk.Treeview):
         )
 
 
-class MainWindow(ProcessViews, RecipiesViews, StorageViews, OrderViews, MaterialsViews, widgets.Widgets):
+class MainWindow(
+    ProcessViews,
+    RecipiesViews,
+    StorageViews,
+    OrderViews,
+    MaterialsViews,
+    widgets.Widgets,
+):
     """
     Pagrindinis programos langas su bendrais
     metodais valdančiais visus langus bendrai
