@@ -9,6 +9,8 @@ Programa skirta gamybos pajėgumo, žaliavų, produktų bei užsakymų sekimui. 
 
 Paleidus programą sukuriami visi pagrindiniai programos laukai, programa kreipiasi į API ir iš config.ini esančių valiutų porų paima dabartinį kursą su EUR. Jei API neveikia ar config.ini suvesti blogi duomenys užkrauna tik default EUR. Į kairėje pusėje esantį combobox sudedami visi užkrauti kursai, pats combobox read-only. Ant visų meniu mygtukų sudedmas spalvų pasikeitimas ant jų užvedus pelę. Meniu scroll mygtukai kurie keičia meniu mygtukus ir automatiškai išsijungia pasiekus meniu viršų ar apačią. Viršuje kontekstinis menu, su kuriuo galima atstatyti pradinę programos būseną, arba išeiti iš programos.
 
+![image](https://user-images.githubusercontent.com/113506949/196032326-06a232ad-f855-4ad5-aa3d-52495bb7794a.png)
+
 ## 1) Process:</br>
 
 Paspaudus Process mygtuką sukuriama treeview lentelė su duomenų bazės Process lentelės duomenimis, įrašų pasirinkimas ribojamas iki 1. Sukuriamas Edit ir išjungtas Delete mygtukai.
@@ -17,7 +19,7 @@ Paspaudus Process mygtuką sukuriama treeview lentelė su duomenų bazės Proces
 	
 - Paspaudus Edit mygtuką nepasirinkus įrašo į Project_error_log failą įrašomas warning, jog bandoma editinti nepasirinkus įrašo. Paspaudus Edit mygtuką pasirinkus įrašą to įrašo ID paimamas į atmintį su kintamuoju, užkraunami 3 entry fields ir 3 labels. Į entry fields iš kart įrašomi dabartiniai pasirinkto įrašo duomenys. Pačio Edit mygtuko tekstas pakeičiamas į Save changes, o funkcija pakeičiama į įrašo išsaugojimą. Pridedmas Cancel mygtukas. Mygtuko Save changes pelės užvedimo spalvos pasikeitimas pakeičiamas į žalią, o mygtuko Cancel į raudoną.
 
-![image](https://user-images.githubusercontent.com/113506949/196007232-6346ac99-9582-4ef4-8f0c-af8a7741340b.png)
+	![image](https://user-images.githubusercontent.com/113506949/196007232-6346ac99-9582-4ef4-8f0c-af8a7741340b.png)
 
 - Paspaudus Save changes yra tikrinami įrašai iš entry fields. Tikrinamas ar įrašas Name yra originalus - su .strip() pašalinami trailing ir leading spaces, su regex pasikartojantys tarpai keičiami į vienus, tada ignoruojant case su .lower() lyginama su duomenų bazės process įrašais. Jei randamas sutapimas, kviečiama ErrorWindow klasė kuri iššaukia Error langą, ir įrašymas yra atmetamas. Įrašas su savim nelyginamas, ir galima keisti tik jo šriftą. Tokie patys tikrinimai atliekami Material laukui lyginant įrašą su duomenų bazės Materials įrašais. Efficiency lauke tikrinama ar skaičius yra teigiamas ir ar didesnis už 0. Jei ne kviečiamas atitinkamas Error ir įrašymas yra atmetamas. Praėjus visus patikrinimus Name ir Efficiency pakeičiami duomenų bazės Process lentelėje, Material Materials lentelėje. Atstatomas Edit mygtukas, pašalinamas Cancel mygtukas, atnaujinama lentelė.
 
@@ -30,7 +32,7 @@ Paspaudus Recipies mygtuką sukuriama treeview lentelė su duomenų bazės Recip
 
 - Paspaudus Edit mygtuką nepasirinkus įrašo į Project_error_log failą įrašomas warning, jog bandoma editinti nepasirinkus įrašo. Paspaudus Edit mygtuką pasirinkus įrašą to įrašo ID paimamas į atmintį su kintamuoju, užkraunami 6 entry fields ir 6 labels. Į juos įrašomi dabartiniai įrašo duomenys. Pačio Edit mygtuko tekstas pakeičiamas į Save changes, o funkcija pakeičiama į įrašo išsaugojimą. Pridedamas Cancel mygtukas. Išjungiamas Delete mygtukas. Mygtuko Save changes pelės užvedimo spalvos pasikeitimas pakeičiamas į žalią, o mygtuko Cancel į raudoną.
 
-![image](https://user-images.githubusercontent.com/113506949/196007244-ea94d7d6-5457-4c9e-922d-b0714e88bfeb.png)
+	![image](https://user-images.githubusercontent.com/113506949/196007244-ea94d7d6-5457-4c9e-922d-b0714e88bfeb.png)
 
 - Paspaudus Save changes mygtuką Name laukas tikrinamas tokiu pačiu principu kaip ir Process lentelėje. Kiti laukai tikrinami ar yra teigiami, ar mažiau arba lygūs 1, ir ar jų suma lygi 1. Leidžiama nedidelė 0.0004 paklaida iki 1. Jei tikrinimai praeina, įrašas yra redaguojamas duomenų bazėje pagal ankščiau paimta įrašo ID. Atstatomi Edit, Add Recipe bei Delete mygtukai, atnaujinama lentelė, atnaujinamas Add an Order receptų pasirinkimo combobox.
 
@@ -47,7 +49,7 @@ Paspaudus Storage mygtuką sukuriama treeview lentelė su duomenų bazės Storag
 
 - Paspaudus Edit mygtuką nepasirinkus įrašo į Project_error_log failą įrašomas warning, jog bandoma editinti nepasirinkus įrašo. Paspaudus Edit mygtuką pasirinkus įrašą to įrašo ID paimamas į atmintį su kintamuoju, užkraunami 2 entry fields ir 2 labels. Į entry fields iš kart įrašomi dabartiniai pasirinkto įrašo duomenys. Pačio Edit mygtuko tekstas pakeičiamas į Save changes, o funkcija pakeičiama į įrašo išsaugojimą. Pridedmas Cancel mygtukas. Mygtuko Save changes pelės užvedimo spalvos pasikeitimas pakeičiamas į žalią, o mygtuko Cancel į raudoną.
 
-![image](https://user-images.githubusercontent.com/113506949/196007260-e0f12f59-539a-4776-8178-e3f165947913.png)
+	![image](https://user-images.githubusercontent.com/113506949/196007260-e0f12f59-539a-4776-8178-e3f165947913.png)
 
 - Paspaudus Save changes mygtuką Name, bei Amount laukai tikrinami tokiu pačiu būdų kaip ir Process lentelėje. Praėjus tikrinimus įrašas pagal prieš tai paimtą įrašo ID yra redaguojamas duomenų bazės Storage lentelėje. Atstatomas Edit mygtukas, pašalinamas Cancel mygtukas, atnaujinama lentelė.
 
@@ -60,7 +62,7 @@ Paspaudus Materials mygtuką sukuriama treeview lentelė su duomenų bazės Mate
 
 - Paspaudus Edit mygtuką nepasirinkus įrašo į Project_error_log failą įrašomas warning, jog bandoma editinti nepasirinkus įrašo. Paspaudus Edit mygtuką pasirinkus įrašą to įrašo ID paimamas į atmintį su kintamuoju, užkraunami 2 entry fields ir 2 labels. Į entry fields iš kart įrašomi dabartiniai pasirinkto įrašo duomenys. Pačio Edit mygtuko tekstas pakeičiamas į Save changes, o funkcija pakeičiama į įrašo išsaugojimą. Pridedmas Cancel mygtukas. Mygtuko Save changes pelės užvedimo spalvos pasikeitimas pakeičiamas į žalią, o mygtuko Cancel į raudoną.
 
-![image](https://user-images.githubusercontent.com/113506949/196007275-428ea0aa-a8d5-4ca8-94f1-df2c99ad3fa9.png)
+	![image](https://user-images.githubusercontent.com/113506949/196007275-428ea0aa-a8d5-4ca8-94f1-df2c99ad3fa9.png)
 
 - Paspaudus Save changes mygtuką Name, bei Amount laukai tikrinami tokiu pačiu būdų kaip ir Process lentelėje. Praėjus tikrinimus įrašas pagal prieš tai paimtą įrašo ID yra redaguojamas duomenų bazės Storage lentelėje. Atstatomas Edit mygtukas, pašalinamas Cancel mygtukas, atnaujinama lentelė.
 
@@ -73,7 +75,7 @@ Paspaudus Orders mygtuką sukuriama treeview lentelė su duomenų bazės Orders 
 
 - Paspaudus Filter mygtuką pridedamos etiketės bei combobox filtravimui. Į stulpelio From combobox sudedama data 2022-01-01, o į stulpelio To combobox sudedama dabartinė data kuri atsinaujina automatiškai. Taip pat pridedamas Period profit stulpelis kuriame automatiškai apskaičiuojama visos lentelės įrašų Selling price - Manufacturing price. Visi datų combobox pririšami prie lentelės įrašų atnaujinimo metodo pagal pasirinktą datų ruožą. Kiekvieną kartą pakeitus bet kurį combobox jų vertės paimamos, ir pagal tai dinamiškai išfiltruojami lentelės įrašai, atnaujinamas Period profit stulpelis. Filter mygtukas pakeičiamas į Cancel ir jo pelės užvedimo spalva pakeičiama į raudoną.
 
-![image](https://user-images.githubusercontent.com/113506949/196007299-b412e31a-f79b-4b38-87b1-3ecdc35d1dce.png)
+	![image](https://user-images.githubusercontent.com/113506949/196007299-b412e31a-f79b-4b38-87b1-3ecdc35d1dce.png)
 
 - Paspaudus Send to Email mygtuką visi tuo metu išfiltruoti lentelės įrašai yra sudedami į laišką, kurios Subject yra pasirinkta data From - To iš combobox, o turinys visi lentelės įrašai, bei Period profit. Duomenys naudojami siųsti laiškui paimami iš config.ini failo įrašant kam siunčiama, bei iš kokio email siunčiama priimant to email login bei gmail app key. Jei laiško išsiųsti nepavyksta metamas Error langas.
 
